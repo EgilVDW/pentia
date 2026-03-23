@@ -11,7 +11,7 @@ const firebaseConfig = {
   projectId: "pentia-1",
   storageBucket: "pentia-1.firebasestorage.app",
   messagingSenderId: "106566492564",
-  appId: "1:106566492564:web:e9877618e195f17ee4ef81",
+  appId: "1:106566492564:web:e9877618e195f17ee4ef81"
 };
 
 // Initialize Firebase
