@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import PlaceholderView from "@/views/PlaceholderView.vue";
+import FrontpageView from "@/views/FrontpageView.vue";
 
 
 const router = createRouter({
@@ -15,6 +16,11 @@ const router = createRouter({
       path: "/placeholder",
       name: "placeholder",
       component: PlaceholderView
+    },
+    {
+      path: "/frontpage",
+      name: "frontpage",
+      component: FrontpageView
     }
   ]
 });
