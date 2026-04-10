@@ -1,0 +1,8 @@
+@use "../abstracts/colors.scss" as *;
+@use "../abstracts/typography.scss" as *;
+
+html {
+  background-color: $color-background;
+  color: $color-foreground;
+  font-family: $font-family-base;
+}
