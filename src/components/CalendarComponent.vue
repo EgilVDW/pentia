@@ -2,6 +2,13 @@
 //TODO: Consider moving into seperate js file for less clutter.
 import { computed, ref } from "vue"
 
+const props = defineProps({
+  activities: {
+    type: Array,
+    default: () => []
+  }
+})
+
 const today = new Date()
 const selectedDate = ref(null)
 
@@ -10,6 +17,8 @@ const currentYear = ref(today.getFullYear())
 
 const daysOfWeek = ["Ma", "Ti", "On", "To", "Fr", "Lø", "Sø"]
 
+const emit = defineEmits(["select-date"])
+
 const getDaysInMonth = (month, year) => {
   return new Date(year, month + 1, 0).getDate()
 }
@@ -17,6 +26,14 @@ const getDaysInMonth = (month, year) => {
 const getFirstDayOfMonth = (month, year) => {
   const day = new Date(year, month, 1).getDay()
   return day === 0 ? 6 : day - 1 // make Monday first
+}
+
+const hasActivity = (date) => {
+  if (!date) return false
+
+  return props.activities.some(activity =>
+    activity.date.toDateString() === date.toDateString()
+  )
 }
 
 const calendarDays = computed(() => {
@@ -40,7 +57,8 @@ const calendarDays = computed(() => {
       isToday:
         i === today.getDate() &&
         currentMonth.value === today.getMonth() &&
-        currentYear.value === today.getFullYear()
+        currentYear.value === today.getFullYear(),
+      hasActivity: hasActivity(date)
     })
   }
 
@@ -49,7 +67,9 @@ const calendarDays = computed(() => {
 
 const selectDate = (day) => {
   if (!day.date) return
+
   selectedDate.value = day.date
+  emit("select-date", day.date)
 }
 
 const isSelected = (day) => {
@@ -109,11 +129,14 @@ const monthLabel = computed(() => {
         :class="{
           'calendar__day--inactive': !day.isCurrentMonth,
           'calendar__day--today': day.isToday,
-          'calendar__day--selected': isSelected(day)
+          'calendar__day--selected': isSelected(day),
+          'calendar__day--has-activity': day.hasActivity
         }"
         @click="selectDate(day)"
       >
         {{ day.day }}
+
+        <span v-if="day.hasActivity" class="calendar__dot"></span>
       </div>
     </div>
 
@@ -176,12 +199,19 @@ const monthLabel = computed(() => {
   }
 
   &__day {
+    position: relative;
     height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 4px;
     cursor: pointer;
+
+    &--has-activity {
+      font-weight: bold;
+      color: $color-surface;
+      background: $color-primary;
+    }
 
     &--inactive {
       color: #bbb;
@@ -196,6 +226,15 @@ const monthLabel = computed(() => {
       background: $color-highlight;
       color: $color-foreground;
     }
+  }
+
+  &__dot {
+    width: 5px;
+    height: 5px;
+    background: $color-primary;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 4px;
   }
 
   &__legend {
