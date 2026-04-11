@@ -1,4 +1,5 @@
 <script setup>
+//TODO: Consider moving into seperate js file for less clutter.
 import { computed, ref } from "vue"
 
 const today = new Date()
