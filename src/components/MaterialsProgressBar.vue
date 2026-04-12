@@ -23,6 +23,7 @@ const completeStep = () => {
         class="progress__fill"
         :style="{ width: progressPercent + '%' }"
       ></div>
+      <!-- TODO: Add checkmark icon -->
     </div>
 
     <div class="progress__text">
