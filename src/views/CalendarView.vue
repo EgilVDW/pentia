@@ -1,5 +1,6 @@
 <script setup>
 import CalendarActivities from "@/components/CalendarActivities.vue";
+import CalendarCards from "@/components/CalendarCards.vue";
 import Calendar from "@/components/CalendarComponent.vue";
 import { computed, ref } from "vue";
 
@@ -45,6 +46,11 @@ const activitiesForSelectedDate = computed(() => {
     :selectedDate="selectedDate"
     :activities="activitiesForSelectedDate"
 />
+  </div>
+
+  <!-- <CheckupCard :title="..." :date="..." /> -->
+  <div id="check-up">
+    <CalendarCards />
   </div>
 </template>
 
