@@ -208,9 +208,8 @@ const monthLabel = computed(() => {
     cursor: pointer;
 
     &--has-activity {
-      font-weight: bold;
-      color: $color-surface;
       background: $color-primary;
+      color: $color-surface;
     }
 
     &--inactive {
@@ -218,8 +217,8 @@ const monthLabel = computed(() => {
     }
 
     &--today {
-      background: $color-primary;
       color: $color-surface;
+      font-weight: bold;
     }
 
     &--selected {
