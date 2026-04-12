@@ -1,6 +1,7 @@
-import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
+import MaterialsView from "@/views/MaterialsView.vue";
 import PlaceholderView from "@/views/PlaceholderView.vue";
+import { createRouter, createWebHistory } from "vue-router";
 
 
 const router = createRouter({
@@ -15,6 +16,11 @@ const router = createRouter({
       path: "/placeholder",
       name: "placeholder",
       component: PlaceholderView
+    },
+    {
+      path: "/materialer",
+      name: "materialer",
+      component: MaterialsView
     }
   ]
 });
