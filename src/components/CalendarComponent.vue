@@ -135,8 +135,6 @@ const monthLabel = computed(() => {
         @click="selectDate(day)"
       >
         {{ day.day }}
-
-        <span v-if="day.hasActivity" class="calendar__dot"></span>
       </div>
     </div>
 
@@ -217,7 +215,7 @@ const monthLabel = computed(() => {
     }
 
     &--today {
-      color: $color-surface;
+      color: $color-foreground;
       font-weight: bold;
     }
 
@@ -225,15 +223,6 @@ const monthLabel = computed(() => {
       background: $color-highlight;
       color: $color-foreground;
     }
-  }
-
-  &__dot {
-    width: 5px;
-    height: 5px;
-    background: $color-primary;
-    border-radius: 50%;
-    position: absolute;
-    bottom: 4px;
   }
 
   &__legend {
