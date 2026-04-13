@@ -32,6 +32,7 @@ defineProps({
 .text{
     white-space: pre-line;
     line-height: normal;
+    font-size: $font-size-body;
 }
 .position{
     padding: 0.5rem 1.5rem;
