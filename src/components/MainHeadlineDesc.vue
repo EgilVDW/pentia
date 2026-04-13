@@ -13,7 +13,7 @@ defineProps({
 
 <template>
     <div class="position">
-        <h2>
+        <h2 class="headline">
             {{ title }}
         </h2>
         <p v-if="text" class="text">
@@ -23,12 +23,17 @@ defineProps({
 
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.headline{
+    font-family: $font-family-base;
+    font-size: $font-size-headline-1;
+    font-weight: bold;
+}
 .text{
     white-space: pre-line;
     line-height: normal;
 }
 .position{
-    padding: 0 2rem;
+    padding: 0.5rem 1.5rem;
 }
 </style>

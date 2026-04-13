@@ -9,14 +9,15 @@ import miltonLogo from "@/assets/milton-logo.png";
     </header>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .header{
     height: 129px;
     width: 100vw;
     display: flex;
     justify-content: space-between;
     align-items: end;
-    padding: 16px 24px;
+    padding: 2rem 1.5rem;
+    background-color: $color-primary;
     img{
         height: 48px;
     }
