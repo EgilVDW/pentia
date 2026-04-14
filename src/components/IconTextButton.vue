@@ -19,7 +19,10 @@ defineProps({
         <img
         :src="src"
         class="icon"
-        :style="{ width: size + 'px', height: size + 'px' }"
+        :style="{ 
+          width: size + 'px', 
+          height: size + 'px' 
+        }"
         alt="icon"
         />
         <p>{{ text }}</p>

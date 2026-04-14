@@ -39,7 +39,7 @@ const tasks = ref([
 
   .tasks-title {
     text-align: left;
-    font-size: $font-size-headline-1;
+    font-size: 1rem;
     font-weight: bold;
     padding: 0.25rem 1rem;
     border-top-left-radius: $border-radius-small;
