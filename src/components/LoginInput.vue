@@ -5,10 +5,6 @@ const props = defineProps({
         type: String,
         default: 'Brugernavn'
     },
-    autocomplete: {
-        type: String, 
-        default: 'Brugernavn'
-    },
     name:{
         type: String,
         default: 'Brugernavn'
@@ -19,10 +15,9 @@ const props = defineProps({
 <template>
     <div class="login-input">
         <input 
-            type="text"
+            type="email"
             v-model="model"
             :placeholder="placeholder"
-            :autocomplete="autocomplete"
             :name="name"
             class="login-input__field"
         />
