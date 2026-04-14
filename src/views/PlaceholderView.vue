@@ -2,5 +2,5 @@
 import Placeholder from "@/components/Placeholder.vue";
 </script>
 <template>
-    <Placeholder />
+  <Placeholder />
 </template>
