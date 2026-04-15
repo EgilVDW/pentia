@@ -28,19 +28,19 @@ defineProps({
   background-color: $color-primary;
   color: $color-surface;
 
-  &__avatar-button {
+  &__avatar {
     position: relative;
     flex-shrink: 0;
     width: 4rem;
     height: 4rem;
   }
 
-  &__avatar {
+  &__avatar-image {
     border-radius: 100%;
     object-fit: cover;
   }
 
-  &__edit-avatar {
+  &__avatar-edit-icon {
     position: absolute;
     right: 0;
     bottom: 0;
