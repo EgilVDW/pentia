@@ -23,7 +23,7 @@ const href = computed(() => {
       </div>
     </div>
     <a :href="href" class="contact-card__contact">
-      <IconLabel icon="Opkald" class="contact-card__contact-content">{{
+      <IconLabel icon="Opkald" class="contact-card__icon-label">{{
         phoneNumber
       }}</IconLabel>
     </a>
@@ -77,7 +77,7 @@ const href = computed(() => {
     line-height: $line-height-headline-2;
   }
 
-  &__contact-content {
+  &__icon-label {
     margin: 0 1rem;
     text-decoration: underline;
     text-underline-offset: 20%;

@@ -9,9 +9,9 @@ defineProps({
 </script>
 <template>
   <div class="profile-card">
-    <button class="profile-card__avatar-button">
-      <img class="profile-card__avatar" :src="avatar" alt="User avatar" />
-      <Icon name="Rediger-profil" class="profile-card__edit-avatar" />
+    <button class="profile-card__avatar">
+      <img :src="avatar" alt="User avatar" class="profile-card__avatar-image" />
+      <Icon name="Rediger-profil" class="profile-card__avatar-edit-icon" />
     </button>
     <div class="profile-card__content">
       <div class="profile-card__name">{{ name }}</div>
