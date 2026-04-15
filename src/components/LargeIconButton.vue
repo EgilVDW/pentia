@@ -1,4 +1,5 @@
 <script setup>
+import BaseButton from "./BaseButton.vue";
 defineProps({
   src: {
     type: String,
@@ -15,18 +16,15 @@ defineProps({
 })
 </script>
 <template>
-  <div class="icon-container">
+  <BaseButton href="/" class="icon-container">
     <img
     :src="src"
     class="icon"
-    :style="{
-      width: size + 'px',
-      height: size + 'px'
-    }"
+    :style="{ width: size + 'px', height: size + 'px' }"
     alt="icon"
     />
     <p>{{ text }}</p>
-  </div>
+  </BaseButton>
 </template>
 <style scoped lang="scss">
 .icon-container{

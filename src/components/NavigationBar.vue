@@ -2,21 +2,22 @@
 import Home from "@/assets/icons/Forside.svg";
 import Chat from "@/assets/icons/Beskeder.svg";
 import Status from "@/assets/icons/Status.svg";
+import BaseButton from "./BaseButton.vue";
 </script>
 <template>
   <section class="nav-container">
-    <div>
-      <Home class="nav-icons" />
-      <p>Home</p>
-    </div>
-    <div>
-      <Chat class="nav-icons" />
-      <p>Beskeder</p>
-    </div>
-    <div>
-      <Status class="nav-icons" />
-      <p>Status</p>
-    </div>
+    <BaseButton href="/" class="nav-container__link">
+      <Home class="nav-container__icon" />
+      <p class="nav-container__title">Home</p>
+    </BaseButton>
+    <BaseButton href="/" class="nav-container__link">
+      <Chat class="nav-container__icon" />
+      <p class="nav-container__title">Beskeder</p>
+    </BaseButton>
+    <BaseButton href="/" class="nav-container__link">
+      <Status class="nav-container__icon" />
+      <p class="nav-container__title">Status</p>
+    </BaseButton>
   </section>
 </template>
 <style scoped lang="scss">
@@ -26,18 +27,18 @@ import Status from "@/assets/icons/Status.svg";
   width: 100vw;
   background-color: $color-primary;
   padding: 1.5rem 1rem;
-  div{
+  .nav-container__link{
     display: flex;
     flex-direction: column;
     align-items: center;
-    p{
+    .nav-container__icon{
+      color: $color-highlight;
+      height: 42px;
+    }
+    .nav-container__title{
       font-size: $font-size-body;
       color: $color-surface;
     }
   }
-}
-.nav-icons{
-  color: $color-highlight;
-  height: 42px;
 }
 </style>

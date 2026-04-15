@@ -12,28 +12,29 @@ defineProps({
 </script>
 
 <template>
-  <div class="position">
-    <h2 class="headline">
+  <div class="main-text">
+    <h2 class="main-text__headline">
       {{ title }}
     </h2>
-    <p v-if="text" class="text">
+    <p v-if="text" class="main-text__description">
       {{ text }}
     </p>
   </div>
 </template>
 
 <style scoped lang="scss">
-.headline{
+.main-text{
+  padding: 0.5rem 1.5rem;
+}
+.main-text__headline{
   font-family: $font-family-base;
   font-size: $font-size-headline-1;
   font-weight: bold;
 }
-.text{
+.main-text__description{
   white-space: pre-line;
   line-height: normal;
   font-size: $font-size-body;
 }
-.position{
-  padding: 0.5rem 1.5rem;
-}
+
 </style>

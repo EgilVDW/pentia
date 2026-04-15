@@ -1,5 +1,6 @@
 <script setup>
-import Camera from "@/assets/icons/Kamera.svg?url"
+import Camera from "@/assets/icons/Kamera.svg?url";
+import BaseButton from "./BaseButton.vue";
 defineProps({
   amount: {
     type: [String, Number],
@@ -8,16 +9,16 @@ defineProps({
 })
 </script>
 <template>
-	<div class="container">
-		<img :src="Camera" class="icon" alt="camera icon">
-		<div class="text">
-			<h3>Byggeplads billeder</h3>
-			<p>{{ amount }} Nye billeder</p>
+	<BaseButton href="/" class="button-container">
+		<img :src="Camera" class="button-container__icon" alt="camera icon">
+		<div class="button-container__content">
+			<h3 class="button-container__title">Byggeplads billeder</h3>
+			<p class="button-container__description">{{ amount }} Nye billeder</p>
 		</div>
-	</div>
+	</BaseButton>
 </template>
 <style scoped lang="scss">
-.container{
+.button-container{
 	display: flex;
 	align-items: center;
 	gap: 0.75rem;
@@ -30,7 +31,7 @@ defineProps({
 	position: relative;
 	overflow: hidden;
 }
-.container::before{
+.button-container::before{
 	content: "";
 	position: absolute;
 	inset: 0;
@@ -38,22 +39,22 @@ defineProps({
 	opacity: 0.7;
 	z-index: 0;
 }
-.container > * {
+.button-container > * {
   position: relative;
   z-index: 1;
 }
-.icon{
+.button-container__icon{
 	width: 32px;
 	height: auto;
 }
-.text{
+.button-container__content{
 	display: flex;
 	flex-direction: column;
-	h3{
+	.button-container__title{
 		font-size: $font-size-headline-2;
 		font-weight: bold;
 	}
-	p{
+	.button-container__description{
 		font-size: $font-size-body;
 	}
 }
