@@ -30,10 +30,12 @@ watch(searchText, (newValue) => {
    position: relative;
     
     &__input {
-        width: 20.875rem;
+        width: 100%;
         height: 2.375rem;
-        padding: 0 16px 0 48px; 
-        font-size: 16px;
+        margin: 15px;
+        padding: 12px 16px 12px 45px; 
+        font-size: 1rem;
+        border: none;
         font-family: $font-family-base;
         color: $color-foreground;
         background-color: $color-surface;
