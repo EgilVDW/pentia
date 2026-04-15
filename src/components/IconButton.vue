@@ -15,6 +15,8 @@ defineProps({
 </template>
 <style scoped lang="scss">
 .icon-button {
+  @include button;
+
   font-size: $font-size-body;
   line-height: $line-height-body;
 }

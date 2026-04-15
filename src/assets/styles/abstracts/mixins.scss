@@ -1,0 +1,13 @@
+@use "@/assets/styles/abstracts/variables" as *;
+@use "@/assets/styles/abstracts/colors" as *;
+
+@mixin button {
+  display: flex;
+  align-items: center;
+  padding: 0 0.625rem;
+  width: 100%;
+  height: 2.375rem;
+  border-radius: $border-radius-large;
+  background-color: $color-surface;
+  box-shadow: $drop-shadow;
+}

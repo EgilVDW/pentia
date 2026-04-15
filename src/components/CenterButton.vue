@@ -8,6 +8,8 @@ import BaseButton from "@/components/BaseButton.vue";
 </template>
 <style scoped lang="scss">
 .center-button {
+  @include button;
+
   justify-content: center;
   font-size: 1.125rem;
   font-weight: 700;

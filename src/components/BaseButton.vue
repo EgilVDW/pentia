@@ -30,19 +30,7 @@ const componentAttrs = computed(() => {
 });
 </script>
 <template>
-  <component :is="component" v-bind="componentAttrs" class="base-button">
+  <component :is="component" v-bind="componentAttrs">
     <slot />
   </component>
 </template>
-<style scoped lang="scss">
-.base-button {
-  display: flex;
-  align-items: center;
-  padding: 0 0.625rem;
-  width: 100%;
-  height: 2.375rem;
-  border-radius: $border-radius-large;
-  background-color: $color-surface;
-  box-shadow: $drop-shadow;
-}
-</style>
