@@ -3,7 +3,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import IconLabel from "@/components/IconLabel.vue";
 
 defineProps({
-  icon: String,
+  icon: String
 });
 </script>
 <template>

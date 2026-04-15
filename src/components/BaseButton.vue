@@ -5,7 +5,7 @@ import { RouterLink } from "vue-router";
 const props = defineProps({
   href: String,
   external: Boolean,
-  type: String,
+  type: String
 });
 
 const component = computed(() => {
@@ -25,7 +25,7 @@ const componentAttrs = computed(() => {
 
   return {
     href: props.href,
-    rel: "noopener noreferrer",
+    rel: "noopener noreferrer"
   };
 });
 </script>

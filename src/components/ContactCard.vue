@@ -6,7 +6,7 @@ const props = defineProps({
   avatar: String,
   role: String,
   name: String,
-  phoneNumber: String,
+  phoneNumber: String
 });
 
 const href = computed(() => {

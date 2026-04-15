@@ -9,19 +9,19 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: HomeView,
+      component: HomeView
     },
     {
       path: "/placeholder",
       name: "placeholder",
-      component: PlaceholderView,
+      component: PlaceholderView
     },
     {
       path: "/profile",
       name: "profile",
-      component: ProfileView,
-    },
-  ],
+      component: ProfileView
+    }
+  ]
 });
 
 export default router;

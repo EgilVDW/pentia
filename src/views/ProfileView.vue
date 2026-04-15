@@ -11,28 +11,28 @@ const details = [
   {
     icon: "Forside",
     label: "Projekt",
-    value: "Typehus: Vinkelhus A 145",
+    value: "Typehus: Vinkelhus A 145"
   },
   {
     icon: "Kort",
     label: "Adresse",
-    value: "Holkenbjergvej 76",
-  },
+    value: "Holkenbjergvej 76"
+  }
 ];
 
 const notifications = [
   {
-    content: "Nye dagsrapporter",
+    content: "Nye dagsrapporter"
   },
   {
-    content: "Nye billeder fra byggeplads",
+    content: "Nye billeder fra byggeplads"
   },
   {
-    content: "Nye beskeder fra byggeleder",
+    content: "Nye beskeder fra byggeleder"
   },
   {
-    content: "Påmindelse om eftersyn",
-  },
+    content: "Påmindelse om eftersyn"
+  }
 ];
 </script>
 <template>

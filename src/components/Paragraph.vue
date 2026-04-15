@@ -1,6 +1,6 @@
 <script setup>
 defineProps({
-  label: String,
+  label: String
 });
 </script>
 <template>

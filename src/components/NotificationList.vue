@@ -2,7 +2,7 @@
 import Icon from "@/components/Icon.vue";
 
 defineProps({
-  items: Array,
+  items: Array
 });
 </script>
 <template>

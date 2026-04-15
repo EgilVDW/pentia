@@ -4,7 +4,7 @@ import Icon from "@/components/Icon.vue";
 defineProps({
   avatar: String,
   name: String,
-  email: String,
+  email: String
 });
 </script>
 <template>

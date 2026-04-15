@@ -19,7 +19,7 @@ export default defineConfig([
       "no-var": ["error"],
       "no-unused-vars": ["error"],
       "prefer-const": ["error"]
-    },
+    }
   },
-  pluginVue.configs["flat/essential"],
+  pluginVue.configs["flat/essential"]
 ]);

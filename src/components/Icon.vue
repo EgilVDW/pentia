@@ -1,17 +1,14 @@
-<template>
-  <div v-if="svgContent" v-html="svgContent" class="icon"></div>
-</template>
 <script setup>
 import { computed } from "vue";
 
 const props = defineProps({
-  name: String,
+  name: String
 });
 
 const icons = import.meta.glob("../assets/icons/*.svg", {
   eager: true,
   query: "?raw",
-  import: "default",
+  import: "default"
 });
 
 const svgContent = computed(() => {
@@ -23,5 +20,10 @@ const svgContent = computed(() => {
 .icon svg {
   width: 100%;
   height: 100%;
+  display: block;
 }
 </style>
+
+<template>
+  <div v-if="svgContent" v-html="svgContent" class="icon"></div>
+</template>
