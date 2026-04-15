@@ -16,6 +16,9 @@ const svgContent = computed(() => {
   return icons[key] || null;
 });
 </script>
+<template>
+  <div v-if="svgContent" v-html="svgContent" class="icon"></div>
+</template>
 <style lang="scss">
 .icon svg {
   width: 100%;
@@ -23,7 +26,3 @@ const svgContent = computed(() => {
   display: block;
 }
 </style>
-
-<template>
-  <div v-if="svgContent" v-html="svgContent" class="icon"></div>
-</template>
