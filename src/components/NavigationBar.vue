@@ -4,20 +4,20 @@ import Chat from "@/assets/icons/Beskeder.svg";
 import Status from "@/assets/icons/Status.svg";
 </script>
 <template>
-    <section class="nav-container">
-        <div>
-            <Home class="nav-icons" />
-            <p>Home</p>
-        </div>
-        <div>
-            <Chat class="nav-icons" />
-            <p>Beskeder</p>
-        </div>
-        <div>
-            <Status class="nav-icons" />
-            <p>Status</p>
-        </div>
-    </section>
+  <section class="nav-container">
+    <div>
+      <Home class="nav-icons" />
+      <p>Home</p>
+    </div>
+    <div>
+      <Chat class="nav-icons" />
+      <p>Beskeder</p>
+    </div>
+    <div>
+      <Status class="nav-icons" />
+      <p>Status</p>
+    </div>
+  </section>
 </template>
 <style scoped lang="scss">
 .nav-container{
