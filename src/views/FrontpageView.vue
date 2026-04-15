@@ -1,11 +1,11 @@
 <script setup>
-import Header from "@/components/Header.vue";
+import Header from "@/components/HeaderBanner.vue";
 import HeadlineDesc from "@/components/MainHeadlineDesc.vue";
 import ProjectStatusList from "@/components/ProjectStatusList.vue";
-import IconTextButton from "@/components/IconTextButton.vue";
+import LargeIconButton from "@/components/LargeIconButton.vue";
 import DocumentIcon from "@/assets/icons/Dokumenter.svg?url";
 import ConstructionSiteImages from "@/components/ConstructionSiteImages.vue";
-import Navigation from "@/components/Navigation.vue";
+import NavigationBar from "@/components/NavigationBar.vue";
 </script>
 <template>
     <Header />
@@ -14,8 +14,8 @@ import Navigation from "@/components/Navigation.vue";
         :text="'Type: Vinkelhus\nAdresse: Holkebjergvej 76\n5250 Odense'"
     />
     <ProjectStatusList />
-    <IconTextButton :src="DocumentIcon" :size="32" text="Dokumenter"/>
+    <LargeIconButton :src="DocumentIcon" :size="32" text="Dokumenter"/>
     <ConstructionSiteImages :amount="2"/>
-    <Navigation />
+    <NavigationBar />
 </template>
 

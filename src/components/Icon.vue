@@ -5,13 +5,13 @@
 import { computed } from "vue";
 
 const props = defineProps({
-  name: String,
+  name: String
 });
 
 const icons = import.meta.glob("../assets/icons/*.svg", {
   eager: true,
   query: "?raw",
-  import: "default",
+  import: "default"
 });
 
 const svgContent = computed(() => {

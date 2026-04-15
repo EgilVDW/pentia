@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref } from "vue";
 
 const tasks = ref([
   { left: "Fundament", right: "Færdig" },
@@ -14,9 +14,9 @@ const tasks = ref([
     <section class="tasks-section">
       <h2 class="tasks-title">Projektstatus</h2>
       <section class="tasks">
-        <div 
-          v-for="(task, index) in tasks" 
-          :key="index" 
+        <div
+          v-for="(task, index) in tasks"
+          :key="index"
           class="task-row"
         >
           <span class="task-name">{{ task.left }}</span>

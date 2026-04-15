@@ -21,23 +21,23 @@ import Status from "@/assets/icons/Status.svg";
 </template>
 <style scoped lang="scss">
 .nav-container{
+  display: flex;
+  justify-content: space-between;
+  width: 100vw;
+  background-color: $color-primary;
+  padding: 1.5rem 1rem;
+  div{
     display: flex;
-    justify-content: space-between;
-    width: 100vw;
-    background-color: $color-primary;
-    padding: 1.5rem 1rem;
-    div{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        p{
-            font-size: $font-size-body;
-            color: $color-surface;
-        }
+    flex-direction: column;
+    align-items: center;
+    p{
+      font-size: $font-size-body;
+      color: $color-surface;
     }
+  }
 }
 .nav-icons{
-    color: $color-highlight;
-    height: 42px;
+  color: $color-highlight;
+  height: 42px;
 }
 </style>
