@@ -1,79 +1,72 @@
 <script setup>
-import { ref } from 'vue';
-import Icon from './Icon.vue';
+import { ref } from "vue";
+import Icon from "./Icon.vue";
 
 const model = defineModel();
-const props = defineProps({
-    placeholder: { 
-        type: String, 
-        default: 'Adgangskode' }
+defineProps({
+  placeholder: {
+    type: String,
+    default: "Adgangskode"
+  }
 });
 
 const isVisible = ref(false);
 </script>
 
 <template>
-    <div class="login-password">
-        <input 
-            :type="isVisible ? 'text' : 'password'" 
-            v-model="model" 
-            :placeholder="placeholder"
-            class="login-password__input" 
-        />
+  <div class="login-password">
+    <input :type="isVisible ? 'text' : 'password'" v-model="model" :placeholder="placeholder"
+      class="login-password__input" />
 
-        <button 
-            type="button" 
-            @click="isVisible = !isVisible" 
-            class="login-password__toggle"
-        >
-            <Icon 
-                :name="isVisible ? 'Skjul' : 'Vis'" 
-                class="login-password__icon" 
-            />
-        </button>
-    </div>
+    <button type="button" @click="isVisible = !isVisible" class="login-password__toggle">
+      <Icon :name="isVisible ? 'Skjul' : 'Vis'" class="login-password__icon" />
+    </button>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 .login-password {
-    position: relative;
+  position: relative;
+  width: 100%;
+
+  &__input {
     width: 100%;
+    padding: 12px 0 12px 30px;
+    border-radius: $border-radius-small;
+    font-size: $font-size-body;
+    background-color: $color-surface;
+    font-family: $font-family-base;
+    color: $color-background;
 
-    &__input {
-        width: 100%;
-        padding: 12px 0 12px 30px;
-        border-radius: $border-radius-large;
-        font-size: 16px;
-        background-color: $color-surface;
-        font-family: "Inter";
-
-        &:focus {
-            outline: none; 
-        }
+    &::placeholder {
+      color: $color-placeholder;
+      font-weight: 300;
     }
 
-    &__toggle {
-        position: absolute;
-        right: 12px;
-        top: 25px;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        opacity: 0.6;
-
-        &:hover {
-            opacity: 1;
-        }
+    &:focus {
+      outline: none;
     }
+  }
 
-    &__icon {
-        width: 2rem; 
-        height: 2rem;
+  &__toggle {
+    position: absolute;
+    right: 12px;
+    top: 22px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    opacity: 0.6;
 
-    }
+  }
+
+  &__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+
+  }
 }
 </style>

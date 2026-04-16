@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import PlaceholderView from "@/views/PlaceholderView.vue";
+import ViewLogin from "@/views/ViewLogin.vue";
 
 
 const router = createRouter({
@@ -15,6 +16,11 @@ const router = createRouter({
       path: "/placeholder",
       name: "placeholder",
       component: PlaceholderView
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: ViewLogin
     }
   ]
 });
