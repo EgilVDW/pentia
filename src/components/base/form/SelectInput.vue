@@ -1,15 +1,14 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
 
-
-const props = defineProps({
+defineProps({
   label: String,
   options: Array
 });
 
-const emit = defineEmits(['select']);
+const emit = defineEmits(["select"]);
 const isOpen = ref(false);
-const selectedValue = ref('');
+const selectedValue = ref("");
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
@@ -17,18 +16,14 @@ const toggleDropdown = () => {
 
 const selectOption = (option) => {
   selectedValue.value = option.label;
-  emit('select', option.value);
+  emit("select", option.value);
   isOpen.value = false;
 };
 </script>
 
 <template>
   <div class="select-input">
-    <button 
-      type="button" 
-      class="select-input__button" 
-      @click="toggleDropdown"
-    >
+    <button type="button" class="select-input__button" @click="toggleDropdown">
       <div class="select-input__icon-container">
         <slot name="icon"></slot>
       </div>
@@ -40,9 +35,9 @@ const selectOption = (option) => {
 
     <div v-if="isOpen" class="select-input__dropdown">
       <ul class="select-input__list">
-        <li 
-          v-for="option in options" 
-          :key="option.value" 
+        <li
+          v-for="option in options"
+          :key="option.value"
           class="select-input__item"
           @click="selectOption(option)"
         >
@@ -55,7 +50,7 @@ const selectOption = (option) => {
 
 <style lang="scss" scoped>
 .select-input {
-  position: relative; 
+  position: relative;
   width: 167px;
   font-family: $font-family-base;
 
@@ -64,7 +59,7 @@ const selectOption = (option) => {
     height: 38px;
     background-color: $color-surface;
     border: none;
-    border-radius: $border-radius-large; 
+    border-radius: $border-radius-large;
     padding: 0 12px;
     display: flex;
     align-items: center;
@@ -77,10 +72,11 @@ const selectOption = (option) => {
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    
-    :deep(svg), :deep(i), :deep(img) {
-      width: 1.25rem; 
+
+    :deep(svg),
+    :deep(i),
+    :deep(img) {
+      width: 1.25rem;
       height: 1.25rem;
       color: $color-foreground;
     }
@@ -96,13 +92,13 @@ const selectOption = (option) => {
 
   &__dropdown {
     position: absolute;
-    top: 0; 
+    top: 0;
     left: 0;
-    width: 100%; 
+    width: 100%;
     background: $color-surface;
     border-radius: $border-radius-large;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); 
-    z-index: 1000; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
     padding: 0;
     overflow: hidden;
   }
