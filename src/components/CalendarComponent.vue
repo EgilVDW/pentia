@@ -156,7 +156,7 @@ const monthLabel = computed(() => {
   width: 300px;
   background: #f5f5f5;
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: $border-radius-large;
 
   &__header {
     display: flex;
@@ -175,7 +175,7 @@ const monthLabel = computed(() => {
     color: $color-primary;
     cursor: pointer;
     font-size: 1.2rem;
-    scale: 215%;
+    // scale: 215%;
   }
 
   &__weekdays {
