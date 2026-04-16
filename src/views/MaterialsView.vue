@@ -6,7 +6,8 @@ const cards = [
   {
     title: "Bad",
     description: "Valgt: Bad & fliser",
-    image: "/images/bathroom.jpg"
+    image: "images/images_bygherre/materialevalg_billeder/Badeværelse.png",
+    alt: "Picture of a bathroom"
   },
   {
     title: "Køkken",

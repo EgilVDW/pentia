@@ -1,6 +1,6 @@
 <!-- TODO: Fix Icon loader to load icon correctly and add styling to cards! -->
 <script setup>
-// import Icon from "@/components/Icon.vue";
+import Icon from "@/components/Icon.vue";
 import { computed, ref } from "vue";
 
 const props = defineProps({
@@ -9,7 +9,8 @@ const props = defineProps({
   image: {
     type: String,
     default: null
-  }
+  },
+  alt: String
 })
 
 const isSelected = ref(false)
@@ -34,7 +35,7 @@ const cardClasses = computed(() => [
         v-if="isSelected"
         class="material-card__checkmark material-card__checkmark--image"
       >
-        <!-- <Icon name="Tjekmark" /> -->
+        <Icon name="Completed-tjekmark" />
       </div>
     </div>
 
@@ -50,17 +51,13 @@ const cardClasses = computed(() => [
             v-if="isSelected && !image"
             class="material-card__checkmark material-card__checkmark--inline"
           >
-            <!-- <Icon name="Tjekmark" /> -->
+            <Icon name="Completed-tjekmark" />
           </div>
         </div>
 
         <p class="material-card__description">
           {{ description }}
         </p>
-      </div>
-
-      <div class="material-card__arrow">
-        <!-- <Icon name="chevron-right" /> -->
       </div>
     </div>
 
@@ -69,17 +66,18 @@ const cardClasses = computed(() => [
 
 <style lang="scss" scoped>
 .material-card {
-  border-radius: 16px;
+  border-radius: $border-radius-large;
   overflow: hidden;
   background: #fff;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: $drop-shadow;
   transition: 0.2s ease;
 
   &__title-row {
     display: flex;
     align-items: center;
     gap: 8px;
+    padding-left: 13px;
   }
 
   &__image {
@@ -97,8 +95,6 @@ const cardClasses = computed(() => [
   &__checkmark {
     width: 28px;
     height: 28px;
-    border-radius: 50%;
-    background: #194451;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -111,14 +107,19 @@ const cardClasses = computed(() => [
       height: 36px;
 
       :deep(svg) {
-        width: 18px;
-        height: 18px;
+        width: 24px;
+        height: 24px;
       }
     }
 
     &--inline {
       position: static;
       flex-shrink: 0;
+
+      :deep(svg) {
+        width: 20px;
+        height: 20px;
+      }
     }
 
   &__content {
@@ -143,6 +144,7 @@ const cardClasses = computed(() => [
   &__description {
     font-size: 14px;
     margin: 4px 0 0;
+    padding-left: 13px;
   }
 
   &__arrow {
