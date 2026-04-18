@@ -21,7 +21,7 @@ import ConstructionGallery from "@/components/ConstructionGallery.vue";
   h1{
     color: $color-foreground;
     font-size: $font-size-headline-1;
-    margin-bottom: 24px;
+    margin-bottom: 10px;
     padding-left: 5px;
     text-transform: none;
   }
