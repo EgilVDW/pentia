@@ -1,13 +1,11 @@
 <script setup>
-import ConstructionStatus from "@/components/ConstructionStatus.vue";
 import { ref } from "vue";
+import ConstructionStatus from "@/components/ConstructionStatus.vue";
+import FloorplanUpdate from "@/components/FloorplanUpdate.vue";
 
-const overallProgress = 25;
-const rooms = ref({
-  entre: "færdig",
-  stue: "igang",
-  kontor: "afventer"
-});
+
+const overallProgress = ref(0);
+
 </script>
 
 <template>
@@ -17,13 +15,13 @@ const rooms = ref({
     <h2><strong>Byggeleder:</strong> Kim Agerbæk</h2>
 
     <header class="status-view__header">
-      <!--<progress-bar component here> -->
+      <!--<progress-bar :progress="overallProgress" /> component here> -->
       progress bar her
     </header>
 
     <div class="status-view__card">
       <section class="status-view__content">
-        Plantegning her
+        <FloorplanUpdate :progress="overallProgress"/>
       </section>
 
       <footer class="status-view__overview">
@@ -53,7 +51,7 @@ const rooms = ref({
 
   &__card {
     width: 100%;
-    max-width: 420px;
+    max-width: 380px;
     border-radius: $border-radius-small;
     border: none;
     overflow: hidden;
@@ -65,10 +63,21 @@ const rooms = ref({
 
   &__content {
     background-color: $color-surface;
-    padding: 30px 20px;
+    padding: 30px 1px 0px 1px;
     flex-grow: 1;
     margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
+
+  &__overview {
+    background-color: $color-surface;
+    border-radius: $border-radius-small;
+    padding: 1px 1px;
+}
+
 
   &__footer {
     justify-content: space-between;
