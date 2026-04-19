@@ -2,24 +2,24 @@
 import { ref, computed } from "vue";
 
 const photos = ref([
-  { id: 1, filename: "site_1.png", date: "05-03-2026" },
-  { id: 2, filename: "site_2.png", date: "04-03-2026" },
-  { id: 3, filename: "site_3.png", date: "04-03-2026" },
-  { id: 4, filename: "site_4.png", date: "04-03-2026" },
-  { id: 5, filename: "site_5.png", date: "04-03-2026" },
-  { id: 6, filename: "site_6.png", date: "04-03-2026" },
-  { id: 7, filename: "site_7.png", date: "04-03-2026" },
-  { id: 8, filename: "site_8.png", date: "04-03-2026" },
-  { id: 9, filename: "site_9.png", date: "04-03-2026" },
-  { id: 10, filename: "site_10.png", date: "04-03-2026" },
-  { id: 11, filename: "site_11.png", date: "04-03-2026" },
-  { id: 12, filename: "site_12.png", date: "04-03-2026" },
-  { id: 13, filename: "site_13.png", date: "04-03-2026" },
-  { id: 14, filename: "site_14.png", date: "04-03-2026" },
-  { id: 15, filename: "site_15.png", date: "04-03-2026" },
-  { id: 16, filename: "site_16.png", date: "04-03-2026" },
-  { id: 17, filename: "site_17.png", date: "04-03-2026" },
-  { id: 18, filename: "site_18.png", date: "04-03-2026" }
+  { id: 1, filename: "site_1.png", date: "05/03-2026" },
+  { id: 2, filename: "site_2.png", date: "04/03-2026" },
+  { id: 3, filename: "site_3.png", date: "04/03-2026" },
+  { id: 4, filename: "site_4.png", date: "04/03-2026" },
+  { id: 5, filename: "site_5.png", date: "04/03-2026" },
+  { id: 6, filename: "site_6.png", date: "03/03-2026" },
+  { id: 7, filename: "site_7.png", date: "03/03-2026" },
+  { id: 8, filename: "site_8.png", date: "03/03-2026" },
+  { id: 9, filename: "site_9.png", date: "03/03-2026" },
+  { id: 10, filename: "site_10.png", date: "02/03-2026" },
+  { id: 11, filename: "site_11.png", date: "02/03-2026" },
+  { id: 12, filename: "site_12.png", date: "02/03-2026" },
+  { id: 13, filename: "site_13.png", date: "02/03-2026" },
+  { id: 14, filename: "site_14.png", date: "01/03-2026" },
+  { id: 15, filename: "site_15.png", date: "01/03-2026" },
+  { id: 16, filename: "site_16.png", date: "01/03-2026" },
+  { id: 17, filename: "site_17.png", date: "01/03-2026" },
+  { id: 18, filename: "site_18.png", date: "01/03-2026" }
 ]);
 
 
@@ -90,11 +90,13 @@ const getImageUrl = (name) => {
       position: absolute;
       bottom: 0;
       width: 100%;
-      background: rgba(25, 68, 81, 0.7);
+      background: rgba(25, 68, 81, 0.9);
       color: $color-surface;
       font-size: $font-size-body;
-      padding: 3px 0;
+      border-radius: $border-radius-small;
+      padding: 5px 1.5px 5px 1.5px;
       text-align: center;
+      font-weight: 700;
     }
 }
 
@@ -128,10 +130,15 @@ const getImageUrl = (name) => {
 
   .modal-info {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     color: $color-surface;
-    font-weight: bold;
+    background: rgba(25, 68, 81, 0.7);
+    font-weight: 400;
+    padding: 20px 20px;
+    text-align: left;
+    box-sizing: border-box;
     font-size: $font-size-headline-2;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
   }
@@ -144,7 +151,7 @@ const getImageUrl = (name) => {
       right: 15px;
       background: none;
       border: none;
-      color: $color-surface;
+      color: $color-primary;
       font-size: $font-size-headline-1;
       cursor: pointer;
       font-weight: 600;
