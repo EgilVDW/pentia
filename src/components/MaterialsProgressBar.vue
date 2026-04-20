@@ -23,6 +23,13 @@ const completeStep = () => {
         class="progress__fill"
         :style="{ width: progressPercent + '%' }"
       ></div>
+
+    <div
+      class="progress__icon"
+      :style="{ left: progressPercent + '%' }"
+    >
+    <Icon name="Completed-tjekmark" />
+  </div>
       <!-- TODO: Add checkmark icon -->
     </div>
 
@@ -52,6 +59,13 @@ const completeStep = () => {
     height: 100%;
     background: $color-primary;
     transition: width 0.3s ease;
+  }
+
+  &__icon {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: left 0.3s ease;
   }
 
   &__text {
