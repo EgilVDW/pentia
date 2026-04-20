@@ -104,7 +104,7 @@ const monthLabel = computed(() => {
 </script>
 
 <template>
-<div class="calendar">
+  <div class="calendar">
     <div class="calendar__header">
       <button class="calendar__nav" @click="prevMonth">‹</button>
       <div class="calendar__title">{{ monthLabel }}</div>
@@ -153,7 +153,7 @@ const monthLabel = computed(() => {
 
 <style lang="scss" scoped>
 .calendar {
-  width: 300px;
+  width: 350px;
   background: #f5f5f5;
   padding: 1rem;
   border-radius: $border-radius-large;
@@ -226,8 +226,10 @@ const monthLabel = computed(() => {
   }
 
   &__legend {
+    display: flex;
     margin-top: 1rem;
     font-size: 0.75rem;
+    gap: 1rem;
   }
 
   &__legend-item {
@@ -243,6 +245,7 @@ const monthLabel = computed(() => {
 
     &--info {
       background: $color-primary;
+      border-radius: $border-radius-small;
     }
 
     &--selected {

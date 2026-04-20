@@ -33,6 +33,10 @@ const activitiesForSelectedDate = computed(() => {
 </script>
 
 <template>
+  <div class="calendar__title">
+    <h1 class="calendar__title-text">Kalender</h1>
+  </div>
+
   <div id="calendar">
     <Calendar
     :selectedDate="selectedDate"
@@ -55,5 +59,14 @@ const activitiesForSelectedDate = computed(() => {
 </template>
 
 <style lang="scss" scoped>
+.calendar__title{
+  padding: 1rem 2.5rem;
+  font-size: $font-size-headline-1;
+  font-weight: 600;
+}
 
+#calendar{
+  display: flex;
+  justify-content: center;
+}
 </style>

@@ -8,14 +8,26 @@
       Eftersyn
     </h2>
 
-    <div class="checkup__card">
-      <div class="checkup__card-content">
-        <p class="checkup__card-title">
-          1 års eftersyn
-        </p>
-        <p class="checkup__card-date">
-          22 September 2027
-        </p>
+    <div class="checkup__card-section">
+      <div class="checkup__card">
+        <div class="checkup__card-content">
+          <p class="checkup__card-title">
+            1 års eftersyn
+          </p>
+          <p class="checkup__card-date">
+            22 September 2027
+          </p>
+        </div>
+      </div>
+      <div class="checkup__card">
+        <div class="checkup__card-content">
+          <p class="checkup__card-title">
+            5 års eftersyn
+          </p>
+          <p class="checkup__card-date">
+            22 September 2031
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -23,7 +35,10 @@
 
 <style lang="scss" scoped>
 .checkup {
-  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1rem 2.5rem;
 
   &__title {
     color: $color-foreground;
@@ -31,10 +46,16 @@
     margin-bottom: 0.75rem;
   }
 
+  &__card-section{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
   &__card {
     background: $color-surface;
-    border-radius: 12px;
-    padding: 1rem;
+    border-radius: $border-radius-large;
+    padding: 11px 10px;
   }
 
   &__card-content {
@@ -45,12 +66,12 @@
 
   &__card-title {
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: $font-size-headline-2;
     color: $color-foreground;
   }
 
   &__card-date {
-    font-size: 0.95rem;
+    font-size: $font-size-body;
     color: $color-foreground;
   }
 }

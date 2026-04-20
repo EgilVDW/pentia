@@ -32,7 +32,7 @@ defineProps({
 
 <style lang="scss" scoped>
 .activity-card {
-  background: #d9d9d9;
+  background: $color-surface;
   padding: 1rem;
   border-radius: 8px;
 
@@ -63,19 +63,20 @@ defineProps({
 
   &__title {
     font-weight: 600;
+    font-size: $font-size-headline-2;
   }
 
   &__time {
-    font-size: 0.9rem;
+    font-size: $font-size-body;
     color: #333;
   }
 
   &__button {
-    background: #fee185;
-    border: none;
-    padding: 0.5rem 0.75rem;
-    border-radius: 6px;
+    background: $color-highlight;
+    padding: 0.25rem 0.5rem;
+    border-radius: $border-radius-large;
     cursor: pointer;
+    box-shadow: $drop-shadow;
   }
 }
 </style>

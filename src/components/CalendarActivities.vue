@@ -37,12 +37,15 @@ const formattedDate = computed(() => {
 
 <style lang="scss" scoped>
 .activities {
-  padding: 1rem;
-  background: #eae8e7;
-  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: $border-radius-large;
+  padding: 1rem 2.5rem;
 
   &__title {
-    font-size: 1.2rem;
+    font-size: $font-size-headline-2;
+    font-weight: 600;
     margin-bottom: 1rem;
   }
 
@@ -54,7 +57,7 @@ const formattedDate = computed(() => {
 
   &__empty {
   opacity: 0.6;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 }
 </style>
