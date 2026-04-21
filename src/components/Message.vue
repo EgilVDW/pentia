@@ -91,14 +91,13 @@ const statusLabel = computed(() => formatStatus(props.status));
     >
       {{ content }}
     </p>
-    <time v-if="outgoing" class="message__meta" :title="timeMeta.tooltip">
-      {{ timeMeta.label }}
-    </time>
-
-    <span v-else class="message__meta">
+    <span v-if="outgoing" class="message__meta">
       {{ statusLabel }}
       <Icon name="Tjekmark" class="message__meta-icon" />
     </span>
+    <time v-else class="message__meta" :title="timeMeta.tooltip">
+      {{ timeMeta.label }}
+    </time>
   </div>
 </template>
 <style scoped lang="scss">
