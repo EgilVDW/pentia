@@ -28,11 +28,11 @@ watch(searchText, (newValue) => {
 <style lang="scss" scoped>
 .search-bar {
   position: relative;
+  display: flex;
 
   &__input {
     width: 100%;
     height: 2.375rem;
-    margin: 15px;
     padding: 12px 16px 12px 45px;
     font-size: 1rem;
     border: none;
