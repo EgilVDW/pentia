@@ -6,6 +6,7 @@ import DocumentsView from "@/views/DocumentsView.vue";
 import ChatView from "@/views/ChatView.vue";
 import StatusView from "@/views/StatusView.vue";
 import GalleryView from "@/views/GalleryView.vue";
+import DailyUpdateView from "@/views/DailyUpdate.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -50,6 +51,11 @@ const router = createRouter({
       path: "/gallery",
       name: "gallery",
       component: GalleryView
+    },
+    {
+      path: "/dailyupdate",
+      name: "dailyupdate",
+      component: DailyUpdateView
     }
   ]
 });
