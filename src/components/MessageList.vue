@@ -7,7 +7,7 @@ defineProps({
 });
 </script>
 <template>
-  <div>
+  <div class="message-list">
     <Message
       v-for="(item, index) in data"
       :key="index"
