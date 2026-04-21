@@ -66,7 +66,7 @@ const getStatus = (status) => {
   }
 
   &__title {
-    margin: 1rem 0;
+    margin: 0.75rem 0 1rem;
     font-size: 1.25rem;
     font-weight: 700;
     line-height: 1.25rem;
