@@ -4,6 +4,7 @@ import PlaceholderView from "@/views/PlaceholderView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import DocumentsView from "@/views/DocumentsView.vue";
 import ChatView from "@/views/ChatView.vue";
+import StatusView from "@/views/StatusView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -38,6 +39,11 @@ const router = createRouter({
       path: "/calendar",
       name: "calendar",
       component: CalendarView
+    },
+    {
+      path: "/status",
+      name: "status",
+      component: StatusView
     }
   ]
 });
