@@ -78,8 +78,7 @@ const openFile = (url) => {
   &__meta {
     margin: 0;
     font-size: 12px;
-    color: $color-foreground;
-    font-weight: 200;
+    color: $color-placeholder;
   }
 }
 </style>
