@@ -22,11 +22,10 @@ const photos = ref([
   { id: 18, filename: "site_18.png", date: "01/03-2026" }
 ]);
 
-
 const selectedId = ref(null);
 
 const activePhoto = computed(() => {
-  return photos.value.find(p => p.id === selectedId.value);
+  return photos.value.find((p) => p.id === selectedId.value);
 });
 
 const togglePhoto = (id) => {
@@ -39,33 +38,33 @@ const getImageUrl = (name) => {
 </script>
 
 <template>
-    <div class="photo-gallery">
-        <div class="photo-gallery-grid">
-          <div
-            v-for="photo in photos"
-            :key="photo.id"
-            class="photo-gallery-grid__item"
-            @click="togglePhoto(photo.id)"
-          >
-            <img :src="getImageUrl(photo.filename)" alt="Byggeplads" />
-            <div class="photo-gallery-grid__date">Dato: {{ photo.date }}</div>
+  <div class="photo-gallery">
+    <div class="photo-gallery-grid">
+      <div
+        v-for="photo in photos"
+        :key="photo.id"
+        class="photo-gallery-grid__item"
+        @click="togglePhoto(photo.id)"
+      >
+        <img :src="getImageUrl(photo.filename)" alt="Byggeplads" />
+        <div class="photo-gallery-grid__date">Dato: {{ photo.date }}</div>
+      </div>
+    </div>
+
+    <Transition name="fade">
+      <div v-if="activePhoto" class="modal-overlay" @click="selectedId = null">
+        <div class="modal-content" @click.stop>
+          <button class="modal-close" @click="selectedId = null">X</button>
+          <img :src="getImageUrl(activePhoto.filename)" class="modal-image" />
+          <div class="modal-info">Dato: {{ activePhoto.date }}</div>
         </div>
       </div>
-
-      <Transition name="fade">
-        <div v-if="activePhoto" class="modal-overlay" @click="selectedId = null">
-          <div class="modal-content" @click.stop>
-            <button class="modal-close" @click="selectedId = null">X</button>
-            <img :src="getImageUrl(activePhoto.filename)" class="modal-image" />
-            <div class="modal-info">Dato: {{ activePhoto.date }}</div>
-          </div>
-        </div>
-      </Transition>
-    </div>
+    </Transition>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.photo-gallery-grid{
+.photo-gallery-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 8px;
@@ -79,25 +78,25 @@ const getImageUrl = (name) => {
     overflow: hidden;
   }
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 
-    &__date {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      background: rgba(25, 68, 81, 0.9);
-      color: $color-surface;
-      font-size: $font-size-body;
-      border-radius: $border-radius-small;
-      padding: 5px 1.5px 5px 1.5px;
-      text-align: center;
-      font-weight: 700;
-    }
+  &__date {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(25, 68, 81, 0.9);
+    color: $color-surface;
+    font-size: 0.375rem;
+    border-radius: $border-radius-small;
+    padding: 5px 1.5px 5px 1.5px;
+    text-align: center;
+    font-weight: 700;
+  }
 }
 
 .modal-overlay {
@@ -140,32 +139,37 @@ const getImageUrl = (name) => {
     text-align: left;
     box-sizing: border-box;
     font-size: $font-size-headline-2;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   }
 
   .modal-close {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      top: 10px;
-      right: 15px;
-      background: none;
-      border: none;
-      color: $color-primary;
-      font-size: $font-size-headline-1;
-      cursor: pointer;
-      font-weight: 600;
-      line-height: $line-height-body;
-      z-index: 10;
-    }
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: $color-primary;
+    font-size: $font-size-headline-1;
+    cursor: pointer;
+    font-weight: 600;
+    line-height: $line-height-body;
+    z-index: 10;
+  }
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.3s, transform 0,3s ease;
+.fade-enter-active,
+.fade-leave-active {
+  transition:
+    opacity 0.3s,
+    transform 0,
+    3s ease;
 }
 
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
   transform: scale(0.95);
-  }
+}
 </style>
