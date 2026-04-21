@@ -1,4 +1,5 @@
 <script setup>
+import ChatHeader from "@/components/ChatHeader.vue";
 import MessageList from "@/components/MessageList.vue";
 import MessageInput from "@/components/MessageInput.vue";
 import { ref } from "vue";
@@ -32,20 +33,19 @@ Vi forventer dog at kunne fortsætte arbejdet på mandag.`,
   }
 ]);
 
-const user = "user1";
-
 const message = ref("");
 
-function sendMessage(text) {
+const sendMessage = (text) => {
   data.value.push({
     user: "user1",
     content: text,
     timestamp: Date.now(),
     status: "sent"
   });
-}
+};
 </script>
 <template>
-  <MessageList :data="data" :user="user" />
+  <ChatHeader name="Kim Agerbæk" role="Byggeleder" status="online" />
+  <MessageList :data="data" user="user1" />
   <MessageInput v-model="message" @send="sendMessage" />
 </template>
