@@ -85,15 +85,13 @@ const cards = [
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
-  padding: 16px;
-
+  padding: 22px 27px;
 }
 
 .materials__stack {
   display: flex;
-
   flex-direction: column;
   grid-template-columns: repeat(2, 1fr);
-  row-gap: 15px;
+  gap: 15px;
 }
 </style>

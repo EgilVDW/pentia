@@ -41,7 +41,6 @@ const cardClasses = computed(() => [
         <Icon name="Completed-tjekmark" />
       </div>
     </div>
-    <!-- <div v-else class="material-card__image material-card--no-image"></div> -->
 
     <div class="material-card__content">
       <div class="material-card__text">
@@ -62,6 +61,9 @@ const cardClasses = computed(() => [
         <p class="material-card__description">
           {{ description }}
         </p>
+      </div>
+      <div class="material-card__arrow">
+        <Icon name="Frem-tilbage-pil" />
       </div>
     </div>
 
@@ -96,8 +98,8 @@ const cardClasses = computed(() => [
   }
 
   &__checkmark {
-    width: 28px;
-    height: 28px;
+    width: 20px;
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -106,20 +108,10 @@ const cardClasses = computed(() => [
       position: absolute;
       top: 12px;
       right: 12px;
-
-      :deep(svg) {
-        width: 24px;
-        height: 24px;
-      }
     }
 
     &--inline {
       position: static;
-
-      :deep(svg) {
-        width: 24px;
-        height: 24px;
-      }
     }
   }
 
@@ -127,24 +119,33 @@ const cardClasses = computed(() => [
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 13px;
+    padding: 16px 13px;
     background: $color-surface;
   }
 
   &__text {
     display: flex;
     flex-direction: column;
+    margin: 4px 0 0;
   }
 
   &__title {
-    font-size: 20px;
+    font-size: $font-size-body;
     font-weight: 600;
-    margin: 0;
+    margin-bottom: 4px;
   }
 
   &__description {
-    font-size: 14px;
-    margin: 4px 0 0;
+    font-size: 10px;
   }
+
+  &__arrow {
+    height: 30px;
+    width: 30px;
+  }
+}
+
+.material-card--no-image {
+  height: 78px;
 }
 </style>
