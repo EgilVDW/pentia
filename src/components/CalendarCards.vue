@@ -1,32 +1,18 @@
-<script setup>
-
-</script>
-
 <template>
   <section class="checkup">
-    <h2 class="checkup__title">
-      Eftersyn
-    </h2>
+    <h2 class="checkup__title">Eftersyn</h2>
 
     <div class="checkup__card-section">
       <div class="checkup__card">
         <div class="checkup__card-content">
-          <p class="checkup__card-title">
-            1 års eftersyn
-          </p>
-          <p class="checkup__card-date">
-            22 September 2027
-          </p>
+          <p class="checkup__card-title">1 års eftersyn</p>
+          <p class="checkup__card-date">22 September 2027</p>
         </div>
       </div>
       <div class="checkup__card">
         <div class="checkup__card-content">
-          <p class="checkup__card-title">
-            5 års eftersyn
-          </p>
-          <p class="checkup__card-date">
-            22 September 2031
-          </p>
+          <p class="checkup__card-title">5 års eftersyn</p>
+          <p class="checkup__card-date">22 September 2031</p>
         </div>
       </div>
     </div>
@@ -46,7 +32,7 @@
     margin-bottom: 0.75rem;
   }
 
-  &__card-section{
+  &__card-section {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
