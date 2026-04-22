@@ -1,22 +1,17 @@
 <script setup>
 import Icon from "@/components/Icon.vue"
-import { computed, ref } from "vue"
+import { computed } from "vue"
 
 // Potential improvement:
 // TODO: Make steps dynamic based on amount of tasks from firebase.
-const totalSteps = 7
-
-const completedSteps = ref(0)
-
-const progressPercent = computed(() => {
-  return (completedSteps.value / totalSteps) * 100
+const props = defineProps({
+  completedSteps: Number,
+  totalSteps: Number
 })
 
-const completeStep = () => {
-  if (completedSteps.value < totalSteps) {
-    completedSteps.value++
-  }
-}
+const progressPercent = computed(() => {
+  return (props.completedSteps / props.totalSteps) * 100
+})
 </script>
 
 <template>
@@ -36,12 +31,8 @@ const completeStep = () => {
     </div>
 
     <div class="progress__text">
-      {{ completedSteps }} / {{ totalSteps }} valg gennemført
+      {{ props.completedSteps }} / {{ props.totalSteps }} valg gennemført
     </div>
-
-    <button class="progress__btn" @click="completeStep">
-      Complete Step
-    </button>
   </section>
 </template>
 

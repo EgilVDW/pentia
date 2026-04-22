@@ -1,7 +1,7 @@
 <!-- TODO: Fix Icon loader to load icon correctly and add styling to cards! -->
 <script setup>
 import Icon from "@/components/Icon.vue";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 
 const props = defineProps({
   title: String,
@@ -10,19 +10,22 @@ const props = defineProps({
     type: String,
     default: null
   },
-  alt: String
+  alt: String,
+  selected: Boolean
 })
 
-const isSelected = ref(false)
+// const isSelected = ref(false)
+const emit = defineEmits(["toggle"])
 
 const handleClick = () => {
-  isSelected.value = !isSelected.value
+  // isSelected.value = !isSelected.value
+  emit("toggle")
 }
 
 const cardClasses = computed(() => [
   "material-card",
   {
-    "material-card--selected": isSelected.value,
+    "material-card--selected": props.selected,
     "material-card--no-image": !props.image
   }
 ])
@@ -35,7 +38,7 @@ const cardClasses = computed(() => [
       <img :src="image" alt="" />
 
       <div
-        v-if="isSelected"
+        v-if="selected"
         class="material-card__checkmark material-card__checkmark--image"
       >
         <Icon name="Completed-tjekmark" />
@@ -51,7 +54,7 @@ const cardClasses = computed(() => [
           </h3>
 
           <div
-            v-if="isSelected && !image"
+            v-if="selected && !image"
             class="material-card__checkmark material-card__checkmark--inline"
           >
             <Icon name="Completed-tjekmark" />
@@ -62,9 +65,7 @@ const cardClasses = computed(() => [
           {{ description }}
         </p>
       </div>
-      <div class="material-card__arrow">
-        <Icon name="Frem-tilbage-pil" />
-      </div>
+        <Icon class="material-card__arrow" name="Frem-tilbage-pil" />
     </div>
 
   </div>
@@ -140,8 +141,9 @@ const cardClasses = computed(() => [
   }
 
   &__arrow {
-    height: 30px;
-    width: 30px;
+    transform: rotate(180deg);
+    height: 25px;
+    width: 25px;
   }
 }
 
