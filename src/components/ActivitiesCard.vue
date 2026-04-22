@@ -32,7 +32,7 @@ defineProps({
 
 <style lang="scss" scoped>
 .activity-card {
-  background: #d9d9d9;
+  background: $color-surface;
   padding: 1rem;
   border-radius: 8px;
 
@@ -48,6 +48,14 @@ defineProps({
     align-items: flex-start;
   }
 
+  &__dot {
+    width: 12px;
+    height: 12px;
+    background: #1f4a4f;
+    border-radius: 2px;
+    margin-top: 6px;
+  }
+
   &__text {
     display: flex;
     flex-direction: column;
@@ -55,19 +63,20 @@ defineProps({
 
   &__title {
     font-weight: 600;
+    font-size: $font-size-headline-2;
   }
 
   &__time {
-    font-size: 0.9rem;
+    font-size: $font-size-body;
     color: #333;
   }
 
   &__button {
-    background: #fee185;
-    border: none;
-    padding: 0.5rem 0.75rem;
-    border-radius: 6px;
+    background: $color-highlight;
+    padding: 0.25rem 0.5rem;
+    border-radius: $border-radius-large;
     cursor: pointer;
+    box-shadow: $drop-shadow;
   }
 }
 </style>

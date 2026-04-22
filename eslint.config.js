@@ -10,9 +10,8 @@ export default defineConfig([
     extends: ["js/recommended"],
     languageOptions: { globals: globals.browser },
     rules: {
-      "indent": ["error", 2],
-      "quotes": ["error", "double"],
-      "no-unused-vars": "warn",
+      indent: ["error", 2],
+      quotes: ["error", "double"],
       "no-console": "warn",
       "comma-dangle": ["error", "never"],
       "no-trailing-spaces": ["error"],
