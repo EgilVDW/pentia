@@ -15,7 +15,7 @@ const cards = [
   {
     title: "Bad",
     description: "Valgt: Bad & fliser",
-    image: "images/images_bygherre/materialevalg_billeder/Badeværelse.png",
+    image: "images/images_bygherre/Materialevalg_billeder/Badeværelse.png",
     alt: "Picture of a bathroom"
   },
   {
