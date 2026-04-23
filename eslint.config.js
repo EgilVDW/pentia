@@ -4,10 +4,11 @@ import pluginVue from "eslint-plugin-vue";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
+  js.configs.recommended,
+  pluginVue.configs["flat/essential"],
   {
     files: ["**/*.{js,mjs,cjs,vue}"],
     plugins: { js },
-    extends: ["js/recommended"],
     languageOptions: { globals: globals.browser },
     rules: {
       indent: ["error", 2],
@@ -17,8 +18,8 @@ export default defineConfig([
       "no-trailing-spaces": ["error"],
       "no-var": ["error"],
       "no-unused-vars": ["error"],
-      "prefer-const": ["error"]
+      "prefer-const": ["error"],
+      "vue/multi-word-component-names": "off"
     }
-  },
-  pluginVue.configs["flat/essential"]
+  }
 ]);

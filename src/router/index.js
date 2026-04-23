@@ -7,6 +7,7 @@ import ChatView from "@/views/ChatView.vue";
 import StatusView from "@/views/StatusView.vue";
 import GalleryView from "@/views/GalleryView.vue";
 import DailyUpdateView from "@/views/DailyUpdate.vue";
+import FrontpageView from "@/views/FrontpageView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -21,6 +22,11 @@ const router = createRouter({
       path: "/placeholder",
       name: "placeholder",
       component: PlaceholderView
+    },
+    {
+      path: "/frontpage",
+      name: "frontpage",
+      component: FrontpageView
     },
     {
       path: "/profile",
