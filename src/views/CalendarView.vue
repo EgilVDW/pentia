@@ -15,7 +15,7 @@ const allActivities = [
     id: 1,
     title: "Deadline for ændring af Fliser",
     time: "16:00",
-    date: new Date(2026, 3, 11) // always today
+    date: new Date(2026, 3, 11)
   },
   {
     id: 2,
@@ -60,7 +60,7 @@ const activitiesForSelectedDate = computed(() => {
 
 <style lang="scss" scoped>
 .calendar__title{
-  padding: 1rem 2.5rem;
+  padding: 1rem 1.5rem;
   font-size: $font-size-headline-1;
   font-weight: 600;
 }

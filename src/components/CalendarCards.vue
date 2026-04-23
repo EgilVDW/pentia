@@ -24,7 +24,7 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 1rem 2.5rem;
+  padding: 1rem 1.5rem;
 
   &__title {
     color: $color-foreground;
