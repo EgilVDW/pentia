@@ -22,7 +22,7 @@ const openFile = (url) => {
 </script>
 
 <template>
-  <div class="document-item" @click="openFile(doc.fileUrl)">
+  <main class="document-item" @click="openFile(doc.fileUrl)">
     <div class="document-item__icon-container">
       <Icon name="Dokumenter" />
     </div>
@@ -33,7 +33,7 @@ const openFile = (url) => {
         {{ doc.category }}, {{ formatDate(doc.date) }}
       </p>
     </div>
-  </div>
+  </main>
 </template>
 
 <style lang="scss" scoped>
@@ -45,7 +45,7 @@ const openFile = (url) => {
   align-items: center;
   gap: 15px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s ease;
   width: 100%;
   height: 55px;
@@ -77,7 +77,7 @@ const openFile = (url) => {
 
   &__meta {
     margin: 0;
-    font-size: 12px;
+    font-size: $font-size-body;
     color: $color-placeholder;
   }
 }

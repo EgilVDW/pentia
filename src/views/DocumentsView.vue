@@ -59,7 +59,7 @@ const handleSortSelect = (val) => {
 </script>
 
 <template>
-  <div class="document-view">
+  <main class="document-view">
     <header class="document-view__header">
       <h1 class="document-view__title">Dokumenter</h1>
 
@@ -84,7 +84,7 @@ const handleSortSelect = (val) => {
       </div>
     </header>
 
-    <main class="document-view__content">
+    <content class="document-view__content">
       <div class="document-view__list">
         <DocumentFile v-for="doc in filteredDocuments" :key="doc.id" :doc="doc" class="document-view__item" />
       </div>
@@ -92,18 +92,14 @@ const handleSortSelect = (val) => {
       <p v-if="filteredDocuments.length === 0" class="document-view__empty">
         Ingen dokumenter fundet.
       </p>
-    </main>
-  </div>
+    </content>
+  </main>
 </template>
 
 <style lang="scss" scoped>
 .document-view {
-  min-height: 100vh;
-  padding: 2rem 1rem;
-  background-color: $color-secondary;
 
   &__header {
-    max-width: 600px;
     margin: 0 auto 1rem;
   }
 
@@ -111,36 +107,17 @@ const handleSortSelect = (val) => {
     font-size: $font-size-headline-1;
     font-weight: 700;
     margin-bottom: 1rem;
-    color: $color-foreground;
   }
 
   &__filters {
     display: flex;
     justify-content: space-between;
     gap: 10px;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   &__filter-item {
     flex: 1;
-    width: auto;
-  }
-
-  &__search {
-
-    :deep(.search-bar__input) {
-      margin-top: -8px;
-    }
-
-    :deep(.search-bar__icon-container) {
-      top: 30%;
-      transform: translateY(-50%);
-    }
-  }
-
-  &__content {
-    max-width: 600px;
-    margin: 0 auto;
   }
 
   &__list {
