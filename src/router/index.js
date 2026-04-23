@@ -1,12 +1,13 @@
 import CalendarView from "@/views/CalendarView.vue";
+import ChatView from "@/views/ChatView.vue";
+import DailyUpdateView from "@/views/DailyUpdate.vue";
+import DocumentsView from "@/views/DocumentsView.vue";
+import GalleryView from "@/views/GalleryView.vue";
 import HomeView from "@/views/HomeView.vue";
+import MaterialsView from "@/views/MaterialsView.vue";
 import PlaceholderView from "@/views/PlaceholderView.vue";
 import ProfileView from "@/views/ProfileView.vue";
-import DocumentsView from "@/views/DocumentsView.vue";
-import ChatView from "@/views/ChatView.vue";
 import StatusView from "@/views/StatusView.vue";
-import GalleryView from "@/views/GalleryView.vue";
-import DailyUpdateView from "@/views/DailyUpdate.vue";
 import FrontpageView from "@/views/FrontpageView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -47,6 +48,11 @@ const router = createRouter({
       path: "/calendar",
       name: "calendar",
       component: CalendarView
+    },
+    {
+      path: "/materials",
+      name: "materials",
+      component: MaterialsView
     },
     {
       path: "/status",

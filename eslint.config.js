@@ -1,7 +1,7 @@
 import js from "@eslint/js";
-import globals from "globals";
 import pluginVue from "eslint-plugin-vue";
 import { defineConfig } from "eslint/config";
+import globals from "globals";
 
 export default defineConfig([
   js.configs.recommended,
