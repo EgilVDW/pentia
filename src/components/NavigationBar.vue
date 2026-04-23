@@ -20,9 +20,11 @@ import Icon from "./Icon.vue";
 </template>
 <style scoped lang="scss">
 .nav-container {
+  position: sticky;
+  bottom: 0;
   display: flex;
   justify-content: space-between;
-  width: 100vw;
+  width: 100%;
   background-color: $color-primary;
   padding: 1.5rem 3.25rem;
   .nav-container__link {
