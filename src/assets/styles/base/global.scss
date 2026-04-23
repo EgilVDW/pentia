@@ -2,7 +2,7 @@
 @use "../abstracts/typography.scss" as *;
 
 html {
-  background-color: $color-background;
+  background-color: $color-secondary;
   color: $color-foreground;
   font-family: $font-family-base;
 }
