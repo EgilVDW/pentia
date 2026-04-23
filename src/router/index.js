@@ -1,3 +1,4 @@
+import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import CalendarView from "@/views/CalendarView.vue";
 import ChatView from "@/views/ChatView.vue";
 import DailyUpdateView from "@/views/DailyUpdate.vue";
@@ -16,58 +17,69 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "home",
-      component: HomeView
-    },
-    {
-      path: "/placeholder",
-      name: "placeholder",
-      component: PlaceholderView
-    },
-    {
-      path: "/frontpage",
-      name: "frontpage",
-      component: FrontpageView
-    },
-    {
-      path: "/profile",
-      name: "profile",
-      component: ProfileView
-    },
-    {
-      path: "/documents",
-      name: "documents",
-      component: DocumentsView
+      component: DefaultLayout,
+      children: [
+        {
+          path: "/",
+          name: "home",
+          component: HomeView
+        },
+        {
+          path: "/placeholder",
+          name: "placeholder",
+          component: PlaceholderView
+        },
+        {
+          path: "/frontpage",
+          name: "frontpage",
+          component: FrontpageView
+        },
+        {
+          path: "/profile",
+          name: "profile",
+          component: ProfileView
+        },
+        {
+          path: "/documents",
+          name: "documents",
+          component: DocumentsView
+        },
+        {
+          path: "/chat",
+          name: "chat",
+          component: ChatView
+        },
+        {
+          path: "/calendar",
+          name: "calendar",
+          component: CalendarView
+        },
+        {
+          path: "/materials",
+          name: "materials",
+          component: MaterialsView
+        },
+        {
+          path: "/status",
+          name: "status",
+          component: StatusView
+        },
+        {
+          path: "/gallery",
+          name: "gallery",
+          component: GalleryView
+        },
+        {
+          path: "/dailyupdate",
+          name: "dailyupdate",
+          component: DailyUpdateView
+        }
+      ]
     },
     {
       path: "/chat",
       name: "chat",
       component: ChatView
-    },
-    {
-      path: "/calendar",
-      name: "calendar",
-      component: CalendarView
-    },
-    {
-      path: "/materials",
-      name: "materials",
-      component: MaterialsView
-    },
-    {
-      path: "/status",
-      name: "status",
-      component: StatusView
-    },
-    {
-      path: "/gallery",
-      name: "gallery",
-      component: GalleryView
-    },
-    {
-      path: "/dailyupdate",
-      name: "dailyupdate",
-      component: DailyUpdateView
     }
   ]
 });
