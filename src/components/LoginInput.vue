@@ -13,9 +13,9 @@ defineProps({
 </script>
 
 <template>
-  <div class="login-input">
+  <main class="login-input">
     <input type="email" v-model="model" :placeholder="placeholder" :name="name" class="login-input__field" />
-  </div>
+  </main>
 </template>
 
 <style lang="scss" scoped>
@@ -37,11 +37,13 @@ defineProps({
 
     &::placeholder {
       color: $color-placeholder;
+      font-size: $font-size-body;
+      font-weight: 300;
     }
 
     &:focus {
       outline: none;
-      border-color: none;
+      border-color: $color-primary;
       color: $color-foreground;
     }
   }

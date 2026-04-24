@@ -19,6 +19,7 @@ defineProps({
 <style lang="scss" scoped>
 .login-button {
   width: 100%;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,9 +30,8 @@ defineProps({
   border-radius: $border-radius-small;
   font-family: $font-family-base;
   font-size: $font-size-body;
-  font-weight: 300;
+  font-weight: 200;
   text-transform: none;
-  cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease;
 
 }

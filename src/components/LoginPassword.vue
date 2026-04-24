@@ -14,14 +14,14 @@ const isVisible = ref(false);
 </script>
 
 <template>
-  <div class="login-password">
+  <main class="login-password">
     <input :type="isVisible ? 'text' : 'password'" v-model="model" :placeholder="placeholder"
       class="login-password__input" />
 
     <button type="button" @click="isVisible = !isVisible" class="login-password__toggle">
       <Icon :name="isVisible ? 'Skjul' : 'Vis'" class="login-password__icon" />
     </button>
-  </div>
+  </main>
 </template>
 
 <style lang="scss" scoped>
@@ -31,7 +31,7 @@ const isVisible = ref(false);
 
   &__input {
     width: 100%;
-    padding: 12px 0 12px 30px;
+    padding: 12px 0 12px 26px;
     border-radius: $border-radius-small;
     font-size: $font-size-body;
     background-color: $color-surface;
@@ -45,6 +45,7 @@ const isVisible = ref(false);
 
     &:focus {
       outline: none;
+      color: $color-primary;
     }
   }
 
@@ -55,7 +56,6 @@ const isVisible = ref(false);
     transform: translateY(-50%);
     background: none;
     border: none;
-    cursor: pointer;
     padding: 0;
     display: flex;
     align-items: center;

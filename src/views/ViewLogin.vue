@@ -3,19 +3,18 @@ import { ref } from "vue";
 import LoginInput from "@/components/LoginInput.vue";
 import LoginPassword from "@/components/LoginPassword.vue";
 import LoginButton from "@/components/LoginButton.vue";
-
 import logoUrl from "@/assets/images/Milton_logo_white_outline.png";
 
 const email = ref("");
 const password = ref("");
 
 const handleLogin = () => {
-  console.log("Logger ind med:", email.value, password.value);
+
 };
 </script>
 
 <template>
-  <div class="login-view">
+  <main class="login-view">
     <div class="login-view__container">
 
       <header class="login-view__header">
@@ -24,7 +23,7 @@ const handleLogin = () => {
         </div>
       </header>
 
-      <main class="login-view__content">
+      <content class="login-view__content">
         <h2 class="login-view__title">Log ind</h2>
 
         <form class="login-view__form" @submit.prevent="handleLogin">
@@ -46,7 +45,7 @@ const handleLogin = () => {
         </form>
 
         <a href="#" class="login-view__forgot-link">Glemt adgangskode?</a>
-      </main>
+      </content>
 
       <footer class="login-view__footer">
         <p class="login-view__terms">
@@ -56,7 +55,7 @@ const handleLogin = () => {
       </footer>
 
     </div>
-  </div>
+  </main>
 </template>
 
 <style lang="scss" scoped>
@@ -79,7 +78,6 @@ const handleLogin = () => {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: $color-primary;
     opacity: $opacity-primary;
     z-index: 0;
   }
@@ -91,6 +89,7 @@ const handleLogin = () => {
     flex-direction: column;
     align-items: center;
     z-index: 1;
+    margin-bottom: 12rem;
   }
 
   &__header {
@@ -100,12 +99,6 @@ const handleLogin = () => {
   &__logo-container {
     color: $color-surface;
     text-align: center;
-
-    :deep(svg) {
-      width: 70px;
-      height: auto;
-      margin-bottom: 0.5rem;
-    }
   }
 
   &__content {
@@ -115,7 +108,7 @@ const handleLogin = () => {
   &__title {
     color: $color-surface;
     text-align: left;
-    font-size: 1rem;
+    font-size: $font-size-headline-1;
     font-weight: 500;
     margin-bottom: 0.8rem;
     padding-left: 2px;
@@ -127,27 +120,19 @@ const handleLogin = () => {
     gap: 0;
   }
 
-  &__input {
-    :deep(.login-input), :deep(.login-password) {
-      margin-bottom: 2px;
-    }
-  }
-
   &__submit-btn {
     margin-top: 15px;
-    background-color: $color-primary;
-    height: 38px;
-    font-weight: 400;
   }
 
   &__forgot-link {
     display: block;
-    margin-top: 1.2rem;
+    margin-top: 1rem;
     color: $color-surface;
     text-decoration: underline;
     font-size: $font-size-body;
     opacity: 0.8;
     text-align: center;
+    font-weight: 300;
   }
 
   &__footer {
@@ -157,17 +142,23 @@ const handleLogin = () => {
     text-align: center;
   }
 
-  &__terms {
+  &__terms-link {
     color: $color-surface;
-    font-size: 0.65rem;
+    text-decoration: underline;
+  }
+
+  &__terms, &__terms-link {
+    font-size: $font-size-body;
+    color: $color-surface;
     line-height: 1.5;
     opacity: 0.9;
     font-weight: 300;
   }
 
-  &__terms-link {
-    color: $color-surface;
-    text-decoration: underline;
+
+  &__terms, &__terms-link:last-of-type {
+    margin-bottom: 3rem;
+
   }
 }
 </style>
