@@ -34,8 +34,8 @@ const tasks = ref([
 
 <style lang="scss" scoped>
 .project-status {
-  width: 100vw;
-  padding: 0rem 2rem;
+  width: 100%;
+  padding: 0;
 
     .project-status__content {
     width: 100%;
