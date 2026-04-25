@@ -9,17 +9,17 @@ const overallProgress = ref(0);
 </script>
 
 <template>
-  <div class="status-view">
-    <h1><strong>Status</strong></h1>
-    <h2><strong>Adresse:</strong> Holkebjergvej 76</h2>
-    <h2><strong>Byggeleder:</strong> Kim Agerbæk</h2>
+  <main class="status-view">
+    <h1><span>Status</span></h1>
+    <h2><span>Adresse:</span> Holkebjergvej 76</h2>
+    <h2><span>Byggeleder:</span> Kim Agerbæk</h2>
 
     <header class="status-view__header">
       <!--<progress-bar :progress="overallProgress" /> component here> -->
       progress bar her
     </header>
 
-    <div class="status-view__card">
+    <content class="status-view__card">
       <section class="status-view__content">
         <FloorplanUpdate :progress="overallProgress"/>
       </section>
@@ -27,8 +27,8 @@ const overallProgress = ref(0);
       <footer class="status-view__overview">
         <ConstructionStatus />
       </footer>
-    </div>
-  </div>
+    </content>
+  </main>
 </template>
 
 <style lang="scss" scoped>
@@ -37,8 +37,6 @@ const overallProgress = ref(0);
   flex-direction: column;
   overflow: hidden;
   justify-content: center;
-  padding: 50px;
-  background-color: $color-secondary;
 
   h1 {
     font-size: $font-size-headline-1;
@@ -48,6 +46,10 @@ const overallProgress = ref(0);
     font-family: $font-family-base;
     font-size: $font-size-headline-2;
   }
+
+    span{
+      font-weight: 700;
+    }
 
   &__card {
     width: 100%;
@@ -75,7 +77,7 @@ const overallProgress = ref(0);
   &__overview {
     background-color: $color-surface;
     border-radius: $border-radius-small;
-    padding: 1px 1px;
+    height: 2.2rem;
 }
 
 
