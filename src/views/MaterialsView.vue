@@ -85,14 +85,20 @@ const toggleCard = (id) => {
 </script>
 
 <template>
-  <div id="progress-bar">
+  <div class="project">
+    <h1 class="project__header">Materialevalg</h1>
+    <p class="project__subject">Projekt: Vinkelhus</p>
+    <p class="project__address">Adresse: Holkebjergvej 76, 5260 Odense</p>
+  </div>
+
+  <div class="progress-bar">
     <MaterialsProgressBar
       :completedSteps="completedSteps"
       :totalSteps="totalSteps"
     />
   </div>
 
-  <section id="materials">
+  <section class="materials">
     <!-- Normal grid cards -->
     <MaterialCards
       v-for="(card) in imageCards"
@@ -120,17 +126,31 @@ const toggleCard = (id) => {
 </template>
 
 <style lang="scss" scoped>
-#materials {
+.project {
+  &__header {
+    font-size: $font-size-headline-1;
+    font-weight: 700;
+  }
+
+  &__subject {
+    font-size: $font-size-headline-2;
+  }
+
+  &__address {
+    font-size: $font-size-headline-2;
+  }
+}
+
+.materials {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
-  padding: 22px 27px;
-}
 
-.materials__stack {
+  &__stack {
   display: flex;
   flex-direction: column;
   grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
+  gap: 16px;
+  }
 }
 </style>

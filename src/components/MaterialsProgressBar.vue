@@ -6,11 +6,20 @@ import { computed } from "vue"
 // TODO: Make steps dynamic based on amount of tasks from firebase.
 const props = defineProps({
   completedSteps: Number,
-  totalSteps: Number
+  totalSteps: Number,
+  progress: Number
+})
+
+const isStepMode = computed(() => {
+  return props.completedSteps !== undefined && props.totalSteps !== undefined
 })
 
 const progressPercent = computed(() => {
-  return (props.completedSteps / props.totalSteps) * 100
+  if (isStepMode.value) {
+    if (!props.totalSteps) return 0
+    return (props.completedSteps / props.totalSteps) * 100
+  }
+  return props.progress ?? 0
 })
 </script>
 
@@ -30,9 +39,10 @@ const progressPercent = computed(() => {
       </div>
     </div>
 
-    <div class="progress__text">
-      {{ props.completedSteps }} / {{ props.totalSteps }} valg gennemført
+    <div v-if="isStepMode" class="progress__text">
+      {{ completedSteps }} / {{ totalSteps }} valg gennemført
     </div>
+    <div v-else class="progress__text">{{ Math.round(progressPercent) }}%</div>
   </section>
 </template>
 
@@ -40,10 +50,10 @@ const progressPercent = computed(() => {
 .progress {
   display: flex;
   flex-direction: column;
-  padding: 0 29px;
+  padding-bottom: 1rem;
 
   &__bar {
-    margin-top: 20px;
+    margin-top: 1.75rem;
     position: relative;
     width: 300px;
     height: 20px;
@@ -68,13 +78,8 @@ const progressPercent = computed(() => {
   }
 
   &__text {
-    margin-top: 8px;
-    font-size: 14px;
-  }
-
-  &__btn {
-    align-self: start;
-    padding-top: 10px;
+    margin-top: 1rem;
+    font-size: $font-size-headline-2;
   }
 }
 </style>

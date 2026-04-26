@@ -1,7 +1,8 @@
 <script setup>
-import { ref } from "vue";
 import ConstructionStatus from "@/components/ConstructionStatus.vue";
 import FloorplanUpdate from "@/components/FloorplanUpdate.vue";
+// import MaterialsProgressBar from "@/components/MaterialsProgressBar.vue";
+import { ref } from "vue";
 
 
 const overallProgress = ref(0);
@@ -15,7 +16,7 @@ const overallProgress = ref(0);
     <h2><strong>Byggeleder:</strong> Kim Agerbæk</h2>
 
     <header class="status-view__header">
-      <!--<progress-bar :progress="overallProgress" /> component here> -->
+      <!-- <MaterialsProgressBar :progress="overallProgress" /> -->
       progress bar her
     </header>
 
