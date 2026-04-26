@@ -43,6 +43,8 @@ const getStatus = (status) => {
 </template>
 <style scoped lang="scss">
 .chat-header {
+  position: sticky;
+  top: -1px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;

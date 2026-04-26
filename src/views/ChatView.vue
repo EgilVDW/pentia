@@ -45,7 +45,27 @@ const sendMessage = (text) => {
 };
 </script>
 <template>
-  <ChatHeader name="Kim Agerbæk" role="Byggeleder" status="online" />
-  <MessageList :data="data" user="user1" />
-  <MessageInput v-model="message" @send="sendMessage" />
+  <main class="chat-view">
+    <ChatHeader name="Kim Agerbæk" role="Byggeleder" status="online" />
+    <div class="chat-view__chat">
+      <MessageList :data="data" user="user1" />
+      <MessageInput v-model="message" @send="sendMessage" />
+    </div>
+  </main>
 </template>
+<style scoped lang="scss">
+.chat-view {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+
+  &__chat {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1.5rem 1rem;
+  }
+}
+</style>
