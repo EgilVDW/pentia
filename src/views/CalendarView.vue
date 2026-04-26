@@ -52,7 +52,6 @@ const activitiesForSelectedDate = computed(() => {
 />
   </div>
 
-  <!-- <CheckupCard :title="..." :date="..." /> -->
   <div id="check-up">
     <CalendarCards />
   </div>
@@ -60,7 +59,7 @@ const activitiesForSelectedDate = computed(() => {
 
 <style lang="scss" scoped>
 .calendar__title{
-  padding: 1rem 1.5rem;
+  padding: 1rem ;
   font-size: $font-size-headline-1;
   font-weight: 600;
 }

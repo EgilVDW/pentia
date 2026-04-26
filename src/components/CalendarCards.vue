@@ -17,6 +17,26 @@
       </div>
     </div>
   </section>
+
+  <section class="maintenance">
+    <h2 class="maintenance__title">Vedligeholdelse</h2>
+
+    <div class="maintenance__card-section">
+      <div class="maintenance__card">
+        <div class="maintenance__card-content">
+          <p class="maintenance__card-title">VVS Service</p>
+          <p class="maintenance__card-text">Anbefales d. 29 December</p>
+        </div>
+      </div>
+
+      <div class="maintenance__card">
+        <div class="maintenance__card-content">
+          <p class="maintenance__card-title">Tagrender</p>
+          <p class="maintenance__card-text">Tjek + rens anbefales til efteråret</p>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <style lang="scss" scoped>
@@ -24,7 +44,7 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 1rem 1.5rem;
+  padding: 1rem;
 
   &__title {
     color: $color-foreground;
@@ -57,6 +77,48 @@
   }
 
   &__card-date {
+    font-size: $font-size-body;
+    color: $color-foreground;
+  }
+}
+
+.maintenance {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1rem;
+
+  &__title {
+    color: $color-foreground;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+  }
+
+  &__card-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  &__card {
+    background: $color-surface;
+    border-radius: $border-radius-large;
+    padding: 11px 10px;
+  }
+
+  &__card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__card-title {
+    font-weight: 600;
+    font-size: $font-size-headline-2;
+    color: $color-foreground;
+  }
+
+  &__card-text {
     font-size: $font-size-body;
     color: $color-foreground;
   }

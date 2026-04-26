@@ -41,12 +41,12 @@ const formattedDate = computed(() => {
   justify-content: center;
   flex-direction: column;
   border-radius: $border-radius-large;
-  padding: 1rem 1.5rem;
+  padding: 1rem;
 
   &__title {
     font-size: $font-size-headline-2;
     font-weight: 600;
-    margin-bottom: 1rem;
+    margin: 1rem 0 .5rem;
   }
 
   &__list {

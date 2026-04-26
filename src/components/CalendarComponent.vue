@@ -1,5 +1,6 @@
 <script setup>
 //TODO: Consider moving into seperate js file for less clutter.
+import Icon from "@/components/Icon.vue"
 import { computed, ref } from "vue"
 
 const props = defineProps({
@@ -106,9 +107,13 @@ const monthLabel = computed(() => {
 <template>
   <div class="calendar">
     <div class="calendar__header">
-      <button class="calendar__nav" @click="prevMonth">‹</button>
+      <button class="calendar__nav" @click="prevMonth">
+        <Icon class="calendar__nav--previous" name="Frem-tilbage-pil"/>
+      </button>
       <div class="calendar__title">{{ monthLabel }}</div>
-      <button class="calendar__nav" @click="nextMonth">›</button>
+      <button class="calendar__nav" @click="nextMonth">
+        <Icon class="calendar__nav--next" name="Frem-tilbage-pil"/>
+      </button>
     </div>
 
     <div class="calendar__weekdays">
@@ -154,15 +159,15 @@ const monthLabel = computed(() => {
 <style lang="scss" scoped>
 .calendar {
   width: 350px;
-  background: #f5f5f5;
+  background: $color-surface;
   padding: 1rem;
-  border-radius: $border-radius-large;
+  border-radius: $border-radius-small;
 
   &__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
   }
 
   &__title {
@@ -175,7 +180,15 @@ const monthLabel = computed(() => {
     color: $color-primary;
     cursor: pointer;
     font-size: 1.2rem;
-    // scale: 215%;
+
+    &--previous {
+      height: 1.5rem;
+    }
+
+    &--next {
+      height: 1.5rem;
+      transform: rotate(180deg);
+    }
   }
 
   &__weekdays {
@@ -202,7 +215,7 @@ const monthLabel = computed(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 4px;
+    border-radius: $border-radius-small;
     cursor: pointer;
 
     &--has-activity {
@@ -230,6 +243,7 @@ const monthLabel = computed(() => {
     margin-top: 1rem;
     font-size: 0.75rem;
     gap: 1rem;
+    padding-left: .75rem;
   }
 
   &__legend-item {
