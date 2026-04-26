@@ -9,7 +9,7 @@
 .white-container{
   width: auto;
   min-height: 110px;
-  margin: 1rem 1.5rem;
+  margin: 0.75rem 0rem 1.75rem 0rem;
   padding: 0.4rem 0.75rem;
   background-color: $color-surface;
   border-radius: $border-radius-small;

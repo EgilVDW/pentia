@@ -17,8 +17,8 @@ const size = computed(() => {
     return "heading--large";
   } else if (props.size === "medium") {
     return "heading--medium";
-  } else if (props.size === "small") {
-    return "heading--small";
+  } else {
+    return "heading--small"; // default
   }
 });
 </script>
