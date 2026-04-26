@@ -1,4 +1,5 @@
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
+import ChatLayout from "@/layouts/ChatLayout.vue";
 import CalendarView from "@/views/CalendarView.vue";
 import ChatView from "@/views/ChatView.vue";
 import DailyUpdateView from "@/views/DailyUpdate.vue";
@@ -45,11 +46,6 @@ const router = createRouter({
           component: DocumentsView
         },
         {
-          path: "/chat",
-          name: "chat",
-          component: ChatView
-        },
-        {
           path: "/calendar",
           name: "calendar",
           component: CalendarView
@@ -77,9 +73,15 @@ const router = createRouter({
       ]
     },
     {
-      path: "/chat",
-      name: "chat",
-      component: ChatView
+      path: "/",
+      component: ChatLayout,
+      children: [
+        {
+          path: "/chat",
+          name: "chat",
+          component: ChatView
+        }
+      ]
     }
   ]
 });
