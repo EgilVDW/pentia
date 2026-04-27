@@ -27,7 +27,7 @@ defineProps({
 
   &__field {
     width: 100%;
-    padding: 8px 25px;
+    padding: 12px 25px;
     border: none;
     border-radius: $border-radius-small;
     font-size: $font-size-body;
