@@ -36,7 +36,6 @@ const isVisible = ref(false);
     font-size: $font-size-body;
     background-color: $color-surface;
     font-family: $font-family-base;
-    color: $color-background;
 
     &::placeholder {
       color: $color-placeholder;
