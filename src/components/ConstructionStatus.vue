@@ -8,8 +8,8 @@ const statusItems = [
 </script>
 
 <template>
-  <div class="build-view">
-    <div
+  <main class="build-view">
+    <content
       class="build-view__item"
       v-for="item in statusItems"
       :key="item.label"
@@ -17,20 +17,20 @@ const statusItems = [
       <span
         class="build-view__indicator"
         :style="{ backgroundColor: item.color }"
-      ></span>
+    > </span>
 
       <span class="build-view__label">
         {{ item.label }}
       </span>
-    </div>
-  </div>
+    </content>
+  </main>
 </template>
 
 <style lang="scss" scoped>
 .build-view {
   display: flex;
   justify-content: space-around;
-  padding: 15px;
+  padding: 8px 15px;
   background-color: $color-surface;
   border-radius: $border-radius-small;
   font-family: $font-family-base;
@@ -53,5 +53,8 @@ const statusItems = [
     font-size: $font-size-body;
     color: $color-foreground;
   }
+    &__indicator, &__label{
+      align-items: baseline;
+    }
 }
 </style>

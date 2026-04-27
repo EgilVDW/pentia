@@ -28,7 +28,7 @@ const getImageUrl = (name) => {
 </script>
 
 <template>
-  <div class="floorplan-update">
+  <main class="floorplan-update">
     <transition name="fade" mode="out-in">
       <img
         :key="currentPlanImage"
@@ -37,7 +37,7 @@ const getImageUrl = (name) => {
         class="floorplan-update__image"
       />
     </transition>
-  </div>
+  </main>
 </template>
 
 <style lang="scss" scoped>
@@ -46,7 +46,6 @@ const getImageUrl = (name) => {
   display: flex;
   justify-content: center;
   padding: 10px;
-  margin-top: 20px;
 
   .fade-enter-active,
   .fade-leave-active {
