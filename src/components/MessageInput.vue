@@ -40,6 +40,8 @@ const handleSend = () => {
 </template>
 <style scoped lang="scss">
 .message-input {
+  position: sticky;
+  bottom: 8rem;
   display: flex;
   border-radius: $border-radius-small;
   background-color: $color-surface;
@@ -49,6 +51,10 @@ const handleSend = () => {
     padding: 0.5rem;
     font-size: 0.875rem;
     line-height: 1.25rem;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   &__button {
