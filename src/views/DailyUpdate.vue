@@ -4,9 +4,10 @@ import DailyInfo from "@/components/DailyInfo.vue";
 import TitleList from "@/components/TitleList.vue";
 import DailyImages from "@/components/DailyImages.vue";
 import NavigationButton from "@/components/NavigationButton.vue";
-import { ref } from "vue";
 import ManagerComment from "@/components/ManagerComment.vue";
 import Heading from "@/components/Heading.vue";
+import { ref } from "vue";
+
 
 const currentDate = new Date().toLocaleDateString();
 const manager = "Kim Agerbæk";
