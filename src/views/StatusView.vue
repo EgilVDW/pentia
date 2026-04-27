@@ -4,9 +4,7 @@ import FloorplanUpdate from "@/components/FloorplanUpdate.vue";
 // import MaterialsProgressBar from "@/components/MaterialsProgressBar.vue";
 import { ref } from "vue";
 
-
 const overallProgress = ref(0);
-
 </script>
 
 <template>
@@ -20,15 +18,15 @@ const overallProgress = ref(0);
       progress bar her
     </header>
 
-    <content class="status-view__card">
+    <div class="status-view__card">
       <section class="status-view__content">
-        <FloorplanUpdate :progress="overallProgress"/>
+        <FloorplanUpdate :progress="overallProgress" />
       </section>
 
       <footer class="status-view__overview">
         <ConstructionStatus />
       </footer>
-    </content>
+    </div>
   </main>
 </template>
 
@@ -48,9 +46,9 @@ const overallProgress = ref(0);
     font-size: $font-size-headline-2;
   }
 
-    span{
-      font-weight: 700;
-    }
+  span {
+    font-weight: 700;
+  }
 
   &__card {
     width: 100%;
@@ -79,9 +77,7 @@ const overallProgress = ref(0);
     background-color: $color-surface;
     border-radius: $border-radius-small;
     height: 2.2rem;
-
-}
-
+  }
 
   &__footer {
     justify-content: space-between;

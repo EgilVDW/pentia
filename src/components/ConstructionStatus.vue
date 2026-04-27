@@ -1,28 +1,24 @@
 <script setup>
-
 const statusItems = [
   { label: "Færdigt", color: "#81a676" },
   { label: "Igang", color: "#f3e082" },
   { label: "Afventer", color: "#c4c4c4" }
-]
+];
 </script>
 
 <template>
   <main class="build-view">
-    <content
-      class="build-view__item"
-      v-for="item in statusItems"
-      :key="item.label"
-    >
+    <div class="build-view__item" v-for="item in statusItems" :key="item.label">
       <span
         class="build-view__indicator"
         :style="{ backgroundColor: item.color }"
-    > </span>
+      >
+      </span>
 
       <span class="build-view__label">
         {{ item.label }}
       </span>
-    </content>
+    </div>
   </main>
 </template>
 
@@ -53,8 +49,9 @@ const statusItems = [
     font-size: $font-size-body;
     color: $color-foreground;
   }
-    &__indicator, &__label{
-      align-items: baseline;
-    }
+  &__indicator,
+  &__label {
+    align-items: baseline;
+  }
 }
 </style>
