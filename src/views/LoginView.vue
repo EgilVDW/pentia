@@ -8,22 +8,23 @@ import logoUrl from "@/assets/images/Milton_logo_white_outline.png";
 const email = ref("");
 const password = ref("");
 
-const handleLogin = () => {
-
-};
+const handleLogin = () => {};
 </script>
 
 <template>
   <main class="login-view">
     <div class="login-view__container">
-
       <header class="login-view__header">
         <div class="login-view__logo-container">
-          <img :src="logoUrl" alt="Milton huse logo" class="login-view__logo-image" />
+          <img
+            :src="logoUrl"
+            alt="Milton huse logo"
+            class="login-view__logo-image"
+          />
         </div>
       </header>
 
-      <content class="login-view__content">
+      <div class="login-view__content">
         <h2 class="login-view__title">Log ind</h2>
 
         <form class="login-view__form" @submit.prevent="handleLogin">
@@ -45,15 +46,14 @@ const handleLogin = () => {
         </form>
 
         <a href="#" class="login-view__forgot-link">Glemt adgangskode?</a>
-      </content>
+      </div>
 
       <footer class="login-view__footer">
         <p class="login-view__terms">
-          Ved at logge ind acceptere du vores <br>
+          Ved at logge ind acceptere du vores <br />
           <a href="#" class="login-view__terms-link">Terms of service</a>
         </p>
       </footer>
-
     </div>
   </main>
 </template>
@@ -147,7 +147,8 @@ const handleLogin = () => {
     text-decoration: underline;
   }
 
-  &__terms, &__terms-link {
+  &__terms,
+  &__terms-link {
     font-size: $font-size-body;
     color: $color-surface;
     line-height: 1.5;
@@ -155,10 +156,9 @@ const handleLogin = () => {
     font-weight: 300;
   }
 
-
-  &__terms, &__terms-link:last-of-type {
+  &__terms,
+  &__terms-link:last-of-type {
     margin-bottom: 3rem;
-
   }
 }
 </style>

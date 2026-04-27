@@ -8,7 +8,7 @@ import GalleryView from "@/views/GalleryView.vue";
 import HomeView from "@/views/HomeView.vue";
 import MaterialsView from "@/views/MaterialsView.vue";
 import PlaceholderView from "@/views/PlaceholderView.vue";
-import ViewLogin from "@/views/ViewLogin.vue";
+import LoginView from "@/views/LoginView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import StatusView from "@/views/StatusView.vue";
 import FrontpageView from "@/views/FrontpageView.vue";
@@ -87,7 +87,7 @@ const router = createRouter({
     {
       path: "/login",
       name: "login",
-      component: ViewLogin
+      component: LoginView
     }
   ]
 });
