@@ -6,6 +6,7 @@ import DailyImages from "@/components/DailyImages.vue";
 import NavigationButton from "@/components/NavigationButton.vue";
 import { ref } from "vue";
 import ManagerComment from "@/components/ManagerComment.vue";
+import Heading from "@/components/Heading.vue";
 
 const currentDate = new Date().toLocaleDateString();
 const manager = "Kim Agerbæk";
@@ -42,10 +43,15 @@ pdf.value = [
 ]
 </script>
 <template>
-  <DailyInfo :date="currentDate" :constructionManager="manager" :project="project"/>
+  <Heading tag="h1" size="large">Dagsopdatering</Heading>
+  <MediumWhiteContainer>
+    <DailyInfo :date="currentDate" :constructionManager="manager" :project="project"/>
+  </MediumWhiteContainer>
+  <Heading tag="h2" size="medium">Dagens arbejde</Heading>
   <MediumWhiteContainer>
     <TitleList :items="dailyWork" />
   </MediumWhiteContainer>
+  <Heading tag="h2" size="medium">Billeder fra dagen</Heading>
   <div class="image-container">
     <DailyImages
     class="image-container__image"
@@ -55,21 +61,23 @@ pdf.value = [
     :date="img.date"
     />
   </div>
+  <Heading tag="h2" size="medium">Kommentar</Heading>
   <MediumWhiteContainer>
     <ManagerComment :src="commentDB[0].img" :name="commentDB[0].name" :comment="commentDB[0].comment" :time="commentDB[0].time"/>
   </MediumWhiteContainer>
+  <Heading tag="h2" size="medium">Vedhæftet filer</Heading>
   <div class="button-container">
     <NavigationButton :label="pdf[0]"/>
     <NavigationButton :label="pdf[1]"/>
   </div>
   <div class="button-container">
-    <NavigationButton label="Næste" iconLeft="Frem-tilbage-pil"/>
-    <NavigationButton label="Forrige" iconRight="Frem-tilbage-pil"/>
+    <NavigationButton label="Forrige" iconLeft="Frem-tilbage-pil"/>
+    <NavigationButton label="Næste" iconRight="Frem-tilbage-pil"/>
   </div>
 </template>
 <style scoped lang="scss">
 .image-container{
-  margin: 1rem 1.5rem;
+  margin: 0.75rem 0rem 1.75rem 0rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.5rem;
@@ -83,7 +91,7 @@ pdf.value = [
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin: 1rem 1.5rem;
+  margin: 1rem 0rem;
   gap: 0.5rem;
 }
 </style>
