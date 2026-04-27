@@ -65,7 +65,7 @@ const sendMessage = (text) => {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: 0 1.5rem 1rem;
+    padding: 1rem 1.5rem;
   }
 }
 </style>
