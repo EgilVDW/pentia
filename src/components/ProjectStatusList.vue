@@ -34,8 +34,8 @@ const tasks = ref([
 
 <style lang="scss" scoped>
 .project-status {
-  width: 100vw;
-  padding: 0rem 2rem;
+  width: 100%;
+  padding: 0;
 
     .project-status__content {
     width: 100%;
@@ -56,7 +56,7 @@ const tasks = ref([
     .project-status__tasks {
       display: flex;
       flex-direction: column;
-      padding: 0rem 0rem;
+      padding: 0;
       background-color: $color-primary;
       border-bottom-left-radius: $border-radius-small;
       border-bottom-right-radius: $border-radius-small;
