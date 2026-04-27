@@ -33,7 +33,6 @@ defineProps({
     font-size: $font-size-body;
     font-family: $font-family-base;
     transition: border-color 0.2s ease;
-    color: $color-background;
 
     &::placeholder {
       color: $color-placeholder;
