@@ -56,7 +56,7 @@ const tasks = ref([
     .project-status__tasks {
       display: flex;
       flex-direction: column;
-      padding: 0rem 0rem;
+      padding: 0;
       background-color: $color-primary;
       border-bottom-left-radius: $border-radius-small;
       border-bottom-right-radius: $border-radius-small;
