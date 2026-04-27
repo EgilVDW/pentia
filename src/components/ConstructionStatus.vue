@@ -30,7 +30,7 @@ const statusItems = [
 .build-view {
   display: flex;
   justify-content: space-around;
-  padding: 15px;
+  padding: 8px 15px;
   background-color: $color-surface;
   border-radius: $border-radius-small;
   font-family: $font-family-base;

@@ -78,6 +78,7 @@ const overallProgress = ref(0);
     background-color: $color-surface;
     border-radius: $border-radius-small;
     height: 2.2rem;
+
 }
 
 
