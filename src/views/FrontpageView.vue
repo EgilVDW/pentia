@@ -11,6 +11,37 @@ import CalenderIcon from "@/assets/icons/Kalender.svg?url";
 
 import ConstructionSiteImages from "@/components/ConstructionSiteImages.vue";
 
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/firebase.js";
+
+const city = ref("");
+const country = ref("");
+const postalCode = ref("");
+const region = ref("");
+const street = ref("");
+const type = ref("");
+
+async function getProjectInfo() {
+  const querySnapshot = await getDocs(collection(db, "projects"));
+
+  const projectInfo = querySnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  }));
+
+  if(!querySnapshot.empty){
+    city.value = projectInfo[0].info.address.city;
+    country.value = projectInfo[0].info.address.country;
+    postalCode.value = projectInfo[0].info.address.postalCode;
+    region.value = projectInfo[0].info.address.region;
+    street.value = projectInfo[0].info.address.street;
+    type.value = projectInfo[0].info.type;
+  }
+
+}
+
+getProjectInfo();
+
 const tasks = ref([])
 
 tasks.value =  [
@@ -23,7 +54,10 @@ tasks.value =  [
 <template>
     <HeadlineDesc
         title="Familien Milton"
-        :text="'Type: Vinkelhus\nAdresse: Holkebjergvej 76\n5250 Odense'"
+        :text="`
+        Type: ${type}
+        Adresse: ${street}
+        ${postalCode} ${city}`"
     />
     <ProjectStatusList :items="tasks"/>
     <div class="button-wrap">
