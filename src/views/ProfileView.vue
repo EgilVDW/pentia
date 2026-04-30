@@ -8,41 +8,95 @@ import NotificationList from "@/components/NotificationList.vue";
 import IconButton from "@/components/IconButton.vue";
 import CenterButton from "@/components/CenterButton.vue";
 
-const details = [
+import { ref, onMounted, computed } from "vue";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+  orderBy
+} from "firebase/firestore";
+import { db } from "@/firebase";
+
+const customer = ref(null);
+const project = ref(null);
+const manager = ref(null);
+const notifications = ref([]);
+
+const customerId = "FVyJCzaC2MGGqbDsDwsF";
+
+onMounted(async () => {
+  const customerRef = doc(db, "users", customerId);
+
+  const projectQuery = query(
+    collection(db, "projects"),
+    where("customerId", "==", customerRef)
+  );
+
+  const [customerSnap, projectSnapshot] = await Promise.all([
+    getDoc(customerRef),
+    getDocs(projectQuery)
+  ]);
+
+  if (customerSnap.exists()) {
+    customer.value = customerSnap.data();
+  }
+
+  if (projectSnapshot.empty) return;
+
+  const projectSnap = projectSnapshot.docs[0];
+  project.value = { id: projectSnap.id, ...projectSnap.data() };
+
+  const notificationsRef = collection(
+    db,
+    "projects",
+    project.value.id,
+    "notifications"
+  );
+
+  const notificationsQuery = query(
+    notificationsRef,
+    orderBy("createdAt", "desc")
+  );
+
+  const [managerSnap, notificationsSnapshot] = await Promise.all([
+    getDoc(project.value.managerId),
+    getDocs(notificationsQuery)
+  ]);
+
+  if (managerSnap.exists()) {
+    manager.value = managerSnap.data();
+  }
+
+  notifications.value = notificationsSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data()
+  }));
+});
+
+const details = computed(() => [
   {
     icon: "Forside",
     label: "Projekt",
-    value: "Typehus: Vinkelhus A 145"
+    value: project.value?.info?.type || ""
   },
   {
     icon: "Kort",
     label: "Adresse",
-    value: "Holkenbjergvej 76"
+    value: project.value?.info?.address.street || ""
   }
-];
-
-const notifications = [
-  {
-    content: "Nye dagsrapporter"
-  },
-  {
-    content: "Nye billeder fra byggeplads"
-  },
-  {
-    content: "Nye beskeder fra byggeleder"
-  },
-  {
-    content: "Påmindelse om eftersyn"
-  }
-];
+]);
 </script>
 <template>
   <main class="profile-view">
     <Heading tag="h1" size="large">Profil</Heading>
     <ProfileCard
-      avatar="/images/images_bygherre/Familien_milton_profile_picture.png"
-      name="Familien Milton"
-      email="Familienmilton@email.dk"
+      v-if="customer"
+      :avatar="customer.avatar"
+      :name="`${customer.firstName} ${customer.lastName}`"
+      :email="customer.email"
     />
     <div class="profile-view__group">
       <Paragraph
@@ -51,10 +105,11 @@ const notifications = [
       >
       <DetailsCard :items="details" />
       <ContactCard
-        avatar="/images/images_bygherre/Kim_profile_picture.png"
-        role="Byggeleder"
-        name="Kim Agerbæk"
-        phoneNumber="+45 1234 5678"
+        v-if="manager"
+        :avatar="manager.avatar"
+        :name="`${manager.firstName} ${manager.lastName}`"
+        :email="manager.email"
+        :phoneNumber="manager?.phoneNumber"
       />
     </div>
     <div class="profile-view__group">
