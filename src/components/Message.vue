@@ -116,7 +116,7 @@ const statusLabel = computed(() => formatStatus(props.status));
     border-radius: $border-radius-small;
     font-size: 0.75rem;
     line-height: 1.25rem;
-    word-break: break-all;
+    overflow-wrap: break-word;
 
     &--incoming {
       background-color: $color-primary;
