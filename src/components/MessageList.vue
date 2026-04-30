@@ -11,7 +11,7 @@ defineProps({
     <Message
       v-for="(item, index) in data"
       :key="index"
-      :outgoing="item.user === user"
+      :outgoing="item.sender === user"
       :content="item.content"
       :timestamp="item.timestamp"
       :status="item.status"
