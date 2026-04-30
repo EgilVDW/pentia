@@ -1,28 +1,62 @@
 <script setup>
-import { ref, computed } from "vue";
+import { db } from "@/firebase";
+import { collection, getDocs, getDoc } from "firebase/firestore";
+import { ref, computed, onMounted } from "vue";
 import Icon from "@/components/Icon.vue";
 import SearchInput from "@/components/SearchInput.vue";
 import SelectInput from "@/components/SelectInput.vue";
 import DocumentFile from "@/components/DocumentFile.vue";
 
-// Dummy data
-const documents = ref([
-  { id: 1, name: "Plantegning.pdf", category: "Tegninger", date: new Date(), fileUrl: "#" },
-  { id: 2, name: "Købsaftale.pdf", category: "Kontrakt", date: new Date(), fileUrl: "#" },
-  { id: 3, name: "Leveranceplan.pdf", category: "Tidsplan", date: new Date(), fileUrl: "#" },
-  { id: 4, name: "BBR-oplysninger.pdf", category: "Kontrakt", date: new Date(), fileUrl: "#" },
-  { id: 5, name: "Guide til aflevering.pdf", category: "Andet", date: new Date(), fileUrl: "#" }
-]);
-
+const documents = ref([]);
 const searchQuery = ref("");
 const selectedCategory = ref("");
 const selectedSort = ref("seneste");
 
+const fetchDocuments = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "documents"));
+
+    const docsArray = await Promise.all(querySnapshot.docs.map(async (docSnapshot) => {
+      const data = docSnapshot.data();
+      let categoryName = "Ingen kategori";
+
+      if (data.categoryId && typeof data.categoryId !== "string") {
+        const categoryDoc = await getDoc(data.categoryId);
+        if (categoryDoc.exists()) {
+
+          categoryName = categoryDoc.data().label || "Uden label";
+        }
+      } else if (typeof data.categoryId === "string") {
+        categoryName = data.categoryId;
+      }
+
+      return {
+        id: docSnapshot.id,
+
+        name: data.navn || data.Navn || data.name || "Dokument: " + docSnapshot.id,
+        category: categoryName,
+
+        date: data.createdAt ? data.createdAt.toDate() : new Date(),
+        fileUrl: data.fileUrl || "#"
+      };
+    }));
+
+    documents.value = docsArray;
+  } catch (error) {
+    console.error("Fejl ved hentning af data:", error);
+  }
+};
+
+onMounted(() => {
+  fetchDocuments();
+});
+
 const categories = [
   { label: "Alle kategorier", value: "" },
-  { label: "Tegninger", value: "Tegninger" },
-  { label: "Kontrakt", value: "Kontrakt" },
-  { label: "Tidsplan", value: "Tidsplan" }
+  { label: "Tegning", value: "tegning" },
+  { label: "Kontrakt", value: "kontrakt" },
+  { label: "Tidsplan", value: "tidsplan" },
+  { label: "Andet", value: "andet" }
 ];
 
 const sortOptions = [
@@ -35,7 +69,7 @@ const filteredDocuments = computed(() => {
   return documents.value
     .filter((doc) => {
       const matchesSearch = doc.name.toLowerCase().includes(searchQuery.value.toLowerCase());
-      const matchesCategory = selectedCategory.value === "" || doc.category === selectedCategory.value;
+      const matchesCategory = selectedCategory.value === "" || doc.category.toLowerCase() === selectedCategory.value.toLowerCase();
       return matchesSearch && matchesCategory;
     })
     .sort((a, b) => {
@@ -45,17 +79,9 @@ const filteredDocuments = computed(() => {
     });
 });
 
-const handleSearch = (val) => {
-  searchQuery.value = val;
-};
-
-const handleCategorySelect = (val) => {
-  selectedCategory.value = val;
-};
-
-const handleSortSelect = (val) => {
-  selectedSort.value = val;
-};
+const handleSearch = (val) => { searchQuery.value = val; };
+const handleCategorySelect = (val) => { selectedCategory.value = val; };
+const handleSortSelect = (val) => { selectedSort.value = val; };
 </script>
 
 <template>
@@ -96,7 +122,7 @@ const handleSortSelect = (val) => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .document-view {
   min-height: 100vh;
   padding: 2rem 1rem;
@@ -127,12 +153,11 @@ const handleSortSelect = (val) => {
   }
 
   &__search {
-
-    :deep(.search-bar__input) {
+    .search-bar__input {
       margin-top: -8px;
     }
 
-    :deep(.search-bar__icon-container) {
+    .search-bar__icon-container {
       top: 30%;
       transform: translateY(-50%);
     }
@@ -153,7 +178,6 @@ const handleSortSelect = (val) => {
     text-align: center;
     color: $color-foreground;
     margin-top: 2rem;
-    font-style: normal;
   }
 }
 </style>
