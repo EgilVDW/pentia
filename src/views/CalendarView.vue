@@ -2,7 +2,27 @@
 import CalendarActivities from "@/components/CalendarActivities.vue";
 import CalendarCards from "@/components/CalendarCards.vue";
 import Calendar from "@/components/CalendarComponent.vue";
-import { computed, ref } from "vue";
+import { db } from "@/firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { computed, onMounted, ref } from "vue";
+
+const activities = ref([])
+
+const fetchActivities = async () => {
+  const querySnapshot = await getDocs(collection(db, "activities"))
+
+  activities.value = querySnapshot.docs.map(doc => {
+    const data = doc.data()
+
+    return {
+      id: doc.id,
+      ...data,
+      date: data.date.toDate()
+    }
+  })
+}
+
+onMounted(fetchActivities)
 
 const selectedDate = ref(new Date())
 const handleDateSelect = (date) => {
@@ -16,13 +36,13 @@ const allActivities = [
     title: "Deadline for ændring af Fliser",
     time: "16:00",
     date: new Date(2026, 3, 11)
-  },
-  {
-    id: 2,
-    title: "Råhus startes idag",
-    time: "06:00",
-    date: new Date(2026, 3, 14)
   }
+  // {
+  //   id: 2,
+  //   title: "Råhus startes idag",
+  //   time: "06:00",
+  //   date: new Date(2026, 3, 14)
+  // }
 ]
 
 const activitiesForSelectedDate = computed(() => {
@@ -40,7 +60,7 @@ const activitiesForSelectedDate = computed(() => {
   <div id="calendar">
     <Calendar
     :selectedDate="selectedDate"
-    :activities="allActivities"
+    :activities="activities"
     @select-date="handleDateSelect"
     />
   </div>
