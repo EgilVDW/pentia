@@ -7,22 +7,35 @@ defineProps({
 
 const formatDate = (date) => {
   if (!date) return "Dato mangler";
-  const d = date.toDate ? date.toDate() : new Date(date);
-  return (
-    d.toLocaleDateString("da-DK", {
-      day: "numeric",
-      month: "long"
-    }) + `, ${d.getHours()}.${d.getMinutes()}`
-  );
+
+
+  const d = (date instanceof Date) ? date : (date.toDate ? date.toDate() : new Date(date));
+
+  const dateString = d.toLocaleDateString("da-DK", {
+    day: "numeric",
+    month: "long"
+  });
+
+
+  const hours = d.getHours();
+  const minutes = String(d.getMinutes()).padStart(2, "0");
+
+  return `${dateString}, ${hours}.${minutes}`;
 };
 
 const openFile = (url) => {
-  if (url) window.open(url, "_blank");
+  if (url && url !== "#") {
+    window.open(url, "_blank");
+  } else {
+    alert("Filen er ikke klar endnu");
+  }
 };
 </script>
 
 <template>
-  <div class="document-item" @click="openFile(doc.fileUrl)">
+
+  <div class="document-item" :class="{ 'document-item--has-file': doc.fileUrl && doc.fileUrl !== '#' }"
+    @click="openFile(doc.fileUrl)">
     <div class="document-item__icon-container">
       <Icon name="Dokumenter" />
     </div>
@@ -46,26 +59,33 @@ const openFile = (url) => {
   gap: 15px;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
   width: 100%;
   height: 55px;
 
-  &__icon-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
-    :deep(svg) {
-      width: 30px;
-      height: 30px;
-      color: $color-foreground;
+  &:active {
+    transform: scale(0.98);
+    background-color: darken($color-surface, 5%);
+  }
+
+  &__icon-container {
+    color: $color-foreground;
+    width: 27px;
+    height: 27px;
+    margin-bottom: 10px;
+
+    svg {
+      width: 100%;
+      height: 100%;
     }
   }
 
   &__info {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 1px;
+    overflow: hidden;
   }
 
   &__name {
@@ -73,12 +93,16 @@ const openFile = (url) => {
     font-size: 1rem;
     font-weight: 400;
     color: $color-foreground;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__meta {
     margin: 0;
     font-size: 12px;
     color: $color-placeholder;
+    text-transform: capitalize;
   }
 }
 </style>
