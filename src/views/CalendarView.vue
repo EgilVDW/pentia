@@ -3,50 +3,38 @@ import CalendarActivities from "@/components/CalendarActivities.vue";
 import CalendarCards from "@/components/CalendarCards.vue";
 import Calendar from "@/components/CalendarComponent.vue";
 import { db } from "@/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 import { computed, onMounted, ref } from "vue";
 
-const activities = ref([])
+const projectId = "ovx2NQL4Bgb8hT4PITk6M"
 
-const fetchActivities = async () => {
-  const querySnapshot = await getDocs(collection(db, "activities"))
+onMounted(() => {
+  onSnapshot(
+    collection(db, "projects", projectId, "calendar"),
+    snapshot => {
+      activities.value = snapshot.docs.map(doc => {
+        const data = doc.data()
 
-  activities.value = querySnapshot.docs.map(doc => {
-    const data = doc.data()
-
-    return {
-      id: doc.id,
-      ...data,
-      date: data.date.toDate()
+        return {
+          id: doc.id,
+          title: data.title,
+          link: data.link,
+          date: data.datetime.toDate()
+        }
+      })
     }
-  })
-}
+  )
+})
 
-onMounted(fetchActivities)
+const activities = ref([])
 
 const selectedDate = ref(new Date())
 const handleDateSelect = (date) => {
   selectedDate.value = date
 }
 
-// Mock data to show cards working.
-const allActivities = [
-  {
-    id: 1,
-    title: "Deadline for ændring af Fliser",
-    time: "16:00",
-    date: new Date(2026, 3, 11)
-  }
-  // {
-  //   id: 2,
-  //   title: "Råhus startes idag",
-  //   time: "06:00",
-  //   date: new Date(2026, 3, 14)
-  // }
-]
-
 const activitiesForSelectedDate = computed(() => {
-  return allActivities.filter(activity => {
+  return activities.value.filter(activity => {
     return activity.date.toDateString() === selectedDate.value.toDateString()
   })
 })

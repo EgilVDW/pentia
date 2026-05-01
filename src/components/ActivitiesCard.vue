@@ -1,9 +1,20 @@
 <script setup>
-defineProps({
+import { computed } from "vue"
+
+const props = defineProps({
   activity: {
     type: Object,
     required: true
   }
+})
+
+const formattedTime = computed(() => {
+  if (!props.activity.date) return ""
+
+  return props.activity.date.toLocalTimeString("da-DK", {
+    hour: "2-digit",
+    minute: "2-digit"
+  })
 })
 </script>
 
@@ -18,7 +29,7 @@ defineProps({
             {{ activity.title }}
           </p>
           <p class="activity-card__time">
-            Kl {{ activity.time }}
+            Kl {{ formattedTime }}
           </p>
         </div>
       </div>

@@ -3,8 +3,14 @@ import ActivitiesCard from "@/components/ActivitiesCard.vue"
 import { computed } from "vue"
 
 const props = defineProps({
-  selectedDate: Date,
-  activities: Array
+  selectedDate: {
+    type: Date,
+    required: true
+  },
+  activities: {
+    type: Array,
+    default: () => []
+  }
 })
 
 const formattedDate = computed(() => {
