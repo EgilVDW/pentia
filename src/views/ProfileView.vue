@@ -30,44 +30,34 @@ const customerId = "FVyJCzaC2MGGqbDsDwsF";
 onMounted(async () => {
   const customerRef = doc(db, "users", customerId);
 
-  const projectQuery = query(
-    collection(db, "projects"),
-    where("customerId", "==", customerRef)
-  );
-
-  const [customerSnap, projectSnapshot] = await Promise.all([
+  const [customerSnapshot, projectSnapshot] = await Promise.all([
     getDoc(customerRef),
-    getDocs(projectQuery)
+    getDocs(
+      query(collection(db, "projects"), where("customerId", "==", customerRef))
+    )
   ]);
 
-  if (customerSnap.exists()) {
-    customer.value = customerSnap.data();
+  if (customerSnapshot.exists()) {
+    customer.value = customerSnapshot.data();
   }
 
-  if (projectSnapshot.empty) return;
+  const projectDoc = projectSnapshot.docs[0];
+  if (!projectDoc) return;
 
-  const projectSnap = projectSnapshot.docs[0];
-  project.value = { id: projectSnap.id, ...projectSnap.data() };
+  project.value = { id: projectDoc.id, ...projectDoc.data() };
 
-  const notificationsRef = collection(
-    db,
-    "projects",
-    project.value.id,
-    "notifications"
-  );
-
-  const notificationsQuery = query(
-    notificationsRef,
-    orderBy("createdAt", "desc")
-  );
-
-  const [managerSnap, notificationsSnapshot] = await Promise.all([
+  const [managerSnapshot, notificationsSnapshot] = await Promise.all([
     getDoc(project.value.managerId),
-    getDocs(notificationsQuery)
+    getDocs(
+      query(
+        collection(db, "projects", projectDoc.id, "notifications"),
+        orderBy("createdAt", "desc")
+      )
+    )
   ]);
 
-  if (managerSnap.exists()) {
-    manager.value = managerSnap.data();
+  if (managerSnapshot.exists()) {
+    manager.value = managerSnapshot.data();
   }
 
   notifications.value = notificationsSnapshot.docs.map((doc) => ({
