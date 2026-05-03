@@ -1,0 +1,15 @@
+{
+  "source": {
+    "include": ["src"],
+    "includePattern": ".js$"
+  },
+  "opts": {
+    "destination": "./docs",
+    "recurse": true,
+    "tutorials": "./tutorials",
+    "template": "./themes/docdash"
+  },
+  "docdash": {
+    "tutorialsLabel": "Documents"
+  }
+}
