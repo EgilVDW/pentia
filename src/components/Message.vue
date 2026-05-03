@@ -5,18 +5,26 @@ import { computed } from "vue";
 const props = defineProps({
   outgoing: Boolean,
   content: String,
-  timestamp: [String, Number],
+  timestamp: Object,
   status: String
 });
 
 const parseToLocalDate = (timestamp) => {
+  if (timestamp?.toDate && typeof timestamp.toDate === "function") {
+    return timestamp.toDate();
+  }
+
   if (timestamp instanceof Date) return timestamp;
 
   if (typeof timestamp === "number") {
     return new Date(timestamp < 1e12 ? timestamp * 1000 : timestamp);
   }
 
-  return new Date(timestamp);
+  if (typeof timestamp === "string") {
+    return new Date(timestamp);
+  }
+
+  return new Date();
 };
 
 const formatFullTooltip = (date) => {
@@ -91,11 +99,15 @@ const statusLabel = computed(() => formatStatus(props.status));
     >
       {{ content }}
     </p>
-    <span v-if="outgoing" class="message__meta">
+    <span v-if="outgoing && statusLabel" class="message__meta">
       {{ statusLabel }}
       <Icon name="Tjekmark" class="message__meta-icon" />
     </span>
-    <time v-else class="message__meta" :title="timeMeta.tooltip">
+    <time
+      v-if="!outgoing && timeMeta"
+      class="message__meta"
+      :title="timeMeta.tooltip"
+    >
       {{ timeMeta.label }}
     </time>
   </div>

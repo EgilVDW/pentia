@@ -24,44 +24,37 @@ const messages = ref([]);
 onMounted(async () => {
   const customerRef = doc(db, "users", customerId);
 
-  const projectQuery = query(
-    collection(db, "projects"),
-    where("customerId", "==", customerRef)
-  );
-
-  const [customerSnap, projectSnapshot] = await Promise.all([
+  const [customerSnapshot, projectSnapshot] = await Promise.all([
     getDoc(customerRef),
-    getDocs(projectQuery)
+    getDocs(
+      query(collection(db, "projects"), where("customerId", "==", customerRef))
+    )
   ]);
 
-  if (customerSnap.exists()) {
-    customer.value = customerSnap.data();
+  if (customerSnapshot.exists()) {
+    customer.value = customerSnapshot.data();
   }
 
-  if (projectSnapshot.empty) return;
+  const projectDoc = projectSnapshot.docs[0];
+  if (!projectDoc) return;
 
-  const projectData = projectSnapshot.docs[0].data();
-  const managerRef = projectData.managerId;
+  const [managerSnapshot, messagesSnapshot] = await Promise.all([
+    getDoc(projectDoc.data().managerId),
+    getDocs(
+      query(
+        collection(db, "projects", projectDoc.id, "messages"),
+        orderBy("createdAt", "asc")
+      )
+    )
+  ]);
 
-  const managerSnap = await getDoc(managerRef);
-
-  if (managerSnap.exists()) {
-    manager.value = managerSnap.data();
+  if (managerSnapshot.exists()) {
+    manager.value = managerSnapshot.data();
   }
 
-  const conversationId = [customerId, managerRef.id].sort().join("_");
-
-  const messagesQuery = query(
-    collection(db, "messages"),
-    where("conversationId", "==", conversationId),
-    orderBy("createdAt", "asc")
-  );
-
-  const messagesSnapshot = await getDocs(messagesQuery);
-
-  messages.value = messagesSnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data()
+  messages.value = messagesSnapshot.docs.map((d) => ({
+    id: d.id,
+    ...d.data()
   }));
 });
 
@@ -69,7 +62,9 @@ const message = ref("");
 
 const sendMessage = (text) => {
   messages.value.push({
-    user: "user1",
+    sender: {
+      id: customerId
+    },
     content: text,
     timestamp: Date.now(),
     status: "sent"
@@ -93,7 +88,7 @@ const getRole = (role) => {
       :active="manager.isActive"
     />
     <div class="chat-view__chat">
-      <MessageList v-if="messages" :data="messages" :user="customerId" />
+      <MessageList v-if="messages" :data="messages" :sender="customerId" />
       <MessageInput v-model="message" @send="sendMessage" />
     </div>
   </main>

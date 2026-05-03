@@ -3,7 +3,7 @@ import Message from "@/components/Message.vue";
 
 defineProps({
   data: Array,
-  user: String
+  sender: String
 });
 </script>
 <template>
@@ -11,9 +11,9 @@ defineProps({
     <Message
       v-for="(item, index) in data"
       :key="index"
-      :outgoing="item.sender === user"
+      :outgoing="item.sender.id === sender"
       :content="item.content"
-      :timestamp="item.timestamp"
+      :timestamp="item.createdAt"
       :status="item.status"
     />
   </div>
