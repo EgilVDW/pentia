@@ -17,8 +17,7 @@ import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, listAll } f
 const selectedFile = ref(null);
 const storage = getStorage();
 const imageUrls = ref([]);
-
-
+const projectId = ref(null);
 
 function handleFile(event) {
   selectedFile.value = event.target.files[0];
@@ -29,8 +28,7 @@ function upload() {
     console.log("No file selected");
     return;
   }
-
-  const fileRef = storageRef(storage, "images/" + selectedFile.value.name);
+  const fileRef = storageRef(storage, projectId.value + "/images/" + selectedFile.value.name);
 
   uploadBytes(fileRef, selectedFile.value).then(() => {
     console.log("Uploaded!");
@@ -38,7 +36,8 @@ function upload() {
 }
 
 async function getImages() {
-  const folderRef = storageRef(storage, "images/");
+  console.log(projectId.value + "/images/");
+  const folderRef = storageRef(storage, projectId.value + "/images/");
   const result = await listAll(folderRef);
 
   return result.items;
@@ -54,14 +53,11 @@ async function getImageURLs() {
   return urls;
 }
 
-onMounted(async () => {
-  imageUrls.value = await getImageURLs();
-});
-
 
 
 const user = ref(null);
 const project = ref(null);
+
 
 async function loadData() {
   const userId = "FVyJCzaC2MGGqbDsDwsF";
@@ -80,10 +76,18 @@ async function loadData() {
   const projectSnap = await getDocs(q);
   if (projectSnap.empty) return;
 
-  const projectData = projectSnap.docs[0].data();
 
-  project.value = projectData;
+  const projectDoc = projectSnap.docs[0];
+  // const projectData = projectDoc.data();
 
+  project.value = {
+    id: projectDoc.id,
+    ...projectDoc.data()
+  };
+
+  projectId.value = projectDoc.id;
+
+  imageUrls.value = await getImageURLs();
 
 }
 
@@ -133,7 +137,7 @@ const tasks = computed(() => {
       <LargeIconButton :src="DayUpdateIcon" :size="28" text="Dagsopdatering"/>
     </div>
 
-    <ConstructionSiteImages :amount="2"/>
+    <ConstructionSiteImages :amount="firestorepath.length"/>
 </template>
 
 <style scoped lang="scss">
