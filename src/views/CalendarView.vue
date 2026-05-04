@@ -6,7 +6,7 @@ import { db } from "@/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 import { computed, onMounted, ref } from "vue";
 
-const projectId = "ovx2NQL4Bgb8hT4PITk6M"
+const projectId = "ovx2NQL4Bg8hT4PiTK6M"
 
 onMounted(() => {
   onSnapshot(

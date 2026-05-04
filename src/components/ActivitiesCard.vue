@@ -11,7 +11,7 @@ const props = defineProps({
 const formattedTime = computed(() => {
   if (!props.activity.date) return ""
 
-  return props.activity.date.toLocalTimeString("da-DK", {
+  return props.activity.date.toLocaleTimeString("da-DK", {
     hour: "2-digit",
     minute: "2-digit"
   })
