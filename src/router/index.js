@@ -42,7 +42,7 @@ const router = createRouter({
           component: ProfileView
         },
         {
-          path: "/documents",
+          path: "/documents/:id",
           name: "documents",
           component: DocumentsView
         },

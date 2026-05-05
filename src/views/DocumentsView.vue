@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import { db } from "@/firebase";
 import { collection, getDocs, getDoc } from "firebase/firestore";
 
@@ -9,6 +10,7 @@ import SelectInput from "@/components/SelectInput.vue";
 import DocumentFile from "@/components/DocumentFile.vue";
 
 // state
+const route = useRoute();
 const documents = ref([]);
 const searchQuery = ref("");
 const selectedCategory = ref("");
@@ -30,26 +32,28 @@ const sortOptions = [
 ];
 
 // methods
-const fetchDocuments = async () => {
+const fetchDocuments = async (projectId) => {
+  if (!projectId) return;
+
   isLoading.value = true;
   try {
-    const querySnapshot = await getDocs(collection(db, "documents"));
+    const docsRef = collection(db, "projects", projectId, "documents");
+    const querySnapshot = await getDocs(docsRef);
 
     const docsArray = await Promise.all(
       querySnapshot.docs.map(async (docSnapshot) => {
         const data = docSnapshot.data();
-
-        // handle inconsistent naming
         const normalizedName = data.navn || data.Navn || data.name || data.Name || `Dokument: ${docSnapshot.id}`;
 
         // handle category logic (reference vs string)
         let categoryName = "Ingen kategori";
-        if (data.categoryId && typeof data.categoryId !== "string") {
-          const categoryDoc = await getDoc(data.categoryId);
-          if (categoryDoc.exists()) {
-            categoryName = categoryDoc.data().label || "Uden label";
+        if (data.categoryId) {
+          if (typeof data.categoryId !== "string") {
+            const categoryDoc = await getDoc(data.categoryId);
+            categoryName = categoryDoc.exists() ? (categoryDoc.data().label || "Uden label") : "Ukendt kategori";
           }
-        } else if (data.categoryId) {
+
+        } else {
           categoryName = data.categoryId;
         }
 
@@ -71,24 +75,28 @@ const fetchDocuments = async () => {
   }
 };
 
-onMounted(fetchDocuments);
+onMounted(() => {
+
+  const projectId = route.params.id;
+  fetchDocuments(projectId);
+});
 
 // filtering
 const filteredDocuments = computed(() => {
   const list = documents.value.filter((doc) => {
     const searchMatch = doc.name.toLowerCase().includes(searchQuery.value.toLowerCase());
     const categoryMatch = !selectedCategory.value ||
-                          doc.category.toLowerCase() === selectedCategory.value.toLowerCase();
+      doc.category.toLowerCase() === selectedCategory.value.toLowerCase();
     return searchMatch && categoryMatch;
   });
 
   // 2. sorting
   return list.sort((a, b) => {
     switch (selectedSort.value) {
-    case "navn":    return a.name.localeCompare(b.name);
+    case "navn": return a.name.localeCompare(b.name);
     case "aeldste": return a.date - b.date;
     case "seneste":
-    default:        return b.date - a.date;
+    default: return b.date - a.date;
     }
   });
 });
@@ -105,23 +113,15 @@ const handleSortSelect = (val) => { selectedSort.value = val; };
       <h1 class="document-view__title">Dokumenter</h1>
 
       <div class="document-view__filters">
-        <SelectInput
-          label="Alle kategorier"
-          :options="categories"
-          class="document-view__filter-item"
-          @select="handleCategorySelect"
-        >
+        <SelectInput label="Alle kategorier" :options="categories" class="document-view__filter-item"
+          @select="handleCategorySelect">
           <template #icon>
             <Icon name="Kategorier" />
           </template>
         </SelectInput>
 
-        <SelectInput
-          label="Seneste"
-          :options="sortOptions"
-          class="document-view__filter-item"
-          @select="handleSortSelect"
-        >
+        <SelectInput label="Seneste" :options="sortOptions" class="document-view__filter-item"
+          @select="handleSortSelect">
           <template #icon>
             <Icon name="Filter" />
           </template>
@@ -140,12 +140,7 @@ const handleSortSelect = (val) => { selectedSort.value = val; };
 
       <template v-else>
         <div v-if="filteredDocuments.length" class="document-view__list">
-          <DocumentFile
-            v-for="doc in filteredDocuments"
-            :key="doc.id"
-            :doc="doc"
-            class="document-view__item"
-          />
+          <DocumentFile v-for="doc in filteredDocuments" :key="doc.id" :doc="doc" class="document-view__item" />
         </div>
 
         <p v-else class="document-view__empty">
@@ -208,7 +203,8 @@ const handleSortSelect = (val) => { selectedSort.value = val; };
     gap: 8px;
   }
 
-  &__empty, &__loader {
+  &__empty,
+  &__loader {
     text-align: center;
     color: $color-foreground;
     margin-top: 2rem;

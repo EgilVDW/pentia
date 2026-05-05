@@ -1,8 +1,11 @@
 <script setup>
 import Icon from "@/components/Icon.vue";
 
-defineProps({
-  doc: Object
+const props = defineProps({
+  doc: {
+    type: Object,
+    required: true
+  }
 });
 
 const formatDate = (date) => {
@@ -11,31 +14,36 @@ const formatDate = (date) => {
 
   const d = (date instanceof Date) ? date : (date.toDate ? date.toDate() : new Date(date));
 
+
   const dateString = d.toLocaleDateString("da-DK", {
     day: "numeric",
     month: "long"
   });
 
+  const timeString = d.toLocaleTimeString("da-DK", {
+    hour: "2-digit",
+    minute: "2-digit"
+  }).replace(":", ".");
 
-  const hours = d.getHours();
-  const minutes = String(d.getMinutes()).padStart(2, "0");
-
-  return `${dateString}, ${hours}.${minutes}`;
+  return `${dateString}, ${timeString}`;
 };
 
-const openFile = (url) => {
+const openFile = () => {
+  const url = props.doc.fileUrl;
   if (url && url !== "#") {
     window.open(url, "_blank");
   } else {
-    alert("Filen er ikke klar endnu");
+    alert("Filen er ikke klar endnu eller linket mangler.");
   }
 };
 </script>
 
 <template>
-
-  <div class="document-item" :class="{ 'document-item--has-file': doc.fileUrl && doc.fileUrl !== '#' }"
-    @click="openFile(doc.fileUrl)">
+  <div
+    class="document-item"
+    :class="{ 'document-item--has-file': doc.fileUrl && doc.fileUrl !== '#' }"
+    @click="openFile"
+  >
     <div class="document-item__icon-container">
       <Icon name="Dokumenter" />
     </div>
@@ -43,7 +51,7 @@ const openFile = (url) => {
     <div class="document-item__info">
       <h4 class="document-item__name">{{ doc.name }}</h4>
       <p class="document-item__meta">
-        {{ doc.category }}, {{ formatDate(doc.date) }}
+        {{ doc.category }} • {{ formatDate(doc.date) }}
       </p>
     </div>
   </div>
@@ -63,6 +71,10 @@ const openFile = (url) => {
   width: 100%;
   height: 55px;
 
+  &:hover {
+    background-color: lighten($color-surface, 2%);
+    transform: translateY(-1px);
+  }
 
   &:active {
     transform: scale(0.98);
@@ -73,7 +85,9 @@ const openFile = (url) => {
     color: $color-foreground;
     width: 27px;
     height: 27px;
-    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     svg {
       width: 100%;
