@@ -12,6 +12,7 @@ import LoginView from "@/views/LoginView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import StatusView from "@/views/StatusView.vue";
 import FrontpageView from "@/views/FrontpageView.vue";
+import UploadImagesView from "@/views/UploadImages.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -70,6 +71,11 @@ const router = createRouter({
           path: "/dailyupdate",
           name: "dailyupdate",
           component: DailyUpdateView
+        },
+        {
+          path: "/desktop/uploadimages",
+          name: "uploadimages",
+          component: UploadImagesView
         }
       ]
     },
