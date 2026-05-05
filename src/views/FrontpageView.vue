@@ -36,7 +36,6 @@ function upload() {
 }
 
 async function getImages() {
-  console.log(projectId.value + "/images/");
   const folderRef = storageRef(storage, projectId.value + "/images/");
   const result = await listAll(folderRef);
 
@@ -108,14 +107,27 @@ const addressText = computed(() => {
   `;
 });
 
+// project status map values
+const taskMap = {
+  done: "Færdig",
+  inProgress: "Igang",
+  pending: "Afventer"
+}
+
+// match map values
+function mapValue(val) {
+  return taskMap[val] ?? val;
+}
+
+// output project status values in array of objects
 const tasks = computed(() => {
   const s = project.value?.status;
   if (!s) return [];
 
   return [
-    { left: "Fundament", right: s.foundation },
-    { left: "Råhus", right: s.shell },
-    { left: "Indvendigt", right: s.interior }
+    { left: "Fundament", right: mapValue(s.foundation) },
+    { left: "Råhus", right: mapValue(s.shell) },
+    { left: "Indvendigt", right: mapValue(s.interior) }
   ];
 });
 
@@ -137,7 +149,7 @@ const tasks = computed(() => {
       <LargeIconButton :src="DayUpdateIcon" :size="28" text="Dagsopdatering"/>
     </div>
 
-    <ConstructionSiteImages :amount="firestorepath.length"/>
+    <ConstructionSiteImages :amount="2"/>
 </template>
 
 <style scoped lang="scss">
