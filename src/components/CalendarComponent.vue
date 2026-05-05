@@ -1,8 +1,19 @@
 <script setup>
+/**
+ * @module CalendarComponent
+ */
 //TODO: Consider moving into seperate js file for less clutter.
 import Icon from "@/components/Icon.vue"
 import { computed, ref } from "vue"
 
+/**
+ * Props definition for the calendar component.
+ *
+ * @typedef {Object} Activity
+ * @property {Date} date - The date of the activity.
+ *
+ * @type {{ activities: Activity[] }}
+ */
 const props = defineProps({
   activities: {
     type: Array,
@@ -18,17 +29,43 @@ const currentYear = ref(today.getFullYear())
 
 const daysOfWeek = ["Ma", "Ti", "On", "To", "Fr", "Lø", "Sø"]
 
+/**
+ * Emits event when a date is selected.
+ *
+ * @event select-date
+ * @type {(event: "select-date", date: Date) => void}
+ */
 const emit = defineEmits(["select-date"])
 
+/**
+ * Get the number of days in a given month.
+ *
+ * @param {number} month - Month index (0-11).
+ * @param {number} year - Full year (e.g., 2026).
+ * @returns {number} Number of days in the month.
+ */
 const getDaysInMonth = (month, year) => {
   return new Date(year, month + 1, 0).getDate()
 }
 
+/**
+ * Get the first day of the month adjusted so Monday = 0.
+ *
+ * @param {number} month - Month index (0-11).
+ * @param {number} year - Full year.
+ * @returns {number} Index of first day (0 = Monday, 6 = Sunday).
+ */
 const getFirstDayOfMonth = (month, year) => {
   const day = new Date(year, month, 1).getDay()
   return day === 0 ? 6 : day - 1 // make Monday first
 }
 
+/**
+ * Check if a given date has an associated activity.
+ *
+ * @param {Date|null} date
+ * @returns {boolean} True if at least one activity exists on the date.
+ */
 const hasActivity = (date) => {
   if (!date) return false
 
@@ -37,6 +74,23 @@ const hasActivity = (date) => {
   )
 }
 
+/**
+ * Represents a single calendar day.
+ *
+ * @typedef {Object} CalendarDay
+ * @property {Date|null} date - Actual date object (null for filler days).
+ * @property {number} [day] - Day number of the month.
+ * @property {boolean} isCurrentMonth - Whether the day belongs to the current month.
+ * @property {boolean} [isToday] - Whether the day is today.
+ * @property {boolean} [hasActivity] - Whether the day has an activity.
+ */
+
+/**
+ * Computed list of days for the current calendar view.
+ * Includes leading empty days to align the first weekday.
+ *
+ * @type {import('vue').ComputedRef<CalendarDay[]>}
+ */
 const calendarDays = computed(() => {
   const days = []
   const daysInMonth = getDaysInMonth(currentMonth.value, currentYear.value)
