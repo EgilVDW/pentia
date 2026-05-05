@@ -1,7 +1,9 @@
 <script setup>
 import MaterialCards from "@/components/MaterialCards.vue";
 import MaterialsProgressBar from "@/components/MaterialsProgressBar.vue";
-import { computed, ref } from "vue";
+import { db } from "@/firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { computed, onMounted, ref } from "vue";
 
 const getImageUrl = (name) => {
   return name
@@ -9,59 +11,42 @@ const getImageUrl = (name) => {
     : null
 }
 
-const cards = ref([
-  {
-    id: 1,
-    title: "Køkken",
-    description: "Valgt: HTH Nordic",
-    image: "Rectangle 44.png",
-    alt: "Billede af et køkken",
-    selected: false
-  },
-  {
-    id: 2,
-    title: "Bad",
-    description: "Valgt: Bad & fliser",
-    image: "Badeværelse.png",
-    selected: false
-  },
-  {
-    id: 3,
-    title: "Gulve",
-    description: "Valgt: Eg planke",
-    image: "Rectangle 44_2.png",
-    selected: false
-  },
-  {
-    id: 4,
-    title: "Fliser",
-    description: "Afventer valg",
-    image: "Rectangle 44_3.png",
-    selected: false
-  },
-  {
-    id: 5,
-    title: "Tag",
-    description: "Valgt: Betontagsten",
-    image: "Rectangle 44_4.png",
-    selected: false
+const cards = ref([])
 
-  },
-  {
-    id: 6,
-    title: "Døre",
-    description: "Valgt: Hvid glat",
-    image: null,
-    selected: false
-  },
-  {
-    id: 7,
-    title: "Vindue",
-    description: "Valgt: Topstyrede",
-    image: null,
-    selected: false
+const fetchMaterials = async () => {
+  try {
+    const materialsSnapshot = await getDocs(collection(db, "materials"))
+
+    const allCards = []
+
+    for (const materialDoc of materialsSnapshot.docs) {
+      const optionsRef = collection(db, "materials", materialDoc.id, "options")
+      const optionsSnapshot = await getDocs(optionsRef)
+
+      optionsSnapshot.forEach((doc) => {
+        const data = doc.data()
+
+        console.log(data)
+
+        allCards.push({
+          id: doc.id,
+          title: data.category || "Ukendt",
+          description: "",
+          image: data.image || "Badeværelse.png",
+          selected: false
+        })
+      })
+    }
+
+    cards.value = allCards
+  } catch (error) {
+    console.error("Fetching error:", error)
   }
-])
+}
+
+onMounted(() => {
+  fetchMaterials()
+})
 
 const imageCards = computed(() =>
   cards.value.filter(card => card.image)
