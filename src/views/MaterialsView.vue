@@ -3,7 +3,10 @@ import MaterialCards from "@/components/MaterialCards.vue";
 import MaterialsProgressBar from "@/components/MaterialsProgressBar.vue";
 import { db } from "@/firebase";
 import { collection, getDocs } from "firebase/firestore";
+// import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
 import { computed, onMounted, ref } from "vue";
+
+// const storage = getStorage()
 
 const getImageUrl = (name) => {
   return name
@@ -11,32 +14,34 @@ const getImageUrl = (name) => {
     : null
 }
 
+// const getImageUrl = async (fileName) => {
+//   if (!fileName) return null
+
+//   try {
+//     const fileRef = storageRef(storage, `materials/${fileName}`)
+//     return await getDownloadURL(fileRef)
+//   } catch (error) {
+//     console.error("Error fetching image:", error)
+//     return null
+//   }
+// }
+
 const cards = ref([])
 
 const fetchMaterials = async () => {
   try {
     const materialsSnapshot = await getDocs(collection(db, "materials"))
 
-    const allCards = []
+    const allCards = materialsSnapshot.docs.map(doc => {
+      const data = doc.data()
 
-    for (const materialDoc of materialsSnapshot.docs) {
-      const optionsRef = collection(db, "materials", materialDoc.id, "options")
-      const optionsSnapshot = await getDocs(optionsRef)
-
-      optionsSnapshot.forEach((doc) => {
-        const data = doc.data()
-
-        console.log(data)
-
-        allCards.push({
-          id: doc.id,
-          title: data.category || "Ukendt",
-          description: "",
-          image: data.image || "Badeværelse.png",
-          selected: false
-        })
-      })
-    }
+      return {
+        id: doc.id,
+        title: data.category || data.name || "Ukendt",
+        image: data.image ?? null,
+        selected: false
+      }
+    })
 
     cards.value = allCards
   } catch (error) {
@@ -89,7 +94,7 @@ const toggleCard = (id) => {
       v-for="(card) in imageCards"
       :key="card.id"
       :title="card.title"
-      :description="card.description"
+      :description="card.selected ? 'Valg taget' : 'Afventer valg'"
       :image="getImageUrl(card.image)"
       :selected="card.selected"
       @toggle="toggleCard(card.id)"
@@ -101,7 +106,7 @@ const toggleCard = (id) => {
         v-for="(card) in noImageCards"
         :key="card.id"
         :title="card.title"
-        :description="card.description"
+        :description="card.selected ? 'Valg taget' : 'Afventer valg'"
         :image="getImageUrl(card.image)"
         :selected="card.selected"
         @toggle="toggleCard(card.id)"
