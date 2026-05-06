@@ -28,17 +28,18 @@ function upload() {
     console.log("No file selected");
     return;
   }
-  const fileRef = storageRef(storage, projectId.value + "/images/" + selectedFile.value.name);
+  const fileRef = storageRef(storage, "projects/" + projectId.value + "/images/" + selectedFile.value.name);
 
   uploadBytes(fileRef, selectedFile.value).then(() => {
     console.log("Uploaded!");
   });
 }
 
+const amountOfImages = ref(0);
 async function getImages() {
-  const folderRef = storageRef(storage, projectId.value + "/images/");
+  const folderRef = storageRef(storage, "projects/" + projectId.value + "/images/");
   const result = await listAll(folderRef);
-
+  amountOfImages.value = result.items.length;
   return result.items;
 }
 
@@ -149,7 +150,7 @@ const tasks = computed(() => {
       <LargeIconButton :src="DayUpdateIcon" :size="28" text="Dagsopdatering"/>
     </div>
 
-    <ConstructionSiteImages :amount="2"/>
+    <ConstructionSiteImages :amount="amountOfImages"/>
 </template>
 
 <style scoped lang="scss">
