@@ -9,13 +9,17 @@ import Heading from "@/components/Heading.vue";
 import { ref, onMounted, computed } from "vue";
 import { doc, getDoc, collection, getDocs, query, where, limit, orderBy } from "firebase/firestore";
 import { db } from "@/firebase";
-
+import { getStorage, ref as storageRef, getDownloadURL, listAll } from "firebase/storage";
 
 const user = ref(null);
 const project = ref(null);
 const projectId = ref(null);
 const manager = ref(null);
 const latestUpdate = ref(null);
+
+const storage = getStorage();
+const imageUrl = ref(null);
+
 
 async function loadData(){
   const userId = "FVyJCzaC2MGGqbDsDwsF";
@@ -47,16 +51,41 @@ async function loadData(){
     orderBy("createdAt", "desc"),
     limit(1)
   );
-
   const updateSnap = await getDocs(updateQuery);
   latestUpdate.value = updateSnap.docs[0]?.data();
 
   const managerSnap = await getDoc(project.value.managerId);
 
   manager.value = managerSnap.data();
+
+  imageUrl.value = await getImageURL();
 }
 
 onMounted(loadData);
+onMounted(async () => {
+  imageUrl.value = await getImageURL();
+});
+
+async function getImages() {
+  if (!project.value?.managerId) {
+    return [];
+  }
+  const managerId = project.value.managerId.id;
+
+  const folderRef = storageRef(storage, `users/${managerId}/`);
+  const result = await listAll(folderRef);
+
+  return result.items;
+}
+
+async function getImageURL() {
+  const items = await getImages();
+
+  if (!items.length) return null;
+
+  return await getDownloadURL(items[0]);
+}
+
 
 const dailyWork = ref([])
 dailyWork.value = [
@@ -75,10 +104,7 @@ imageDB.value = [
 const commentDB = ref([])
 commentDB.value = [
   {
-    img: "/images/images_bygherre/Kim_profile_picture.png",
-    name: "Kim Agerbæk",
-    comment: "Fundamentet er nu færdigt. Vi forventer at starte råhusmontage i næste uge, hvis vejret holder.",
-    time: "14:58"
+    img: "/images/images_bygherre/Kim_profile_picture.png"
   }
 ]
 
@@ -100,11 +126,22 @@ const formattedDate = computed(() => {
     : "";
 });
 
+const formattedTime = computed(() => {
+  if (!latestUpdate.value?.datetime) return "";
+
+  return new Date(latestUpdate.value.datetime * 1000)
+    .toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    });
+});
+
 </script>
 <template>
   <Heading tag="h1" size="large">Dagsopdatering</Heading>
   <MediumWhiteContainer>
-    <DailyInfo :date="formattedDate" :constructionManager="manager?.firstName + ' ' + manager?.lastName" :project="project?.info?.name"/>
+    <DailyInfo :date="formattedDate || ''" :constructionManager="manager?.firstName + ' ' + manager?.lastName || ''" :project="project?.info?.name || ''"/>
   </MediumWhiteContainer>
   <Heading tag="h2" size="medium">Dagens arbejde</Heading>
   <MediumWhiteContainer>
@@ -122,7 +159,7 @@ const formattedDate = computed(() => {
   </div>
   <Heading tag="h2" size="medium">Kommentar</Heading>
   <MediumWhiteContainer>
-    <ManagerComment :src="commentDB[0].img" :name="commentDB[0].name" :comment="commentDB[0].comment" :time="commentDB[0].time"/>
+    <ManagerComment :src="imageUrl || ''" :name="manager?.firstName + ' ' + manager?.lastName || ''" :comment="latestUpdate?.comment || ''" :time="formattedTime || ''"/>
   </MediumWhiteContainer>
   <Heading tag="h2" size="medium">Vedhæftet filer</Heading>
   <div class="button-container">
