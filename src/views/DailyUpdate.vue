@@ -6,12 +6,57 @@ import DailyImages from "@/components/DailyImages.vue";
 import NavigationButton from "@/components/NavigationButton.vue";
 import ManagerComment from "@/components/ManagerComment.vue";
 import Heading from "@/components/Heading.vue";
-import { ref } from "vue";
+import { ref, onMounted, computed } from "vue";
+import { doc, getDoc, collection, getDocs, query, where, limit, orderBy } from "firebase/firestore";
+import { db } from "@/firebase";
 
 
-const currentDate = new Date().toLocaleDateString();
-const manager = "Kim Agerbæk";
-const project = "Typehus A 145";
+const user = ref(null);
+const project = ref(null);
+const projectId = ref(null);
+const manager = ref(null);
+const latestUpdate = ref(null);
+
+async function loadData(){
+  const userId = "FVyJCzaC2MGGqbDsDwsF";
+
+  const userSnap = await getDoc(doc(db, "users", userId));
+  if (!userSnap.exists()) return;
+
+  user.value = userSnap.data();
+
+  const q = query(
+    collection(db, "projects"),
+    where("customerId", "==", doc(db, "users", userId))
+  );
+
+  const projectSnap = await getDocs(q);
+  if (projectSnap.empty) return;
+
+  const projectDoc = projectSnap.docs[0];
+
+  project.value = {
+    id: projectDoc.id,
+    ...projectDoc.data()
+  };
+
+  projectId.value = projectDoc.id;
+
+  const updateQuery = query(
+    collection(db, "projects", projectId.value, "dailyUpdates"),
+    orderBy("createdAt", "desc"),
+    limit(1)
+  );
+
+  const updateSnap = await getDocs(updateQuery);
+  latestUpdate.value = updateSnap.docs[0]?.data();
+
+  const managerSnap = await getDoc(project.value.managerId);
+
+  manager.value = managerSnap.data();
+}
+
+onMounted(loadData);
 
 const dailyWork = ref([])
 dailyWork.value = [
@@ -42,11 +87,24 @@ pdf.value = [
   "Fundament_tegning.pdf",
   "Vejrforhold.pdf"
 ]
+
+const formattedDate = computed(() => {
+  return latestUpdate.value?.createdAt
+    ? latestUpdate.value.createdAt.toDate().toLocaleString("en-GB", {
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    }).replace(",", "")
+    : "";
+});
+
 </script>
 <template>
   <Heading tag="h1" size="large">Dagsopdatering</Heading>
   <MediumWhiteContainer>
-    <DailyInfo :date="currentDate" :constructionManager="manager" :project="project"/>
+    <DailyInfo :date="formattedDate" :constructionManager="manager?.firstName + ' ' + manager?.lastName" :project="project?.info?.name"/>
   </MediumWhiteContainer>
   <Heading tag="h2" size="medium">Dagens arbejde</Heading>
   <MediumWhiteContainer>
