@@ -1,52 +1,64 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watchEffect } from "vue";
+import { getStorage, ref as storageRef, getDownloadURL } from "firebase/storage";
 
-const photos = ref([
-  { id: 1, filename: "site_1.png", date: "05/03-2026" },
-  { id: 2, filename: "site_2.png", date: "04/03-2026" },
-  { id: 3, filename: "site_3.png", date: "04/03-2026" },
-  { id: 4, filename: "site_4.png", date: "04/03-2026" },
-  { id: 5, filename: "site_5.png", date: "04/03-2026" },
-  { id: 6, filename: "site_6.png", date: "03/03-2026" },
-  { id: 7, filename: "site_7.png", date: "03/03-2026" },
-  { id: 8, filename: "site_8.png", date: "03/03-2026" },
-  { id: 9, filename: "site_9.png", date: "03/03-2026" },
-  { id: 10, filename: "site_10.png", date: "02/03-2026" },
-  { id: 11, filename: "site_11.png", date: "02/03-2026" },
-  { id: 12, filename: "site_12.png", date: "02/03-2026" },
-  { id: 13, filename: "site_13.png", date: "02/03-2026" },
-  { id: 14, filename: "site_14.png", date: "01/03-2026" },
-  { id: 15, filename: "site_15.png", date: "01/03-2026" },
-  { id: 16, filename: "site_16.png", date: "01/03-2026" },
-  { id: 17, filename: "site_17.png", date: "01/03-2026" },
-  { id: 18, filename: "site_18.png", date: "01/03-2026" }
-]);
+const props = defineProps({
+  photos: {
+    type: Array,
+    required: true
+  }
+});
 
+const storage = getStorage();
+const resolvedPhotos = ref([]);
 const selectedId = ref(null);
 
+const loadUrls = async () => {
+  const promises = props.photos.map(async (photo) => {
+    try {
+
+
+      const url = await getDownloadURL(storageRef(storage, photo.url));
+      return { ...photo, downloadUrl: url };
+    } catch (error) {
+      console.error("Fejl ved hentning af billede:", error);
+      return { ...photo, downloadUrl: "" };
+    }
+  });
+
+  resolvedPhotos.value = await Promise.all(promises);
+};
+
+
+watchEffect(() => {
+  if (props.photos && props.photos.length > 0) {
+    loadUrls();
+  }
+});
+
 const activePhoto = computed(() => {
-  return photos.value.find((p) => p.id === selectedId.value);
+  return resolvedPhotos.value.find((p) => p.id === selectedId.value);
 });
 
 const togglePhoto = (id) => {
   selectedId.value = selectedId.value === id ? null : id;
-};
-
-const getImageUrl = (name) => {
-  return `/images/images_bygherre/Byggeplads_galleri/${name}`;
 };
 </script>
 
 <template>
   <div class="photo-gallery">
     <div class="photo-gallery-grid">
+
       <div
-        v-for="photo in photos"
+        v-for="photo in resolvedPhotos"
         :key="photo.id"
         class="photo-gallery-grid__item"
         @click="togglePhoto(photo.id)"
       >
-        <img :src="getImageUrl(photo.filename)" alt="Byggeplads" />
+
+        <img :src="photo.downloadUrl" alt="Byggeplads" v-if="photo.downloadUrl" />
+        <div v-else class="loading-placeholder">Henter...</div>
+
         <div class="photo-gallery-grid__date">Dato: {{ photo.date }}</div>
       </div>
     </div>
@@ -55,7 +67,8 @@ const getImageUrl = (name) => {
       <div v-if="activePhoto" class="modal-overlay" @click="selectedId = null">
         <div class="modal-content" @click.stop>
           <button class="modal-close" @click="selectedId = null">X</button>
-          <img :src="getImageUrl(activePhoto.filename)" class="modal-image" />
+
+          <img :src="activePhoto.downloadUrl" class="modal-image" />
           <div class="modal-info">Dato: {{ activePhoto.date }}</div>
         </div>
       </div>
@@ -163,8 +176,7 @@ const getImageUrl = (name) => {
 .fade-leave-active {
   transition:
     opacity 0.3s,
-    transform 0,
-    3s ease;
+    transform 0.3s ease;
 }
 
 .fade-enter-from,
