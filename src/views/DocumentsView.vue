@@ -9,13 +9,13 @@ import SearchInput from "@/components/SearchInput.vue";
 import SelectInput from "@/components/SelectInput.vue";
 import DocumentFile from "@/components/DocumentFile.vue";
 
-// state
 const route = useRoute();
 const documents = ref([]);
+const isLoading = ref(false);
+
 const searchQuery = ref("");
 const selectedCategory = ref("");
 const selectedSort = ref("seneste");
-const isLoading = ref(false);
 
 const categories = [
   { label: "Alle kategorier", value: "" },
@@ -31,9 +31,10 @@ const sortOptions = [
   { label: "Navn (A-Å)", value: "navn" }
 ];
 
-// methods
 const fetchDocuments = async (projectId) => {
-  if (!projectId) return;
+  if (!projectId || projectId === "id") {
+    return;
+  }
 
   isLoading.value = true;
   try {
@@ -43,24 +44,32 @@ const fetchDocuments = async (projectId) => {
     const docsArray = await Promise.all(
       querySnapshot.docs.map(async (docSnapshot) => {
         const data = docSnapshot.data();
-        const normalizedName = data.navn || data.Navn || data.name || data.Name || `Dokument: ${docSnapshot.id}`;
 
-        // handle category logic (reference vs string)
-        let categoryName = "Ingen kategori";
+
+        const rawName = data.name || "Navn mangler";
+        const cleanName = decodeURIComponent(rawName.split("/").pop().split("?")[0]);
+
+        let categoryLabel = "Andet";
         if (data.categoryId) {
-          if (typeof data.categoryId !== "string") {
-            const categoryDoc = await getDoc(data.categoryId);
-            categoryName = categoryDoc.exists() ? (categoryDoc.data().label || "Uden label") : "Ukendt kategori";
-          }
 
-        } else {
-          categoryName = data.categoryId;
+          try {
+
+            const categorySnap = await getDoc(data.categoryId);
+
+            if (categorySnap.exists()) {
+              categoryLabel = categorySnap.data().label;
+            } else {
+              console.warn("Kategori-dokumentet findes ikke i Firestore!");
+            }
+          } catch (err) {
+            console.error("Fejl ved opslag af kategori:", err);
+          }
         }
 
         return {
           id: docSnapshot.id,
-          name: normalizedName,
-          category: categoryName,
+          name: cleanName,
+          category: categoryLabel,
           date: data.createdAt?.toDate() || new Date(),
           fileUrl: data.fileUrl || "#"
         };
@@ -68,40 +77,35 @@ const fetchDocuments = async (projectId) => {
     );
 
     documents.value = docsArray;
+    console.log("Hentede dokumenter med labels:", documents.value);
   } catch (error) {
-    console.error("Fejl ved hentning af data:", error);
+    console.error("Fejl ved hentning af Firebase data:", error);
   } finally {
     isLoading.value = false;
   }
 };
 
-onMounted(() => {
 
+onMounted(() => {
   const projectId = route.params.id;
   fetchDocuments(projectId);
 });
 
-// filtering
-const filteredDocuments = computed(() => {
-  const list = documents.value.filter((doc) => {
-    const searchMatch = doc.name.toLowerCase().includes(searchQuery.value.toLowerCase());
-    const categoryMatch = !selectedCategory.value ||
-      doc.category.toLowerCase() === selectedCategory.value.toLowerCase();
-    return searchMatch && categoryMatch;
-  });
 
-  // 2. sorting
-  return list.sort((a, b) => {
-    switch (selectedSort.value) {
-    case "navn": return a.name.localeCompare(b.name);
-    case "aeldste": return a.date - b.date;
-    case "seneste":
-    default: return b.date - a.date;
-    }
-  });
+const filteredDocuments = computed(() => {
+  return documents.value
+    .filter((doc) => {
+      const matchesSearch = doc.name.toLowerCase().includes(searchQuery.value.toLowerCase());
+      const matchesCategory = selectedCategory.value === "" || doc.category === selectedCategory.value;
+      return matchesSearch && matchesCategory;
+    })
+    .sort((a, b) => {
+      if (selectedSort.value === "navn") return a.name.localeCompare(b.name);
+      if (selectedSort.value === "seneste") return b.date - a.date;
+      return a.date - b.date;
+    });
 });
 
-// event handling
 const handleSearch = (val) => { searchQuery.value = val; };
 const handleCategorySelect = (val) => { selectedCategory.value = val; };
 const handleSortSelect = (val) => { selectedSort.value = val; };
