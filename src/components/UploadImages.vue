@@ -26,7 +26,7 @@ function upload() {
     console.log("No file selected");
     return;
   }
-  const fileRef = storageRef(storage, projectId.value + "/images/" + selectedFile.value.name);
+  const fileRef = storageRef(storage, "projects/" + projectId.value + "/images/" + selectedFile.value.name);
 
   uploadBytes(fileRef, selectedFile.value).then(() => {
     console.log("Uploaded!");
