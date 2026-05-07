@@ -101,12 +101,6 @@ imageDB.value = [
   { path: "/images/images_bygherre/Dagsopdatering/Rectangle-66.png", date: "today" }
 ]
 
-const commentDB = ref([])
-commentDB.value = [
-  {
-    img: "/images/images_bygherre/Kim_profile_picture.png"
-  }
-]
 
 const pdf = ref([]);
 pdf.value = [
