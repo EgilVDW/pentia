@@ -18,15 +18,10 @@ const fetchPhotos = async () => {
       db,
       "projects",
       projectId,
-      "dailyUpdates",
-      "i5nrxqE3dnbrXeh32Sa",
       "images"
     );
-    console.log("Prøver at hente fra sti:", imagesRef.path);
     const querySnapshot = await getDocs(imagesRef);
-    console.log(querySnapshot);
     if (querySnapshot.empty) {
-      console.log("Ingen billeder fundet på denne sti.");
       photos.value = [];
       return;
     }
@@ -35,14 +30,13 @@ const fetchPhotos = async () => {
       const data = doc.data();
       return {
         id: doc.id,
-        url: data.fileUrl,
+        url: data.path,
         date: data.createdAt?.toDate().toLocaleDateString("da-DK") || "Ingen dato"
       };
     });
 
-    console.log("Succes! Billedet er hentet:", photos.value);
   } catch (error) {
-    console.error("Fejl ved hentning af billeder:", error);
+    console.error("eror getting images:", error);
   } finally {
     isLoading.value = false;
   }
