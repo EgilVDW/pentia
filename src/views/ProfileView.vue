@@ -19,11 +19,20 @@ import {
   orderBy
 } from "firebase/firestore";
 import { db } from "@/firebase";
+import {
+  getStorage,
+  ref as storageRef,
+  getDownloadURL,
+  uploadBytes
+} from "firebase/storage";
+import { updateDoc } from "firebase/firestore";
 
 const customer = ref(null);
 const project = ref(null);
 const manager = ref(null);
 const notifications = ref([]);
+
+const storage = getStorage();
 
 const customerId = "FVyJCzaC2MGGqbDsDwsF";
 
@@ -39,6 +48,15 @@ onMounted(async () => {
 
   if (customerSnapshot.exists()) {
     customer.value = customerSnapshot.data();
+
+    if (customer.value.avatarPath) {
+      try {
+        const avatarRef = storageRef(storage, customer.value.avatarPath);
+        customer.value.avatar = await getDownloadURL(avatarRef);
+      } catch {
+        return null;
+      }
+    }
   }
 
   const projectDoc = projectSnapshot.docs[0];
@@ -58,6 +76,15 @@ onMounted(async () => {
 
   if (managerSnapshot.exists()) {
     manager.value = managerSnapshot.data();
+
+    if (manager.value.avatarPath) {
+      try {
+        const avatarRef = storageRef(storage, manager.value.avatarPath);
+        manager.value.avatar = await getDownloadURL(avatarRef);
+      } catch {
+        return null;
+      }
+    }
   }
 
   notifications.value = notificationsSnapshot.docs.map((doc) => ({
@@ -78,6 +105,35 @@ const details = computed(() => [
     value: project.value?.info?.address.street || ""
   }
 ]);
+
+async function updateAvatar(file) {
+  if (!customer.value) return;
+
+  try {
+    if (!file.type.startsWith("image/")) {
+      return;
+    }
+
+    const sanitizedFileName = file.name.replace(/\s+/g, "_");
+
+    const path = `users/${customerId}/${sanitizedFileName}`;
+
+    const avatarStorageRef = storageRef(storage, path);
+
+    await uploadBytes(avatarStorageRef, file);
+
+    const downloadURL = await getDownloadURL(avatarStorageRef);
+
+    await updateDoc(doc(db, "users", customerId), {
+      avatarPath: path
+    });
+
+    customer.value.avatar = `${downloadURL}?t=${Date.now()}`;
+    customer.value.avatarPath = path;
+  } catch {
+    return null;
+  }
+}
 </script>
 <template>
   <main class="profile-view">
@@ -87,6 +143,7 @@ const details = computed(() => [
       :avatar="customer.avatar"
       :name="`${customer.firstName} ${customer.lastName}`"
       :email="customer.email"
+      @avatar-selected="updateAvatar"
     />
     <div class="profile-view__group">
       <Paragraph
