@@ -94,7 +94,7 @@ watch(
 }
 
 .modal {
-  background: white;
+  background: $color-background;
   width: 600px;
   max-width: 90vw;
   border-radius: 12px;
@@ -114,8 +114,8 @@ watch(
 }
 
 .option-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 1px solid $color-foreground;
+  border-radius: $border-radius-large;
   padding: 16px;
   cursor: pointer;
 
