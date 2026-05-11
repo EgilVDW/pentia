@@ -3,27 +3,12 @@ import MaterialCards from "@/components/MaterialCards.vue";
 import MaterialsProgressBar from "@/components/MaterialsProgressBar.vue";
 import { db } from "@/firebase";
 import { collection, getDocs } from "firebase/firestore";
-// import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
 import { computed, onMounted, ref } from "vue";
 
-// const storage = getStorage()
-
-const getImageUrl = (name) => {
-  return name
-    ? `/images/images_bygherre/Materialevalg_billeder/${name}`
-    : null
-}
-
-// const getImageUrl = async (fileName) => {
-//   if (!fileName) return null
-
-//   try {
-//     const fileRef = storageRef(storage, `materials/${fileName}`)
-//     return await getDownloadURL(fileRef)
-//   } catch (error) {
-//     console.error("Error fetching image:", error)
-//     return null
-//   }
+// const getImageUrl = (name) => {
+//   return name
+//     ? `/images/images_bygherre/Materialevalg_billeder/${name}`
+//     : null
 // }
 
 const cards = ref([])
@@ -34,6 +19,8 @@ const fetchMaterials = async () => {
 
     const allCards = materialsSnapshot.docs.map(doc => {
       const data = doc.data()
+
+      console.log(data.image)
 
       return {
         id: doc.id,
@@ -95,7 +82,7 @@ const toggleCard = (id) => {
       :key="card.id"
       :title="card.title"
       :description="card.selected ? 'Valg taget' : 'Afventer valg'"
-      :image="getImageUrl(card.image)"
+      :image="card.image || '/images/placeholders/default.png'"
       :selected="card.selected"
       @toggle="toggleCard(card.id)"
     />
@@ -107,7 +94,6 @@ const toggleCard = (id) => {
         :key="card.id"
         :title="card.title"
         :description="card.selected ? 'Valg taget' : 'Afventer valg'"
-        :image="getImageUrl(card.image)"
         :selected="card.selected"
         @toggle="toggleCard(card.id)"
       />
