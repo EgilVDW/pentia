@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import { doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
-import { getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
+import { doc, getDoc, collection, getDocs, query, where, addDoc, serverTimestamp } from "firebase/firestore";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db } from "@/firebase";
 
 const props = defineProps({
@@ -11,27 +11,74 @@ const props = defineProps({
   }
 });
 
-const selectedFile = ref(null);
+const selectedFiles = ref([]);
 const storage = getStorage();
 const projectId = ref(null);
 const project = ref(null);
 
+const MAX_FILES = 10;
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
 function handleFile(event) {
-  selectedFile.value = event.target.files[0];
-}
+  const files = Array.from(event.target.files);
+  selectedFiles.value = Array.from(event.target.files);
 
-function upload() {
-  if (!selectedFile.value) {
-    console.log("No file selected");
+  if (files.length > MAX_FILES) {
+    alert(`You can only upload up to ${MAX_FILES} images.`);
     return;
   }
-  const fileRef = storageRef(storage, "projects/" + projectId.value + "/images/" + selectedFile.value.name);
 
-  uploadBytes(fileRef, selectedFile.value).then(() => {
-    console.log("Uploaded!");
-  });
+  for (const file of files) {
+    if (file.size > MAX_FILE_SIZE) {
+      alert(`${file.name} exceeds 5 MB.`);
+      return;
+    }
+  }
 }
+
+
+
+async function upload() {
+  if (!selectedFiles.value.length) {
+    console.log("No files selected");
+    return;
+  }
+
+  try {
+    const uploads = selectedFiles.value.map(async (file) => {
+      const fileRef = storageRef(
+        storage,
+        `projects/${projectId.value}/images/${file.name}`
+      );
+
+      // Upload file
+      await uploadBytes(fileRef, file);
+
+      // Get URL
+      const downloadURL = await getDownloadURL(fileRef);
+
+      // Save metadata
+      await addDoc(
+        collection(db, "projects", projectId.value, "images"),
+        {
+          name: file.name,
+          url: downloadURL,
+          path: fileRef.fullPath,
+          createdAt: serverTimestamp(),
+          size: file.size,
+          contentType: file.type
+        }
+      );
+    });
+
+    await Promise.all(uploads);
+
+    console.log("All files uploaded!");
+  } catch (error) {
+    console.error("Upload failed:", error);
+  }
+}
+
 
 async function loadData(){
   const userId = props.user;
@@ -60,7 +107,7 @@ onMounted(() => loadData());
 </script>
 
 <template>
-  <input type="file" @change="handleFile" />
+  <input type="file" multiple @change="handleFile" />
   <button class="upload-button" @click="upload">Upload</button>
 </template>
 
