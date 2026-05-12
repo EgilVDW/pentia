@@ -14,7 +14,7 @@ import LoginView from "@/views/LoginView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import StatusView from "@/views/StatusView.vue";
 import FrontpageView from "@/views/FrontpageView.vue";
-import UploadImagesView from "@/views/UploadImages.vue";
+import UploadImagesView from "@/views/desktop/UploadImagesView.vue";
 import CustomerView from "@/views/desktop/CustomerView.vue";
 import DesktopHomeView from "@/views/desktop/HomeView.vue";
 import { createRouter, createWebHistory } from "vue-router";
@@ -75,11 +75,6 @@ const router = createRouter({
           path: "/dailyupdate",
           name: "dailyupdate",
           component: DailyUpdateView
-        },
-        {
-          path: "/desktop/uploadimages",
-          name: "uploadimages",
-          component: UploadImagesView
         }
       ]
     },
@@ -130,7 +125,7 @@ const router = createRouter({
             {
               path: "billeder",
               name: "billeder",
-              component: DesktopHomeView
+              component: UploadImagesView
             },
             {
               path: "kontakt",
