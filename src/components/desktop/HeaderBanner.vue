@@ -3,7 +3,9 @@ import miltonLogo from "@/assets/milton-logo.png";
 </script>
 <template>
   <header class="header-banner">
-    <img class="head-banner__img" :src="miltonLogo" alt="Milton logo" />
+    <RouterLink to="/desktop">
+      <img class="head-banner__img" :src="miltonLogo" alt="Milton logo" />
+    </RouterLink>
   </header>
 </template>
 
