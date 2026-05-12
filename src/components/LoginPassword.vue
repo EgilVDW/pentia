@@ -19,7 +19,7 @@ const isVisible = ref(false);
       class="login-password__input" />
 
     <button type="button" @click="isVisible = !isVisible" class="login-password__toggle">
-      <Icon :name="isVisible ? 'Skjul' : 'Vis'" class="login-password__icon" />
+      <Icon :name="isVisible ? 'Vis' : 'Skjul'" class="login-password__icon" />
     </button>
   </main>
 </template>
