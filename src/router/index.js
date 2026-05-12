@@ -1,5 +1,7 @@
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import ChatLayout from "@/layouts/ChatLayout.vue";
+import DesktopLayout from "@/layouts/DesktopLayout.vue";
+import ProjectLayout from "@/layouts/ProjectLayout.vue";
 import CalendarView from "@/views/CalendarView.vue";
 import ChatView from "@/views/ChatView.vue";
 import DailyUpdateView from "@/views/DailyUpdate.vue";
@@ -12,6 +14,9 @@ import LoginView from "@/views/LoginView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import StatusView from "@/views/StatusView.vue";
 import FrontpageView from "@/views/FrontpageView.vue";
+import UploadImagesView from "@/views/UploadImages.vue";
+import CustomerView from "@/views/desktop/CustomerView.vue";
+import DesktopHomeView from "@/views/desktop/HomeView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -70,6 +75,11 @@ const router = createRouter({
           path: "/dailyupdate",
           name: "dailyupdate",
           component: DailyUpdateView
+        },
+        {
+          path: "/desktop/uploadimages",
+          name: "uploadimages",
+          component: UploadImagesView
         }
       ]
     },
@@ -88,6 +98,63 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: LoginView
+    },
+    {
+      path: "/desktop",
+      component: DesktopLayout,
+      children: [
+        {
+          path: "",
+          name: "placeholder",
+          component: DesktopHomeView
+        },
+        {
+          path: ":projectId",
+          component: ProjectLayout,
+          children: [
+            {
+              path: "",
+              name: "bygherre",
+              component: CustomerView
+            },
+            {
+              path: "3d-tegning",
+              name: "3d-tegning",
+              component: DesktopHomeView
+            },
+            {
+              path: "dagsopdatering",
+              name: "dagsopdatering",
+              component: DesktopHomeView
+            },
+            {
+              path: "billeder",
+              name: "billeder",
+              component: DesktopHomeView
+            },
+            {
+              path: "kontakt",
+              name: "kontakt",
+              component: DesktopHomeView
+            },
+            {
+              path: "dokumenter",
+              name: "dokumenter",
+              component: DesktopHomeView
+            },
+            {
+              path: "kalender",
+              name: "kalender",
+              component: DesktopHomeView
+            },
+            {
+              path: "materialevalg",
+              name: "materialevalg",
+              component: DesktopHomeView
+            }
+          ]
+        }
+      ]
     }
   ]
 });
