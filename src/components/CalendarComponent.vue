@@ -37,6 +37,24 @@ const hasActivity = (date) => {
   )
 }
 
+/**
+ * Represents a single calendar day.
+ *
+ * @typedef {Object} CalendarDay
+ * @property {Date|null} date - Actual date object (null for filler days).
+ * @property {number} [day] - Day number of the month.
+ * @property {boolean} isCurrentMonth - Whether the day belongs to the current month.
+ * @property {boolean} [isToday] - Whether the day is today.
+ * @property {boolean} [hasActivity] - Whether the day has an activity.
+ */
+
+/**
+ * Computed list of days for the current calendar view.
+ * Includes leading empty days to align the first weekday.
+ *
+ * @type {import('vue').ComputedRef<CalendarDay[]>}
+ */
+
 const calendarDays = computed(() => {
   const days = []
   const daysInMonth = getDaysInMonth(currentMonth.value, currentYear.value)
