@@ -12,52 +12,20 @@ import { ref, onMounted, computed } from "vue";
 import { doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/firebase";
 
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
+import { getStorage, ref as storageRef,  listAll } from "firebase/storage";
 
-const selectedFile = ref(null);
 const storage = getStorage();
-const imageUrls = ref([]);
 const projectId = ref(null);
-
-function handleFile(event) {
-  selectedFile.value = event.target.files[0];
-}
-
-function upload() {
-  if (!selectedFile.value) {
-    console.log("No file selected");
-    return;
-  }
-  const fileRef = storageRef(storage, "projects/" + projectId.value + "/images/" + selectedFile.value.name);
-
-  uploadBytes(fileRef, selectedFile.value).then(() => {
-    console.log("Uploaded!");
-  });
-}
 
 const amountOfImages = ref(0);
 async function getImages() {
   const folderRef = storageRef(storage, "projects/" + projectId.value + "/images/");
   const result = await listAll(folderRef);
   amountOfImages.value = result.items.length;
-  return result.items;
 }
-
-async function getImageURLs() {
-  const items = await getImages();
-
-  const urls = await Promise.all(
-    items.map(item => getDownloadURL(item))
-  );
-
-  return urls;
-}
-
-
 
 const user = ref(null);
 const project = ref(null);
-
 
 async function loadData() {
   const userId = "FVyJCzaC2MGGqbDsDwsF";
@@ -78,7 +46,6 @@ async function loadData() {
 
 
   const projectDoc = projectSnap.docs[0];
-  // const projectData = projectDoc.data();
 
   project.value = {
     id: projectDoc.id,
@@ -87,8 +54,7 @@ async function loadData() {
 
   projectId.value = projectDoc.id;
 
-  imageUrls.value = await getImageURLs();
-
+  getImages();
 }
 
 onMounted(loadData);
@@ -132,12 +98,8 @@ const tasks = computed(() => {
   ];
 });
 
-
 </script>
 <template>
-    <input type="file" @change="handleFile" />
-    <button @click="upload">Upload</button>
-    <img v-for="url in imageUrls" :key="url" :src="url" />
     <HeadlineDesc
       :title="userName"
       :text="addressText"
