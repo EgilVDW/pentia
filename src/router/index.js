@@ -18,6 +18,7 @@ import DesktopHomeView from "@/views/desktop/HomeView.vue";
 import CustomerView from "@/views/desktop/CustomerView.vue";
 import UploadImagesView from "@/views/desktop/UploadImagesView.vue";
 import MaterialsUploadView from "@/views/desktop/MaterialsUploadView.vue";
+import SignupView from "@/views/Signup.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -89,6 +90,11 @@ const router = createRouter({
           component: ChatView
         }
       ]
+    },
+    {
+      path: "/signup",
+      name: "signup",
+      component: SignupView
     },
     {
       path: "/login",
