@@ -1,75 +1,41 @@
 <script setup>
 import MaterialCards from "@/components/MaterialCards.vue";
+import MaterialOptionsModal from "@/components/MaterialOptionsModal.vue";
 import MaterialsProgressBar from "@/components/MaterialsProgressBar.vue";
-import { computed, ref } from "vue";
+import { db } from "@/firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { computed, onMounted, ref } from "vue";
 
-const getImageUrl = (name) => {
-  return name
-    ? `/images/images_bygherre/Materialevalg_billeder/${name}`
-    : null
+const cards = ref([])
+
+const fetchMaterials = async () => {
+  try {
+    const materialsSnapshot = await getDocs(collection(db, "materials"))
+
+    const allCards = materialsSnapshot.docs.map(doc => {
+      const data = doc.data()
+
+      console.log(data.image)
+
+      return {
+        id: doc.id,
+        title: data.category || data.name || "Ukendt",
+        image: data.image ?? null,
+        selected: false
+      }
+    })
+
+    cards.value = allCards
+  } catch (error) {
+    console.error("Fetching error:", error)
+  }
 }
 
-const cards = ref([
-  {
-    id: 1,
-    title: "Køkken",
-    description: "Valgt: HTH Nordic",
-    image: "Rectangle 44.png",
-    alt: "Billede af et køkken",
-    selected: false
-  },
-  {
-    id: 2,
-    title: "Bad",
-    description: "Valgt: Bad & fliser",
-    image: "Badeværelse.png",
-    selected: false
-  },
-  {
-    id: 3,
-    title: "Gulve",
-    description: "Valgt: Eg planke",
-    image: "Rectangle 44_2.png",
-    selected: false
-  },
-  {
-    id: 4,
-    title: "Fliser",
-    description: "Afventer valg",
-    image: "Rectangle 44_3.png",
-    selected: false
-  },
-  {
-    id: 5,
-    title: "Tag",
-    description: "Valgt: Betontagsten",
-    image: "Rectangle 44_4.png",
-    selected: false
+onMounted(() => {
+  fetchMaterials()
+})
 
-  },
-  {
-    id: 6,
-    title: "Døre",
-    description: "Valgt: Hvid glat",
-    image: null,
-    selected: false
-  },
-  {
-    id: 7,
-    title: "Vindue",
-    description: "Valgt: Topstyrede",
-    image: null,
-    selected: false
-  }
-])
-
-const imageCards = computed(() =>
-  cards.value.filter(card => card.image)
-)
-
-const noImageCards = computed(() =>
-  cards.value.filter(card => !card.image)
-)
+const materialCards = computed(() => cards.value)
 
 const completedSteps = computed(() =>
   cards.value.filter(card => card.selected).length
@@ -80,6 +46,19 @@ const totalSteps = computed(() => cards.value.length)
 const toggleCard = (id) => {
   const card = cards.value.find(c => c.id === id)
   if (card) card.selected = !card.selected
+}
+
+const modalOpen = ref(false)
+const selectedMaterial = ref(null)
+
+const openModal = (card) => {
+  selectedMaterial.value = card
+  modalOpen.value = true
+}
+
+const closeModal = () => {
+  modalOpen.value = false
+  selectedMaterial.value = null
 }
 
 </script>
@@ -99,30 +78,24 @@ const toggleCard = (id) => {
   </div>
 
   <section class="materials">
-    <!-- Normal grid cards -->
     <MaterialCards
-      v-for="(card) in imageCards"
+      v-for="(card) in materialCards"
       :key="card.id"
       :title="card.title"
-      :description="card.description"
-      :image="getImageUrl(card.image)"
+      :description="card.selected ? 'Valg taget' : 'Afventer valg'"
+      :image="card.image || '/images/placeholders/default.png'"
       :selected="card.selected"
+      @click="openModal(card)"
       @toggle="toggleCard(card.id)"
     />
-
-    <!-- Stacked small cards -->
-    <div class="materials__stack">
-      <MaterialCards
-        v-for="(card) in noImageCards"
-        :key="card.id"
-        :title="card.title"
-        :description="card.description"
-        :image="getImageUrl(card.image)"
-        :selected="card.selected"
-        @toggle="toggleCard(card.id)"
-      />
-    </div>
   </section>
+
+  <MaterialOptionsModal
+    :open="modalOpen"
+    :materialId="selectedMaterial?.id"
+    :materialTitle="selectedMaterial?.title"
+    @close="closeModal"
+  />
 </template>
 
 <style lang="scss" scoped>
@@ -145,12 +118,5 @@ const toggleCard = (id) => {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
-
-  &__stack {
-  display: flex;
-  flex-direction: column;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  }
 }
 </style>

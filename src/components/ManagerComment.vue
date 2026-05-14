@@ -39,7 +39,7 @@ defineProps({
 }
 .time-stamp{
   position: absolute;
-  top: 0;
+  top: 12px;
   right: 0;
   font-size: 10px;
   color: $color-placeholder;
@@ -52,6 +52,9 @@ defineProps({
 }
 .column-container__image-wrap{
   flex-shrink: 0;
+  img{
+    margin-top: 0.375rem;
+  }
 }
 .column-container img {
   width: 60px;
@@ -61,10 +64,11 @@ defineProps({
 }
 .column-container__title{
   font-size: $font-size-headline-1;
-  // margin-top: 1.25rem;
+  margin-top: 1.25rem;
 }
 .column-container__text{
   font-size: $font-size-body;
   word-break: break-word;
+  margin-bottom: 0.5rem;
 }
 </style>

@@ -4,11 +4,28 @@ import LoginInput from "@/components/LoginInput.vue";
 import LoginPassword from "@/components/LoginPassword.vue";
 import LoginButton from "@/components/LoginButton.vue";
 import logoUrl from "@/assets/images/Milton_logo_white_outline.png";
+import login from "@/login";
 
 const email = ref("");
 const password = ref("");
 
-const handleLogin = () => {};
+const error = ref("");
+
+const handleLogin = async () => {
+  error.value = "";
+
+  try {
+    const user = await login(
+      email.value,
+      password.value
+    );
+
+    console.log("Logged in:", user);
+
+  } catch (err) {
+    error.value = err.message;
+  }
+};
 </script>
 
 <template>
@@ -30,7 +47,7 @@ const handleLogin = () => {};
         <form class="login-view__form" @submit.prevent="handleLogin">
           <LoginInput
             v-model="email"
-            placeholder="Brugernavn"
+            placeholder="Email"
             class="login-view__input"
           />
 

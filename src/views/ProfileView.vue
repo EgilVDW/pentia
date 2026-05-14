@@ -8,41 +8,166 @@ import NotificationList from "@/components/NotificationList.vue";
 import IconButton from "@/components/IconButton.vue";
 import CenterButton from "@/components/CenterButton.vue";
 
-const details = [
+import { ref, onMounted, computed } from "vue";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+  orderBy
+} from "firebase/firestore";
+import { db } from "@/firebase";
+import {
+  getStorage,
+  ref as storageRef,
+  getDownloadURL,
+  uploadBytes
+} from "firebase/storage";
+import { updateDoc } from "firebase/firestore";
+
+const customer = ref(null);
+const project = ref(null);
+const manager = ref(null);
+const notifications = ref([]);
+
+const storage = getStorage();
+
+const customerId = "FVyJCzaC2MGGqbDsDwsF";
+
+onMounted(async () => {
+  const customerRef = doc(db, "users", customerId);
+
+  const [customerSnapshot, projectSnapshot] = await Promise.all([
+    getDoc(customerRef),
+    getDocs(
+      query(collection(db, "projects"), where("customerId", "==", customerRef))
+    )
+  ]);
+
+  if (customerSnapshot.exists()) {
+    customer.value = customerSnapshot.data();
+
+    if (customer.value.avatarPath) {
+      try {
+        const avatarRef = storageRef(storage, customer.value.avatarPath);
+        customer.value.avatar = await getDownloadURL(avatarRef);
+      } catch {
+        return null;
+      }
+    }
+  }
+
+  const projectDoc = projectSnapshot.docs[0];
+  if (!projectDoc) return;
+
+  project.value = { id: projectDoc.id, ...projectDoc.data() };
+
+  const [managerSnapshot, notificationsSnapshot] = await Promise.all([
+    getDoc(project.value.managerId),
+    getDocs(
+      query(
+        collection(db, "projects", projectDoc.id, "notifications"),
+        orderBy("createdAt", "desc")
+      )
+    )
+  ]);
+
+  if (managerSnapshot.exists()) {
+    manager.value = managerSnapshot.data();
+
+    if (manager.value.avatarPath) {
+      try {
+        const avatarRef = storageRef(storage, manager.value.avatarPath);
+        manager.value.avatar = await getDownloadURL(avatarRef);
+      } catch {
+        return null;
+      }
+    }
+  }
+
+  notifications.value = notificationsSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data()
+  }));
+});
+
+const details = computed(() => [
   {
     icon: "Forside",
     label: "Projekt",
-    value: "Typehus: Vinkelhus A 145"
+    value: project.value?.info?.type || ""
   },
   {
     icon: "Kort",
     label: "Adresse",
-    value: "Holkenbjergvej 76"
+    value: project.value?.info?.address.street || ""
   }
-];
+]);
 
-const notifications = [
-  {
-    content: "Nye dagsrapporter"
-  },
-  {
-    content: "Nye billeder fra byggeplads"
-  },
-  {
-    content: "Nye beskeder fra byggeleder"
-  },
-  {
-    content: "Påmindelse om eftersyn"
+async function updateAvatar(file, size = 256) {
+  if (!customer.value) return;
+
+  try {
+    if (!file.type.startsWith("image/")) return;
+
+    const webpBlob = await new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const minSide = Math.min(img.width, img.height);
+        const sx = (img.width - minSide) / 2;
+        const sy = (img.height - minSide) / 2;
+
+        const canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext("2d");
+
+        ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, size, size);
+
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) reject(new Error("Conversion failed"));
+            else resolve(blob);
+          },
+          "image/webp",
+          0.8
+        );
+      };
+      img.onerror = reject;
+      img.src = URL.createObjectURL(file);
+    });
+
+    const path = `users/${customerId}/avatar.webp`;
+    const avatarStorageRef = storageRef(storage, path);
+
+    await uploadBytes(avatarStorageRef, webpBlob, {
+      contentType: "image/webp"
+    });
+
+    const downloadURL = await getDownloadURL(avatarStorageRef);
+
+    await updateDoc(doc(db, "users", customerId), {
+      avatarPath: path
+    });
+
+    customer.value.avatar = `${downloadURL}?t=${Date.now()}`;
+    customer.value.avatarPath = path;
+  } catch {
+    return null;
   }
-];
+}
 </script>
 <template>
   <main class="profile-view">
     <Heading tag="h1" size="large">Profil</Heading>
     <ProfileCard
-      avatar="/images/images_bygherre/Familien_milton_profile_picture.png"
-      name="Familien Milton"
-      email="Familienmilton@email.dk"
+      v-if="customer"
+      :avatar="customer.avatar"
+      :name="`${customer.firstName} ${customer.lastName}`"
+      :email="customer.email"
+      @avatar-selected="updateAvatar"
     />
     <div class="profile-view__group">
       <Paragraph
@@ -51,10 +176,11 @@ const notifications = [
       >
       <DetailsCard :items="details" />
       <ContactCard
-        avatar="/images/images_bygherre/Kim_profile_picture.png"
-        role="Byggeleder"
-        name="Kim Agerbæk"
-        phoneNumber="+45 1234 5678"
+        v-if="manager"
+        :avatar="manager.avatar"
+        :name="`${manager.firstName} ${manager.lastName}`"
+        :email="manager.email"
+        :phoneNumber="manager?.phoneNumber"
       />
     </div>
     <div class="profile-view__group">
