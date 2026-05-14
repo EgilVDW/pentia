@@ -1,36 +1,32 @@
 <script setup>
-
 const statusItems = [
   { label: "Færdigt", color: "#81a676" },
   { label: "Igang", color: "#f3e082" },
   { label: "Afventer", color: "#c4c4c4" }
-]
+];
 </script>
 
 <template>
-  <div class="build-view">
-    <div
-      class="build-view__item"
-      v-for="item in statusItems"
-      :key="item.label"
-    >
+  <main class="build-view">
+    <div class="build-view__item" v-for="item in statusItems" :key="item.label">
       <span
         class="build-view__indicator"
         :style="{ backgroundColor: item.color }"
-      ></span>
+      >
+      </span>
 
       <span class="build-view__label">
         {{ item.label }}
       </span>
     </div>
-  </div>
+  </main>
 </template>
 
 <style lang="scss" scoped>
 .build-view {
   display: flex;
   justify-content: space-around;
-  padding: 15px;
+  padding: 8px 15px;
   background-color: $color-surface;
   border-radius: $border-radius-small;
   font-family: $font-family-base;
@@ -52,6 +48,10 @@ const statusItems = [
   &__label {
     font-size: $font-size-body;
     color: $color-foreground;
+  }
+  &__indicator,
+  &__label {
+    align-items: baseline;
   }
 }
 </style>

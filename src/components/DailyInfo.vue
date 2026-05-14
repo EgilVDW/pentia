@@ -1,6 +1,4 @@
 <script setup>
-import MediumWhiteContainer from "@/components/MediumWhiteContainer.vue";
-
 defineProps({
   date: {
     type: String,
@@ -19,11 +17,9 @@ defineProps({
 
 </script>
 <template>
-  <MediumWhiteContainer>
-    <span class="white-container__title">Dato:</span> {{ date }} <br>
-    <span class="white-container__title">Byggeleder: </span>{{ constructionManager }} <br>
-    <span class="white-container__title">Projekt: </span>{{ project }}
-  </MediumWhiteContainer>
+  <span class="white-container__title">Dato:</span> {{ date }} <br>
+  <span class="white-container__title">Byggeleder: </span>{{ constructionManager }} <br>
+  <span class="white-container__title">Projekt: </span>{{ project }}
 </template>
 <style scoped lang="scss">
 .white-container__title{

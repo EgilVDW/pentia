@@ -27,6 +27,7 @@ import Icon from "./Icon.vue";
   width: 100%;
   background-color: $color-primary;
   padding: 1.5rem 3.25rem;
+  z-index: 99;
   .nav-container__link {
     display: flex;
     flex-direction: column;

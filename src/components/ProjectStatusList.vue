@@ -1,16 +1,11 @@
 <script setup>
-import { ref } from "vue";
+
 defineProps({
   items: {
     type: Array,
     default: () => []
   }
 })
-const tasks = ref([
-  { left: "Fundament", right: "Færdig" },
-  { left: "Råhus", right: "I gang" },
-  { left: "Indvendigt", right: "Ikke startet" }
-])
 </script>
 
 
@@ -20,12 +15,12 @@ const tasks = ref([
       <h2 class="project-status__title">Projektstatus</h2>
       <section class="project-status__tasks">
         <div
-          v-for="(task, index) in tasks"
+          v-for="(item, index) in items"
           :key="index"
           class="project-status__task-row"
         >
-          <span class="project-status__task-name">{{ task.left }}</span>
-          <span class="project-status__task-status">{{ task.right }}</span>
+          <span class="project-status__task-name">{{ item.left }}</span>
+          <span class="project-status__task-status">{{ item.right }}</span>
         </div>
       </section>
     </section>
@@ -34,8 +29,8 @@ const tasks = ref([
 
 <style lang="scss" scoped>
 .project-status {
-  width: 100vw;
-  padding: 0rem 2rem;
+  width: 100%;
+  padding: 0;
 
     .project-status__content {
     width: 100%;
@@ -56,7 +51,7 @@ const tasks = ref([
     .project-status__tasks {
       display: flex;
       flex-direction: column;
-      padding: 0rem 0rem;
+      padding: 0;
       background-color: $color-primary;
       border-bottom-left-radius: $border-radius-small;
       border-bottom-right-radius: $border-radius-small;

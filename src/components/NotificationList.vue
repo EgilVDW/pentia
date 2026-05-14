@@ -8,9 +8,9 @@ defineProps({
 <template>
   <ul class="notification-list">
     <li v-for="(item, index) in items" :key="index">
-      <RouterLink to="/" class="notification-list__item">
+      <RouterLink :to="item.link" class="notification-list__item">
         <Icon name="Notifikationer" class="notification-list__icon" />
-        <div class="notification-list__content">{{ item.content }}</div>
+        <div class="notification-list__content">{{ item.title }}</div>
         <Icon name="Frem-tilbage-pil" class="notification-list__arrow" />
       </RouterLink>
     </li>

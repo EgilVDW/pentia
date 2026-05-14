@@ -24,7 +24,7 @@ defineProps({
 
 <style scoped lang="scss">
 .main-text{
-  padding: 0.5rem 1.5rem;
+  padding: 0;
 }
 .main-text__headline{
   font-family: $font-family-base;

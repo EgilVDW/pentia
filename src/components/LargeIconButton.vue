@@ -34,7 +34,7 @@ defineProps({
   background-color: $color-surface;
   padding: 1rem;
   border-radius: $border-radius-large;
-  width: 50%;
+  width: 100%;
   box-shadow: $drop-shadow;
   p{
     font-size: $font-size-body;

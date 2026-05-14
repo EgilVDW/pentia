@@ -2,50 +2,110 @@
 import ChatHeader from "@/components/ChatHeader.vue";
 import MessageList from "@/components/MessageList.vue";
 import MessageInput from "@/components/MessageInput.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+  orderBy
+} from "firebase/firestore";
+import { db } from "@/firebase";
 
-const data = ref([
-  {
-    user: "user1",
-    content: "Hej Kim, jeg kan se at der er kommet forsinkelse på råhuset :(",
-    timestamp: "2026-04-20T14:55",
-    status: "seen"
-  },
-  {
-    user: "user2",
-    content: `Hej Sebastian
-Det er korrekt, der er desværre kommet en forsinkelse fra leverandøren.
-Vi forventer dog at kunne fortsætte arbejdet på mandag.`,
-    timestamp: "2026-04-20T15:10",
-    status: "seen"
-  },
-  {
-    user: "user1",
-    content: "Tak for opdateringen. Påvirker det afleveringsdatoen?",
-    timestamp: "2026-04-20T15:40",
-    status: "seen"
-  },
-  {
-    user: "user2",
-    content: "Ikke umiddelbart. Jeg holder jer opdateret i dagsrapporten.",
-    timestamp: "2026-04-20T16:08",
-    status: "sent"
+const customer = ref(null);
+const manager = ref(null);
+
+const customerId = "FVyJCzaC2MGGqbDsDwsF";
+
+const messages = ref([]);
+
+onMounted(async () => {
+  const customerRef = doc(db, "users", customerId);
+
+  const [customerSnapshot, projectSnapshot] = await Promise.all([
+    getDoc(customerRef),
+    getDocs(
+      query(collection(db, "projects"), where("customerId", "==", customerRef))
+    )
+  ]);
+
+  if (customerSnapshot.exists()) {
+    customer.value = customerSnapshot.data();
   }
-]);
+
+  const projectDoc = projectSnapshot.docs[0];
+  if (!projectDoc) return;
+
+  const [managerSnapshot, messagesSnapshot] = await Promise.all([
+    getDoc(projectDoc.data().managerId),
+    getDocs(
+      query(
+        collection(db, "projects", projectDoc.id, "messages"),
+        orderBy("createdAt", "asc")
+      )
+    )
+  ]);
+
+  if (managerSnapshot.exists()) {
+    manager.value = managerSnapshot.data();
+  }
+
+  messages.value = messagesSnapshot.docs.map((d) => ({
+    id: d.id,
+    ...d.data()
+  }));
+});
 
 const message = ref("");
 
 const sendMessage = (text) => {
-  data.value.push({
-    user: "user1",
+  messages.value.push({
+    sender: {
+      id: customerId
+    },
     content: text,
     timestamp: Date.now(),
     status: "sent"
   });
 };
+
+const getRole = (role) => {
+  const map = {
+    manager: "Byggeleder"
+  };
+
+  return map[role] ?? role;
+};
 </script>
 <template>
-  <ChatHeader name="Kim Agerbæk" role="Byggeleder" status="online" />
-  <MessageList :data="data" user="user1" />
-  <MessageInput v-model="message" @send="sendMessage" />
+  <main class="chat-view">
+    <ChatHeader
+      v-if="manager"
+      :name="`${manager.firstName} ${manager.lastName}`"
+      :role="getRole(manager.role)"
+      :active="manager.isActive"
+    />
+    <div class="chat-view__chat">
+      <MessageList v-if="messages" :data="messages" :sender="customerId" />
+      <MessageInput v-model="message" @send="sendMessage" />
+    </div>
+  </main>
 </template>
+<style scoped lang="scss">
+.chat-view {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+
+  &__chat {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+  }
+}
+</style>

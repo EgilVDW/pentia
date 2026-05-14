@@ -17,9 +17,10 @@ const size = computed(() => {
     return "heading--large";
   } else if (props.size === "medium") {
     return "heading--medium";
-  } else if (props.size === "small") {
-    return "heading--small";
+  } else {
+    return "heading--small"; // default
   }
+  return null;
 });
 </script>
 <template>
@@ -38,7 +39,7 @@ const size = computed(() => {
 
   &--medium {
     font-size: 1rem;
-    line-height: 0.1875rem;
+    line-height: 1.1875rem;
   }
 
   &--small {

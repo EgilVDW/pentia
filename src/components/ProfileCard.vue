@@ -6,13 +6,32 @@ defineProps({
   name: String,
   email: String
 });
+
+const emit = defineEmits(["avatar-selected"]);
+
+const handleFileChange = (event) => {
+  const file = event.target.files[0];
+
+  if (!file) return;
+
+  emit("avatar-selected", file);
+
+  event.target.value = "";
+};
 </script>
 <template>
   <div class="profile-card">
-    <button class="profile-card__avatar">
+    <button class="profile-card__avatar" @click="$refs.fileInput.click()">
       <img :src="avatar" alt="User avatar" class="profile-card__avatar-image" />
       <Icon name="Rediger-profil" class="profile-card__avatar-edit-icon" />
     </button>
+    <input
+      ref="fileInput"
+      type="file"
+      accept="image/*"
+      hidden
+      @change="handleFileChange"
+    />
     <div class="profile-card__content">
       <div class="profile-card__name">{{ name }}</div>
       <div class="profile-card__email">{{ email }}</div>

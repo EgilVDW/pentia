@@ -23,7 +23,7 @@ defineProps({
 	align-items: center;
 	gap: 0.75rem;
 	padding: 1rem;
-	margin: 0rem 1.5rem;
+	margin-top: 1rem;
 	border-radius: $border-radius-large;
 	background-image: url("/images/images_bygherre/hondverker-murer.png");
 	background-size: cover;
