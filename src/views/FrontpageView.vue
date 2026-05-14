@@ -10,8 +10,8 @@ import ConstructionSiteImages from "@/components/ConstructionSiteImages.vue";
 
 import { ref, onMounted, computed } from "vue";
 import { doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "@/firebase";
-
+import { db, auth } from "@/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 import { getStorage, ref as storageRef,  listAll } from "firebase/storage";
 
 const storage = getStorage();
@@ -27,9 +27,8 @@ async function getImages() {
 const user = ref(null);
 const project = ref(null);
 
-async function loadData() {
-  const userId = "FVyJCzaC2MGGqbDsDwsF";
-  // const userId = auth.currentUser.uid;
+async function loadData(userId) {
+  // const userId = "FVyJCzaC2MGGqbDsDwsF";
 
   const userSnap = await getDoc(doc(db, "users", userId));
   if (!userSnap.exists()) return;
@@ -57,7 +56,13 @@ async function loadData() {
   getImages();
 }
 
-onMounted(loadData);
+onMounted(() => {
+  onAuthStateChanged(auth, (user) => {
+    if (!user) return;
+
+    loadData(user.uid);
+  });
+});
 
 const userName = computed(() => user.value?.firstName + " " + user.value?.lastName || "");
 

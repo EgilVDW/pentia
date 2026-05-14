@@ -1,15 +1,11 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { doc, getDoc, collection, getDocs, query, where, addDoc, serverTimestamp } from "firebase/firestore";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db } from "@/firebase";
+import { db, auth } from "@/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
-const props = defineProps({
-  user: {
-    type: String,
-    required: true
-  }
-});
+
 
 const selectedFiles = ref([]);
 const storage = getStorage();
@@ -39,6 +35,10 @@ function handleFile(event) {
 
 
 async function upload() {
+  if (!projectId.value) {
+    console.error("Project not loaded yet");
+    return;
+  }
   if (!selectedFiles.value.length) {
     console.log("No files selected");
     return;
@@ -80,18 +80,19 @@ async function upload() {
 }
 
 
-async function loadData(){
-  const userId = props.user;
+async function loadData(userId){
+  console.log(auth.currentUser);
   const userSnap = await getDoc(doc(db, "users", userId));
   if (!userSnap.exists()) return;
 
   const q = query(
     collection(db, "projects"),
-    where("customerId", "==", doc(db, "users", userId))
+    where("managerId", "==", doc(db, "users", userId))
   );
 
   const projectSnap = await getDocs(q);
   if (projectSnap.empty) return;
+
 
   const projectDoc = projectSnap.docs[0];
 
@@ -99,11 +100,15 @@ async function loadData(){
     id: projectDoc.id,
     ...projectDoc.data()
   };
-
   projectId.value = projectDoc.id;
 }
 
-onMounted(() => loadData());
+onAuthStateChanged(auth, (user) => {
+  if (!user) return;
+
+  loadData(user.uid);
+});
+
 </script>
 
 <template>
