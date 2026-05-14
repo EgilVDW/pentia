@@ -1,10 +1,10 @@
 <script setup>
 import ConstructionStatus from "@/components/ConstructionStatus.vue";
 import FloorplanUpdate from "@/components/FloorplanUpdate.vue";
-// import MaterialsProgressBar from "@/components/MaterialsProgressBar.vue";
+import MaterialsProgressBar from "@/components/MaterialsProgressBar.vue";
 import { ref } from "vue";
 
-const overallProgress = ref(0);
+const overallProgress = ref();
 </script>
 
 <template>
@@ -14,19 +14,19 @@ const overallProgress = ref(0);
     <h2><span>Byggeleder:</span> Kim Agerbæk</h2>
 
     <header class="status-view__header">
-      <!-- <MaterialsProgressBar :progress="overallProgress" /> -->
-      progress bar her
-    </header>
 
-    <div class="status-view__card">
-      <section class="status-view__content">
-        <FloorplanUpdate :progress="overallProgress" />
-      </section>
+  <MaterialsProgressBar v-model:progress="overallProgress" />
+</header>
 
-      <footer class="status-view__overview">
-        <ConstructionStatus />
-      </footer>
-    </div>
+<div class="status-view__card">
+  <section class="status-view__content">
+    <FloorplanUpdate :progress="overallProgress" />
+  </section>
+
+  <footer class="status-view__overview">
+    <ConstructionStatus />
+  </footer>
+</div>
   </main>
 </template>
 
