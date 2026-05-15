@@ -2,65 +2,33 @@
 import MaterialCards from "@/components/MaterialCards.vue";
 import MaterialOptionsModal from "@/components/MaterialOptionsModal.vue";
 import MaterialsProgressBar from "@/components/MaterialsProgressBar.vue";
-import { db } from "@/firebase";
-import { collection, getDocs } from "firebase/firestore";
-import { computed, onMounted, ref } from "vue";
+import { useMaterialsStore } from "@/stores/materialsStore";
+import { storeToRefs } from "pinia";
+import { onMounted, ref } from "vue";
 
-const cards = ref([])
+const store = useMaterialsStore();
+const { cards, completedSteps, totalSteps } = storeToRefs(store);
 
-const fetchMaterials = async () => {
-  try {
-    const materialsSnapshot = await getDocs(collection(db, "materials"))
+onMounted(store.fetchMaterials);
 
-    const allCards = materialsSnapshot.docs.map(doc => {
-      const data = doc.data()
+// UI-only state — belongs in the view, not the store
+const modalOpen = ref(false);
+const selectedMaterial = ref(null);
 
-      console.log(data.image)
-
-      return {
-        id: doc.id,
-        title: data.category || data.name || "Ukendt",
-        image: data.image ?? null,
-        selected: false
-      }
-    })
-
-    cards.value = allCards
-  } catch (error) {
-    console.error("Fetching error:", error)
-  }
-}
-
-onMounted(() => {
-  fetchMaterials()
-})
-
-const materialCards = computed(() => cards.value)
-
-const completedSteps = computed(() =>
-  cards.value.filter(card => card.selected).length
-)
-
-const totalSteps = computed(() => cards.value.length)
-
-const toggleCard = (id) => {
-  const card = cards.value.find(c => c.id === id)
-  if (card) card.selected = !card.selected
-}
-
-const modalOpen = ref(false)
-const selectedMaterial = ref(null)
+const handleCardClick = (card) => {
+  openModal(card);
+  store.toggleCard(card.id);
+};
 
 const openModal = (card) => {
-  selectedMaterial.value = card
-  modalOpen.value = true
-}
+  selectedMaterial.value = card;
+  modalOpen.value = true;
+};
 
 const closeModal = () => {
-  modalOpen.value = false
-  selectedMaterial.value = null
-}
-
+  modalOpen.value = false;
+  selectedMaterial.value = null;
+};
 </script>
 
 <template>
@@ -79,14 +47,13 @@ const closeModal = () => {
 
   <section class="materials">
     <MaterialCards
-      v-for="(card) in materialCards"
+      v-for="(card) in cards"
       :key="card.id"
       :title="card.title"
       :description="card.selected ? 'Valg taget' : 'Afventer valg'"
       :image="card.image || '/images/placeholders/default.png'"
       :selected="card.selected"
-      @click="openModal(card)"
-      @toggle="toggleCard(card.id)"
+      @toggle="handleCardClick(card)"
     />
   </section>
 
