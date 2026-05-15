@@ -8,90 +8,46 @@ import NotificationList from "@/components/NotificationList.vue";
 import IconButton from "@/components/IconButton.vue";
 import CenterButton from "@/components/CenterButton.vue";
 
-import { ref, onMounted, computed } from "vue";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  doc,
-  getDoc,
-  orderBy
-} from "firebase/firestore";
+import { computed, onMounted, ref, watch } from "vue";
+
+import { useAuthStore } from "@/stores/auth";
+import { useProjectStore } from "@/stores/project";
+import { useContactStore } from "@/stores/contact";
+
 import { db } from "@/firebase";
+import { doc, updateDoc } from "firebase/firestore";
+
 import {
   getStorage,
   ref as storageRef,
   getDownloadURL,
   uploadBytes
 } from "firebase/storage";
-import { updateDoc } from "firebase/firestore";
 
-const customer = ref(null);
-const project = ref(null);
-const manager = ref(null);
-const notifications = ref([]);
+const authStore = useAuthStore();
+const projectStore = useProjectStore();
+const contactStore = useContactStore();
 
 const storage = getStorage();
 
-const customerId = "FVyJCzaC2MGGqbDsDwsF";
+const customer = computed(() => authStore.profile);
+const project = computed(() => projectStore.currentProject);
+const manager = computed(() => contactStore.contact);
+const notifications = computed(() => projectStore.notifications);
 
 onMounted(async () => {
-  const customerRef = doc(db, "users", customerId);
-
-  const [customerSnapshot, projectSnapshot] = await Promise.all([
-    getDoc(customerRef),
-    getDocs(
-      query(collection(db, "projects"), where("customerId", "==", customerRef))
-    )
-  ]);
-
-  if (customerSnapshot.exists()) {
-    customer.value = customerSnapshot.data();
-
-    if (customer.value.avatarPath) {
-      try {
-        const avatarRef = storageRef(storage, customer.value.avatarPath);
-        customer.value.avatar = await getDownloadURL(avatarRef);
-      } catch {
-        return null;
-      }
-    }
+  if (!projectStore.currentProject) {
+    await projectStore.fetchProject();
   }
-
-  const projectDoc = projectSnapshot.docs[0];
-  if (!projectDoc) return;
-
-  project.value = { id: projectDoc.id, ...projectDoc.data() };
-
-  const [managerSnapshot, notificationsSnapshot] = await Promise.all([
-    getDoc(project.value.managerId),
-    getDocs(
-      query(
-        collection(db, "projects", projectDoc.id, "notifications"),
-        orderBy("createdAt", "desc")
-      )
-    )
-  ]);
-
-  if (managerSnapshot.exists()) {
-    manager.value = managerSnapshot.data();
-
-    if (manager.value.avatarPath) {
-      try {
-        const avatarRef = storageRef(storage, manager.value.avatarPath);
-        manager.value.avatar = await getDownloadURL(avatarRef);
-      } catch {
-        return null;
-      }
-    }
-  }
-
-  notifications.value = notificationsSnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data()
-  }));
 });
+
+watch(
+  () => [authStore.user, projectStore.currentProject],
+  async () => {
+    await contactStore.fetchContact();
+  },
+  { immediate: true }
+);
 
 const details = computed(() => [
   {
@@ -102,12 +58,14 @@ const details = computed(() => [
   {
     icon: "Kort",
     label: "Adresse",
-    value: project.value?.info?.address.street || ""
+    value: project.value?.info?.address?.street || ""
   }
 ]);
 
 async function updateAvatar(file, size = 256) {
-  if (!customer.value) return;
+  if (!customer.value || !authStore.user) return;
+
+  const customerId = authStore.user.uid;
 
   try {
     if (!file.type.startsWith("image/")) return;
@@ -164,7 +122,7 @@ async function updateAvatar(file, size = 256) {
     <Heading tag="h1" size="large">Profil</Heading>
     <ProfileCard
       v-if="customer"
-      :avatar="customer.avatar"
+      :avatar="customer.avatarPath"
       :name="`${customer.firstName} ${customer.lastName}`"
       :email="customer.email"
       @avatar-selected="updateAvatar"
@@ -177,7 +135,7 @@ async function updateAvatar(file, size = 256) {
       <DetailsCard :items="details" />
       <ContactCard
         v-if="manager"
-        :avatar="manager.avatar"
+        :avatar="manager.avatarPath"
         :name="`${manager.firstName} ${manager.lastName}`"
         :email="manager.email"
         :phoneNumber="manager?.phoneNumber"
