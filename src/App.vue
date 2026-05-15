@@ -10,7 +10,7 @@ const authStore = useAuthStore();
 const projectStore = useProjectStore();
 const materialsStore = useMaterialsStore();
 const categoriesStore = useDocumentCategoriesStore();
-const contactStore = useContactStore();
+useContactStore();
 
 onMounted(() => {
   // Lytte efter om brugeren er logget ind
