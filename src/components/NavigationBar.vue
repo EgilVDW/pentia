@@ -8,11 +8,11 @@ import Icon from "./Icon.vue";
       <Icon name="Forside" class="nav-container__icon" />
       <p class="nav-container__title">Home</p>
     </BaseButton>
-    <BaseButton href="/" class="nav-container__link">
+    <BaseButton href="/chat" class="nav-container__link">
       <Icon name="Beskeder" class="nav-container__icon" />
       <p class="nav-container__title">Beskeder</p>
     </BaseButton>
-    <BaseButton href="/" class="nav-container__link">
+    <BaseButton href="/status" class="nav-container__link">
       <Icon name="Status" class="nav-container__icon" />
       <p class="nav-container__title">Status</p>
     </BaseButton>

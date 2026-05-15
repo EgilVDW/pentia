@@ -1,19 +1,19 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { db } from "@/firebase";
 import {
   collection,
-  query,
-  where,
-  getDocs,
   doc,
-  getDoc
+  getDoc,
+  getDocs,
+  query,
+  where
 } from "firebase/firestore";
-import { db } from "@/firebase";
+import { onMounted, ref } from "vue";
 
 const user = ref(null);
 const projects = ref([]);
 
-const userId = "B0PrYXmWmZ0Q09DRJI6V";
+const userId = "8Kk7GiihG1W2fFbyN5tSJLZovsT2";
 
 onMounted(async () => {
   const userRef = doc(db, "users", userId);

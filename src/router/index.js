@@ -1,24 +1,22 @@
 import ChatLayout from "@/layouts/ChatLayout.vue";
+import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import DesktopLayout from "@/layouts/DesktopLayout.vue";
 import ProjectLayout from "@/layouts/ProjectLayout.vue";
-import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import CalendarView from "@/views/CalendarView.vue";
 import ChatView from "@/views/ChatView.vue";
 import DailyUpdateView from "@/views/DailyUpdate.vue";
+import CustomerView from "@/views/desktop/CustomerView.vue";
+import DesktopHomeView from "@/views/desktop/HomeView.vue";
+import MaterialsUploadView from "@/views/desktop/MaterialsUploadView.vue";
+import UploadImagesView from "@/views/desktop/UploadImagesView.vue";
 import DocumentsView from "@/views/DocumentsView.vue";
-import FrontpageView from "@/views/FrontpageView.vue";
 import GalleryView from "@/views/GalleryView.vue";
 import HomeView from "@/views/HomeView.vue";
 import LoginView from "@/views/LoginView.vue";
 import MaterialsView from "@/views/MaterialsView.vue";
-import PlaceholderView from "@/views/PlaceholderView.vue";
 import ProfileView from "@/views/ProfileView.vue";
-import StatusView from "@/views/StatusView.vue";
-import DesktopHomeView from "@/views/desktop/HomeView.vue";
-import CustomerView from "@/views/desktop/CustomerView.vue";
-import UploadImagesView from "@/views/desktop/UploadImagesView.vue";
-import MaterialsUploadView from "@/views/desktop/MaterialsUploadView.vue";
 import SignupView from "@/views/Signup.vue";
+import StatusView from "@/views/StatusView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -32,16 +30,6 @@ const router = createRouter({
           path: "/",
           name: "home",
           component: HomeView
-        },
-        {
-          path: "/placeholder",
-          name: "placeholder",
-          component: PlaceholderView
-        },
-        {
-          path: "/frontpage",
-          name: "frontpage",
-          component: FrontpageView
         },
         {
           path: "/profile",

@@ -1,6 +1,10 @@
 <script setup>
 import BaseButton from "./BaseButton.vue";
 defineProps({
+  href: {
+    type: String,
+    default: null
+  },
   src: {
     type: String,
     required: true
@@ -16,7 +20,7 @@ defineProps({
 })
 </script>
 <template>
-  <BaseButton href="/" class="icon-container">
+  <BaseButton :href="href" class="icon-container">
     <img
     :src="src"
     class="icon"
