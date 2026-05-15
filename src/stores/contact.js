@@ -1,5 +1,3 @@
-// stores/contact.js
-
 import { defineStore } from "pinia";
 import { ref, computed, watch } from "vue";
 import { db } from "@/firebase";
