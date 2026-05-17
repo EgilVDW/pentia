@@ -8,61 +8,48 @@ import LargeIconButton from "@/components/LargeIconButton.vue";
 import HeadlineDesc from "@/components/MainHeadlineDesc.vue";
 import ProjectStatusList from "@/components/ProjectStatusList.vue";
 
-import { auth, db } from "@/firebase";
-import { onAuthStateChanged } from "firebase/auth";
-import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { getStorage, listAll, ref as storageRef } from "firebase/storage";
-import { computed, onMounted, ref } from "vue";
+import { computed, ref, watch } from "vue";
+
+import { storeToRefs } from "pinia";
+import { useUserStore } from "@/stores/user";
+
+
+const userStore = useUserStore();
+const {
+  user,
+  project,
+  projectId
+} = storeToRefs(userStore);
 
 const storage = getStorage();
-const projectId = ref(null);
 
+
+// IMAGES
 const amountOfImages = ref(0);
+
 async function getImages() {
-  const folderRef = storageRef(storage, "projects/" + projectId.value + "/images/");
+  if (!projectId.value) return;
+
+  const folderRef = storageRef(
+    storage,
+    `projects/${projectId.value}/images/`
+  );
+
   const result = await listAll(folderRef);
+
   amountOfImages.value = result.items.length;
 }
 
-const user = ref(null);
-const project = ref(null);
 
-async function loadData(userId) {
-  // const userId = "FVyJCzaC2MGGqbDsDwsF";
-
-  const userSnap = await getDoc(doc(db, "users", userId));
-  if (!userSnap.exists()) return;
-
-  user.value = userSnap.data();
-
-  const q = query(
-    collection(db, "projects"),
-    where("customerId", "==", doc(db, "users", userId))
-  );
-
-  const projectSnap = await getDocs(q);
-  if (projectSnap.empty) return;
+// WATCH FOR PROJECT CHANGES
+watch(projectId, (newId) => {
+  if (newId) {
+    getImages();
+  }
+}, { immediate: true });
 
 
-  const projectDoc = projectSnap.docs[0];
-
-  project.value = {
-    id: projectDoc.id,
-    ...projectDoc.data()
-  };
-
-  projectId.value = projectDoc.id;
-
-  getImages();
-}
-
-onMounted(() => {
-  onAuthStateChanged(auth, (user) => {
-    if (!user) return;
-
-    loadData(user.uid);
-  });
-});
 
 const userName = computed(() => user.value?.firstName + " " + user.value?.lastName || "");
 
