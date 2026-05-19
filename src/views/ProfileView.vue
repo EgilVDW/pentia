@@ -8,7 +8,7 @@ import NotificationList from "@/components/NotificationList.vue";
 import IconButton from "@/components/IconButton.vue";
 import CenterButton from "@/components/CenterButton.vue";
 
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, watch } from "vue";
 
 import { useAuthStore } from "@/stores/auth";
 import { useProjectStore } from "@/stores/project";
@@ -107,11 +107,13 @@ async function updateAvatar(file, size = 256) {
     const downloadURL = await getDownloadURL(avatarStorageRef);
 
     await updateDoc(doc(db, "users", customerId), {
-      avatarPath: path
+      avatarPath: path,
+      avatarUrl: downloadURL
     });
 
     customer.value.avatar = `${downloadURL}?t=${Date.now()}`;
     customer.value.avatarPath = path;
+    customer.value.avatarUrl = downloadURL;
   } catch {
     return null;
   }
@@ -122,7 +124,7 @@ async function updateAvatar(file, size = 256) {
     <Heading tag="h1" size="large">Profil</Heading>
     <ProfileCard
       v-if="customer"
-      :avatar="customer.avatarPath"
+      :avatar="customer.avatarUrl"
       :name="`${customer.firstName} ${customer.lastName}`"
       :email="customer.email"
       @avatar-selected="updateAvatar"
@@ -135,7 +137,7 @@ async function updateAvatar(file, size = 256) {
       <DetailsCard :items="details" />
       <ContactCard
         v-if="manager"
-        :avatar="manager.avatarPath"
+        :avatar="manager.avatarUrl"
         :name="`${manager.firstName} ${manager.lastName}`"
         :email="manager.email"
         :phoneNumber="manager?.phoneNumber"
