@@ -6,14 +6,18 @@ import DailyImages from "@/components/DailyImages.vue";
 import NavigationButton from "@/components/NavigationButton.vue";
 import ManagerComment from "@/components/ManagerComment.vue";
 import Heading from "@/components/Heading.vue";
-import { ref, onMounted, computed } from "vue";
-import { doc, getDoc, collection, getDocs, query, where, limit, orderBy } from "firebase/firestore";
+import { ref, onMounted, computed, watch } from "vue";
+import { getDoc, collection, getDocs, query, limit, orderBy } from "firebase/firestore";
 import { db } from "@/firebase";
 import { getStorage, ref as storageRef, getDownloadURL, listAll } from "firebase/storage";
+import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
 
-const user = ref(null);
-const project = ref(null);
-const projectId = ref(null);
+
+const userStore = useUserStore();
+
+const { project, projectId } = storeToRefs(userStore);
+
 const manager = ref(null);
 const latestUpdate = ref(null);
 
@@ -21,37 +25,17 @@ const storage = getStorage();
 const imageUrl = ref(null);
 
 
-async function loadData(){
-  const userId = "FVyJCzaC2MGGqbDsDwsF";
-
-  const userSnap = await getDoc(doc(db, "users", userId));
-  if (!userSnap.exists()) return;
-
-  user.value = userSnap.data();
-
-  const q = query(
-    collection(db, "projects"),
-    where("customerId", "==", doc(db, "users", userId))
-  );
-
-  const projectSnap = await getDocs(q);
-  if (projectSnap.empty) return;
-
-  const projectDoc = projectSnap.docs[0];
-
-  project.value = {
-    id: projectDoc.id,
-    ...projectDoc.data()
-  };
-
-  projectId.value = projectDoc.id;
+async function loadData() {
+  if (!projectId.value || !project.value) return;
 
   const updateQuery = query(
     collection(db, "projects", projectId.value, "dailyUpdates"),
     orderBy("createdAt", "desc"),
     limit(1)
   );
+
   const updateSnap = await getDocs(updateQuery);
+
   latestUpdate.value = updateSnap.docs[0]?.data();
 
   const managerSnap = await getDoc(project.value.managerId);
@@ -61,7 +45,12 @@ async function loadData(){
   imageUrl.value = await getImageURL();
 }
 
-onMounted(loadData);
+watch(projectId, async (newId) => {
+  if (newId) {
+    await loadData();
+  }
+}, { immediate: true });
+
 onMounted(async () => {
   imageUrl.value = await getImageURL();
 });
