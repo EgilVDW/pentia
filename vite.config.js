@@ -13,7 +13,8 @@ export default defineConfig({
     }
   },
   test: {
-    environment: "jsdom"
+    environment: "jsdom",
+    setupFiles: "./tests/setup.js"
   },
   css: {
     preprocessorOptions: {

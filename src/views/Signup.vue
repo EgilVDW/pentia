@@ -18,6 +18,18 @@ async function handleSignup() {
 
   try {
     user.value = await signup(email.value, password.value);
+
+    await setDoc(doc(db, "users", user.value.uid), {
+      avatarPath: "",
+      avatarUrl: "",
+      email: user.value.email,
+      firstName: firstName.value,
+      lastName: lastName.value,
+      isActive: true,
+      phoneNumber: "",
+      role: "customer"
+    });
+
     success.value = true;
 
     email.value = "";
@@ -25,16 +37,6 @@ async function handleSignup() {
   } catch (err) {
     error.value = err.message;
   }
-  await setDoc(doc(db, "users", user.value.uid), {
-    avatarPath: "",
-    avatarUrl: "",
-    email: user.value.email,
-    firstName: firstName.value,
-    lastName: lastName.value,
-    isActive: true,
-    phoneNumber: "",
-    role: "customer"
-  });
 }
 </script>
 
