@@ -6,12 +6,75 @@ import DailyImages from "@/components/DailyImages.vue";
 import NavigationButton from "@/components/NavigationButton.vue";
 import ManagerComment from "@/components/ManagerComment.vue";
 import Heading from "@/components/Heading.vue";
-import { ref } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
+import { getDoc, collection, getDocs, query, limit, orderBy } from "firebase/firestore";
+import { db } from "@/firebase";
+import { getStorage, ref as storageRef, getDownloadURL, listAll } from "firebase/storage";
+import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
 
 
-const currentDate = new Date().toLocaleDateString();
-const manager = "Kim Agerbæk";
-const project = "Typehus A 145";
+const userStore = useUserStore();
+
+const { project, projectId } = storeToRefs(userStore);
+
+const manager = ref(null);
+const latestUpdate = ref(null);
+
+const storage = getStorage();
+const imageUrl = ref(null);
+
+
+async function loadData() {
+  if (!projectId.value || !project.value) return;
+
+  const updateQuery = query(
+    collection(db, "projects", projectId.value, "dailyUpdates"),
+    orderBy("createdAt", "desc"),
+    limit(1)
+  );
+
+  const updateSnap = await getDocs(updateQuery);
+
+  latestUpdate.value = updateSnap.docs[0]?.data();
+
+  const managerSnap = await getDoc(project.value.managerId);
+
+  manager.value = managerSnap.data();
+
+  imageUrl.value = await getImageURL();
+}
+
+watch(projectId, async (newId) => {
+  if (newId) {
+    await loadData();
+  }
+}, { immediate: true });
+
+onMounted(async () => {
+  imageUrl.value = await getImageURL();
+});
+
+async function getImages() {
+  if (!project.value?.managerId) {
+    return [];
+  }
+  const managerId = project.value.managerId.id;
+
+  const folderRef = storageRef(storage, `users/${managerId}/`);
+  const result = await listAll(folderRef);
+
+  return result.items;
+}
+
+async function getImageURL() {
+  const items = await getImages();
+
+  if (!items.length) return null;
+
+  return await getDownloadURL(items[0]);
+}
+
 
 const dailyWork = ref([])
 dailyWork.value = [
@@ -27,26 +90,41 @@ imageDB.value = [
   { path: "/images/images_bygherre/Dagsopdatering/Rectangle-66.png", date: "today" }
 ]
 
-const commentDB = ref([])
-commentDB.value = [
-  {
-    img: "/images/images_bygherre/Kim_profile_picture.png",
-    name: "Kim Agerbæk",
-    comment: "Fundamentet er nu færdigt. Vi forventer at starte råhusmontage i næste uge, hvis vejret holder.",
-    time: "14:58"
-  }
-]
 
 const pdf = ref([]);
 pdf.value = [
   "Fundament_tegning.pdf",
   "Vejrforhold.pdf"
 ]
+
+const formattedDate = computed(() => {
+  return latestUpdate.value?.createdAt
+    ? latestUpdate.value.createdAt.toDate().toLocaleString("en-GB", {
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    }).replace(",", "")
+    : "";
+});
+
+const formattedTime = computed(() => {
+  if (!latestUpdate.value?.datetime) return "";
+
+  return new Date(latestUpdate.value.datetime * 1000)
+    .toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    });
+});
+
 </script>
 <template>
   <Heading tag="h1" size="large">Dagsopdatering</Heading>
   <MediumWhiteContainer>
-    <DailyInfo :date="currentDate" :constructionManager="manager" :project="project"/>
+    <DailyInfo :date="formattedDate || ''" :constructionManager="manager?.firstName + ' ' + manager?.lastName || ''" :project="project?.info?.name || ''"/>
   </MediumWhiteContainer>
   <Heading tag="h2" size="medium">Dagens arbejde</Heading>
   <MediumWhiteContainer>
@@ -64,7 +142,7 @@ pdf.value = [
   </div>
   <Heading tag="h2" size="medium">Kommentar</Heading>
   <MediumWhiteContainer>
-    <ManagerComment :src="commentDB[0].img" :name="commentDB[0].name" :comment="commentDB[0].comment" :time="commentDB[0].time"/>
+    <ManagerComment :src="imageUrl || ''" :name="manager?.firstName + ' ' + manager?.lastName || ''" :comment="latestUpdate?.comment || ''" :time="formattedTime || ''"/>
   </MediumWhiteContainer>
   <Heading tag="h2" size="medium">Vedhæftet filer</Heading>
   <div class="button-container">

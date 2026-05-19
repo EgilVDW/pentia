@@ -6,7 +6,7 @@ import BaseButton from "./BaseButton.vue";
 <template>
   <header class="header-banner">
     <img class="head-banner__img" :src="miltonLogo" alt="Milton logo" />
-    <BaseButton href="/">
+    <BaseButton href="/profile">
       <img class="head-banner__img" :src="userIcon" alt="Profile icon" />
     </BaseButton>
   </header>

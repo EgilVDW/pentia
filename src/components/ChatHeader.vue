@@ -5,17 +5,8 @@ import Icon from "@/components/Icon.vue";
 defineProps({
   name: String,
   role: String,
-  status: String
+  active: Boolean
 });
-
-const getStatus = (status) => {
-  const map = {
-    online: "Aktiv",
-    offline: "Inaktiv"
-  };
-
-  return map[status] ?? status;
-};
 </script>
 <template>
   <header class="chat-header">
@@ -30,12 +21,14 @@ const getStatus = (status) => {
           <div
             class="chat-header__status-indicator"
             :class="
-              status === 'online'
+              active
                 ? 'chat-header__status-indicator--online'
                 : 'chat-header__status-indicator--offline'
             "
           ></div>
-          <div class="chat-header__status-label">{{ getStatus(status) }}</div>
+          <div class="chat-header__status-label">
+            {{ active ? "Online" : "Offline" }}
+          </div>
         </div>
       </div>
     </div>

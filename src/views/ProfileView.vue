@@ -8,41 +8,126 @@ import NotificationList from "@/components/NotificationList.vue";
 import IconButton from "@/components/IconButton.vue";
 import CenterButton from "@/components/CenterButton.vue";
 
-const details = [
+import { computed, onMounted, watch } from "vue";
+
+import { useAuthStore } from "@/stores/auth";
+import { useProjectStore } from "@/stores/project";
+import { useContactStore } from "@/stores/contact";
+
+import { db } from "@/firebase";
+import { doc, updateDoc } from "firebase/firestore";
+
+import {
+  getStorage,
+  ref as storageRef,
+  getDownloadURL,
+  uploadBytes
+} from "firebase/storage";
+
+const authStore = useAuthStore();
+const projectStore = useProjectStore();
+const contactStore = useContactStore();
+
+const storage = getStorage();
+
+const customer = computed(() => authStore.profile);
+const project = computed(() => projectStore.currentProject);
+const manager = computed(() => contactStore.contact);
+const notifications = computed(() => projectStore.notifications);
+
+onMounted(async () => {
+  if (!projectStore.currentProject) {
+    await projectStore.fetchProject();
+  }
+});
+
+watch(
+  () => [authStore.user, projectStore.currentProject],
+  async () => {
+    await contactStore.fetchContact();
+  },
+  { immediate: true }
+);
+
+const details = computed(() => [
   {
     icon: "Forside",
     label: "Projekt",
-    value: "Typehus: Vinkelhus A 145"
+    value: project.value?.info?.type || ""
   },
   {
     icon: "Kort",
     label: "Adresse",
-    value: "Holkenbjergvej 76"
+    value: project.value?.info?.address?.street || ""
   }
-];
+]);
 
-const notifications = [
-  {
-    content: "Nye dagsrapporter"
-  },
-  {
-    content: "Nye billeder fra byggeplads"
-  },
-  {
-    content: "Nye beskeder fra byggeleder"
-  },
-  {
-    content: "Påmindelse om eftersyn"
+async function updateAvatar(file, size = 256) {
+  if (!customer.value || !authStore.user) return;
+
+  const customerId = authStore.user.uid;
+
+  try {
+    if (!file.type.startsWith("image/")) return;
+
+    const webpBlob = await new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const minSide = Math.min(img.width, img.height);
+        const sx = (img.width - minSide) / 2;
+        const sy = (img.height - minSide) / 2;
+
+        const canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext("2d");
+
+        ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, size, size);
+
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) reject(new Error("Conversion failed"));
+            else resolve(blob);
+          },
+          "image/webp",
+          0.8
+        );
+      };
+      img.onerror = reject;
+      img.src = URL.createObjectURL(file);
+    });
+
+    const path = `users/${customerId}/avatar.webp`;
+    const avatarStorageRef = storageRef(storage, path);
+
+    await uploadBytes(avatarStorageRef, webpBlob, {
+      contentType: "image/webp"
+    });
+
+    const downloadURL = await getDownloadURL(avatarStorageRef);
+
+    await updateDoc(doc(db, "users", customerId), {
+      avatarPath: path,
+      avatarUrl: downloadURL
+    });
+
+    customer.value.avatar = `${downloadURL}?t=${Date.now()}`;
+    customer.value.avatarPath = path;
+    customer.value.avatarUrl = downloadURL;
+  } catch {
+    return null;
   }
-];
+}
 </script>
 <template>
   <main class="profile-view">
     <Heading tag="h1" size="large">Profil</Heading>
     <ProfileCard
-      avatar="/images/images_bygherre/Familien_milton_profile_picture.png"
-      name="Familien Milton"
-      email="Familienmilton@email.dk"
+      v-if="customer"
+      :avatar="customer.avatarUrl"
+      :name="`${customer.firstName} ${customer.lastName}`"
+      :email="customer.email"
+      @avatar-selected="updateAvatar"
     />
     <div class="profile-view__group">
       <Paragraph
@@ -51,10 +136,11 @@ const notifications = [
       >
       <DetailsCard :items="details" />
       <ContactCard
-        avatar="/images/images_bygherre/Kim_profile_picture.png"
-        role="Byggeleder"
-        name="Kim Agerbæk"
-        phoneNumber="+45 1234 5678"
+        v-if="manager"
+        :avatar="manager.avatarUrl"
+        :name="`${manager.firstName} ${manager.lastName}`"
+        :email="manager.email"
+        :phoneNumber="manager?.phoneNumber"
       />
     </div>
     <div class="profile-view__group">
