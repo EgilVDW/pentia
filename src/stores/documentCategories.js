@@ -8,6 +8,8 @@ export const useDocumentCategoriesStore = defineStore("documentCategories", () =
   const loading = ref(false)
 
   async function fetchCategories() {
+    if (categories.value.length > 0) return
+
     loading.value = true
     try {
       const querySnapshot = await getDocs(collection(db, "documentCategories"))
