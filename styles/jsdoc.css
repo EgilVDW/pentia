@@ -171,10 +171,6 @@ tt, code, kbd, samp{
   padding: 1px 5px;
 }
 
-pre {
-  padding-bottom: 1em;
-}  
-
 .class-description {
   font-size: 130%;
   line-height: 140%;
@@ -220,6 +216,7 @@ nav {
   overflow: auto;
   position: fixed;
   height: 100%;
+  overflow: auto;
 }
 
 nav #nav-search{
@@ -304,6 +301,23 @@ nav h2 {
 nav > h2 > a {
    margin: 10px 0 -10px;
    color: #606 !important;
+}
+
+nav .active {
+  position: relative;
+}
+
+nav .active:before {
+  content: "▶";
+  position: absolute;
+  font-size: 22px;
+  line-height: 15px;
+  left: -18px;
+}
+
+nav .methods .active:before {
+  left: 8px;
+  font-size: 13px;
 }
 
 footer {
@@ -772,5 +786,4 @@ html[data-search-mode] .level-hide {
          url('../fonts/Source-Sans-Pro/sourcesanspro-light-webfont.svg#source_sans_prolight') format('svg');
     font-weight: 300;
     font-style: normal;
-
 }
