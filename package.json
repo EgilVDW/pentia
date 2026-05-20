@@ -7,12 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "deploy": "npm run build && firebase deploy",
+    "docs": "jsdoc -c jsdoc.json",
     "preview": "vite preview",
     "lint": "eslint src/",
     "test": "vitest",
     "test:run": "vitest run"
   },
   "dependencies": {
+    "docdash-extended": "^1.0.2",
     "firebase": "^12.11.0",
     "vue": "^3.5.29",
     "vue-router": "^5.0.3"
@@ -22,9 +24,11 @@
     "@pinia/testing": "^1.0.3",
     "@vitejs/plugin-vue": "^6.0.6",
     "@vue/test-utils": "^2.4.10",
+    "docdash": "^2.0.2",
     "eslint": "^10.1.0",
     "eslint-plugin-vue": "^10.8.0",
     "globals": "^17.4.0",
+    "jsdoc": "^4.0.5",
     "jsdom": "^29.1.1",
     "pinia": "^3.0.4",
     "sass": "^1.98.0",

@@ -1,20 +1,79 @@
-// src/stores/userStore.js
+/**
+ * Handles authenticated user state, user profile data,
+ * and the user's associated project.
+ *
+ * @category stores
+ * @namespace UserStore
+ */
 
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs
+} from "firebase/firestore";
+
 import { auth, db } from "@/firebase";
 
+/**
+ * Pinia store for managing authenticated user data
+ * and related project information.
+ *
+ * @memberof UserStore
+ * @function useUserStore
+ *
+ * @returns {Object} User store instance
+ */
 export const useUserStore = defineStore("user", () => {
+  /**
+   * Raw Firebase authenticated user.
+   *
+   * @memberof UserStore
+   * @type {Object|null}
+   */
   const firebaseUser = ref(null);
 
+  /**
+   * Application user profile data from Firestore.
+   *
+   * @memberof UserStore
+   * @type {Object|null}
+   */
   const user = ref(null);
+
+  /**
+   * Project associated with the user.
+   *
+   * @memberof UserStore
+   * @type {Object|null}
+   */
   const project = ref(null);
 
+  /**
+   * ID of the user's project.
+   *
+   * @memberof UserStore
+   * @type {string|null}
+   */
   const projectId = ref(null);
 
-
+  /**
+   * Loads user profile and associated project data
+   * from Firestore.
+   *
+   * @memberof UserStore
+   * @async
+   * @function loadData
+   *
+   * @param {string} userId Firebase user UID
+   *
+   * @returns {Promise<void>}
+   */
   async function loadData(userId) {
     try {
       // USER
@@ -48,12 +107,19 @@ export const useUserStore = defineStore("user", () => {
       };
 
       projectId.value = projectDoc.id;
-
     } catch (err) {
       console.error(err);
     }
   }
 
+  /**
+   * Initializes Firebase authentication listener.
+   *
+   * Updates store state whenever auth state changes.
+   *
+   * @memberof UserStore
+   * @function initAuth
+   */
   function initAuth() {
     onAuthStateChanged(auth, async (authUser) => {
       if (!authUser) {
@@ -71,11 +137,9 @@ export const useUserStore = defineStore("user", () => {
 
   return {
     firebaseUser,
-
     user,
     project,
     projectId,
-
     loadData,
     initAuth
   };

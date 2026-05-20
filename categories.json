@@ -1,0 +1,17 @@
+{
+  "guides": {
+    "displayName": "Guides"
+  },
+  "components": {
+    "displayName": "Components"
+  },
+  "views": {
+    "displayName": "Views"
+  },
+  "stores": {
+    "displayName": "Stores"
+  },
+  "utils": {
+    "displayName": "Utils"
+  }
+}
