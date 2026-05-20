@@ -6,6 +6,14 @@ import { doc, getDoc } from "firebase/firestore";
 import { useAuthStore } from "@/stores/auth";
 import { useProjectStore } from "@/stores/project";
 
+/**
+ * Add two numbers.
+ *
+ * @category stores
+ * @param {number} a
+ * @param {number} b
+ * @returns {number}
+ */
 export const useContactStore = defineStore("contact", () => {
   const authStore = useAuthStore();
   const projectStore = useProjectStore();

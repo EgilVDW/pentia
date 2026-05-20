@@ -1,15 +1,18 @@
 {
   "source": {
-    "include": ["src"],
-    "includePattern": ".js$"
+    "include": ["src", "guides", "components"],
+    "includePattern": ".+\\.(js|md)$"
   },
   "opts": {
     "destination": "./docs",
     "recurse": true,
-    "tutorials": "./tutorials",
-    "template": "./themes/docdash"
+    "template": "./node_modules/docdash-extended"
   },
-  "docdash": {
-    "tutorialsLabel": "Documents"
-  }
+  "plugins": ["plugins/markdown", "node_modules/docdash-extended/categories"],
+  "templates": {
+    "default": {
+      "includeDate": false
+    }
+  },
+  "categoriesFile": "./categories.json"
 }
