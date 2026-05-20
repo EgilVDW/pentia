@@ -4,17 +4,13 @@ import { setActivePinia } from "pinia";
 import { createTestingPinia } from "@pinia/testing";
 import { useUserStore } from "@/stores/user";
 
-// --------------------
-// Mock Firebase module
-// --------------------
+
 vi.mock("@/firebase", () => ({
   auth: {},
   db: {}
 }));
 
-// --------------------
-// Mock Firestore
-// --------------------
+
 vi.mock("firebase/firestore", () => ({
   getDoc: vi.fn(),
   getDocs: vi.fn(),
@@ -26,9 +22,7 @@ vi.mock("firebase/firestore", () => ({
 
 import { getDoc, getDocs } from "firebase/firestore";
 
-// --------------------
-// Tests
-// --------------------
+
 describe("useUserStore", () => {
   beforeEach(() => {
     setActivePinia(

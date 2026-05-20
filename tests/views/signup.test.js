@@ -2,18 +2,14 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { mount } from "@vue/test-utils";
 import SignupView from "@/views/Signup.vue";
 
-// --------------------
-// MOCK signup utility
-// --------------------
+
 vi.mock("@/signup", () => ({
   default: vi.fn()
 }));
 
 import signup from "@/signup";
 
-// --------------------
-// MOCK Firebase
-// --------------------
+
 vi.mock("firebase/firestore", () => ({
   doc: vi.fn(() => "mocked-doc-ref"),
   setDoc: vi.fn()
@@ -31,7 +27,6 @@ describe("SignupView", () => {
   });
 
   it("successfully signs up user and shows success message", async () => {
-    // 🔥 mock signup function response
     signup.mockResolvedValue({
       uid: "user123",
       email: "test@test.com"
