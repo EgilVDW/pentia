@@ -1,6 +1,6 @@
 <script setup>
 /**
- * @module CalendarComponent
+ * @name CalendarComponent
  */
 //TODO: Consider moving into seperate js file for less clutter.
 import Icon from "@/components/Icon.vue"

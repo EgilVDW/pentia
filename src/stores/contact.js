@@ -1,3 +1,11 @@
+/**
+ * Handles contact state and contact lookup
+ * for the currently selected project.
+ *
+ * @category stores
+ * @namespace ContactStore
+ */
+
 import { defineStore } from "pinia";
 import { ref, computed, watch } from "vue";
 import { db } from "@/firebase";
@@ -7,20 +15,39 @@ import { useAuthStore } from "@/stores/auth";
 import { useProjectStore } from "@/stores/project";
 
 /**
- * Add two numbers.
+ * Pinia contact store.
  *
- * @category stores
- * @param {number} a
- * @param {number} b
- * @returns {number}
+ * @memberof ContactStore
+ * @function useContactStore
+ * @returns {Object} Contact store instance
  */
 export const useContactStore = defineStore("contact", () => {
   const authStore = useAuthStore();
   const projectStore = useProjectStore();
 
+  /**
+   * Current contact data.
+   *
+   * @memberof ContactStore
+   * @type {Object|null}
+   */
   const contact = ref(null);
+
+  /**
+   * Indicates whether contact data is loading.
+   *
+   * @memberof ContactStore
+   * @type {boolean}
+   */
   const loading = ref(false);
 
+  /**
+   * Computed contact ID based on the current project
+   * and authenticated user.
+   *
+   * @memberof ContactStore
+   * @type {string|null}
+   */
   const contactId = computed(() => {
     const project = projectStore.currentProject;
     const user = authStore.user;
@@ -38,6 +65,14 @@ export const useContactStore = defineStore("contact", () => {
     return null;
   });
 
+  /**
+   * Fetches the current contact from Firestore.
+   *
+   * @memberof ContactStore
+   * @async
+   * @function fetchContact
+   * @returns {Promise<void>}
+   */
   async function fetchContact() {
     if (!contactId.value) {
       contact.value = null;
@@ -65,6 +100,12 @@ export const useContactStore = defineStore("contact", () => {
     }
   }
 
+  /**
+   * Watches authentication and project changes
+   * and refreshes the contact automatically.
+   *
+   * @memberof ContactStore
+   */
   watch(
     () => [authStore.user, projectStore.currentProject],
     async () => {

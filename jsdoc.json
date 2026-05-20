@@ -1,18 +1,32 @@
 {
   "source": {
-    "include": ["src", "guides", "components"],
-    "includePattern": ".+\\.(js|md)$"
+    "include": [
+      "src",
+      "guides"
+    ],
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "(^|\\/|\\\\)_"
   },
   "opts": {
     "destination": "./docs",
     "recurse": true,
     "template": "./node_modules/docdash-extended"
   },
-  "plugins": ["plugins/markdown", "node_modules/docdash-extended/categories"],
+  "plugins": [
+    "plugins/markdown",
+    "node_modules/docdash-extended/categories"
+  ],
   "templates": {
     "default": {
-      "includeDate": false
+      "includeDate": false,
+      "outputSourceFiles": false
     }
+  },
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "docdash": {
+    "removeQuotes": "all"
   },
   "categoriesFile": "./categories.json"
 }
