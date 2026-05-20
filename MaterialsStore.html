@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Global - Documentation</title>
+    <title>MaterialsStore - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -35,7 +35,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Global</h1>
+    <h1 class="page-title">MaterialsStore</h1>
     
 
     
@@ -49,7 +49,7 @@
     
         <h2>
         
-            
+            Namespace
         
         </h2>
         
@@ -62,7 +62,20 @@
         
             
 
+
+    
+
+    <h4 class="name" id="MaterialsStore">MaterialsStore</h4>
+
+    
+
+
+
+
 <dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Handles material data from Firestore.</p></li></ul></dd>
     
 
     
@@ -101,9 +114,32 @@
 
 
 
-            
 
-            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
         </div>
     
@@ -125,7 +161,7 @@
 
         
             
-<h4 class="name" id="Guide"><span class="type-signature"></span>Guide<span class="type-signature"></span></h4>
+<h4 class="name" id=".loading"><span class="type-signature type-signature-static, constant">(static, constant) </span>loading<span class="type-signature"> :boolean</span></h4>
 
 
 
@@ -134,17 +170,7 @@
 <dl class="details">
     
     <dt class="tag-description">Description:</dt>
-    <dd class="tag-description"><ul class="dummy"><li><p>Guide page</p>
-<p>JSDoc Guide (Placeholder)</p>
-<p>This page explains how JSDoc is structured and how to write consistent documentation.</p>
-<p>The goal is to keep documentation readable, predictable, and useful for developers.</p>
-<p>Core principles:</p>
-<ul>
-<li>Describe intent, not implementation details.</li>
-<li>Keep descriptions short and clear.</li>
-<li>Document inputs and outputs where relevant.</li>
-</ul>
-<p>Example:</p></li></ul></dd>
+    <dd class="tag-description"><ul class="dummy"><li><p>Indicates whether materials are loading.</p></li></ul></dd>
     
 
     
@@ -185,44 +211,309 @@
 
 
 <div class="description usertext">
-    <p>Guide page</p>
-<p>JSDoc Guide (Placeholder)</p>
-<p>This page explains how JSDoc is structured and how to write consistent documentation.</p>
-<p>The goal is to keep documentation readable, predictable, and useful for developers.</p>
-<p>Core principles:</p>
-<ul>
-<li>Describe intent, not implementation details.</li>
-<li>Keep descriptions short and clear.</li>
-<li>Document inputs and outputs where relevant.</li>
-</ul>
-<p>Example:</p>
+    <p>Indicates whether materials are loading.</p>
 </div>
 
 
 
+    <h5 class="h5-types">Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+
+        </li>
+    </ul>
 
 
 
 
-    <h5 class="h5-examples">Example</h5>
+
+
+        
+            
+<h4 class="name" id=".materialsList"><span class="type-signature type-signature-static, constant">(static, constant) </span>materialsList<span class="type-signature"> :Array</span></h4>
+
+
+
+
+
+<dl class="details">
     
-    <pre class="prettyprint"><code>function add(a, b) {
-  return a + b;
-}
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>List of available materials.</p></li></ul></dd>
+    
 
-Best practices:
+    
 
-- Keep docs close to code.
-- Avoid redundant comments.
-- Update docs when logic changes.
+    
 
-This is a placeholder guide for internal documentation structure.</code></pre>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>List of available materials.</p>
+</div>
+
+
+
+    <h5 class="h5-types">Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array</span>
+
+
+
+        </li>
+    </ul>
+
+
+
 
 
 
         
     
 
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".fetchMaterials"><span class="type-signature type-signature-async, static">(async, static) </span>fetchMaterials<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Fetches materials from Firestore.</p></li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;void></span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".useMaterialsStore"><span class="type-signature type-signature-static">(static) </span>useMaterialsStore<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Pinia store for materials.</p></li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Materials store instance</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
     
 
     
