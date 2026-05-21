@@ -2,6 +2,9 @@
   "guides": {
     "displayName": "Guides"
   },
+  "difficultiesSolutions": {
+    "displayName": "Difficulties & Solutions"
+  },
   "components": {
     "displayName": "Components"
   },

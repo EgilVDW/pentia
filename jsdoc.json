@@ -2,7 +2,8 @@
   "source": {
     "include": [
       "src",
-      "guides"
+      "guides",
+      "difficultiesSolutions"
     ],
     "includePattern": ".+\\.js(doc|x)?$",
     "excludePattern": "(^|\\/|\\\\)_"
