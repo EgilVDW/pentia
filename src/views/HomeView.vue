@@ -104,6 +104,7 @@ const tasks = computed(() => {
         :src="DocumentIcon"
         :size="28"
         text="Dokumenter"
+        data-cy="document-button"
       />
 
       <LargeIconButton

@@ -5,7 +5,9 @@ import LoginPassword from "@/components/LoginPassword.vue";
 import LoginButton from "@/components/LoginButton.vue";
 import logoUrl from "@/assets/images/Milton_logo_white_outline.png";
 import login from "@/login";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const email = ref("");
 const password = ref("");
 
@@ -21,7 +23,7 @@ const handleLogin = async () => {
     );
 
     console.log("Logged in:", user);
-
+    router.push("/");
   } catch (err) {
     error.value = err.message;
   }
@@ -49,15 +51,17 @@ const handleLogin = async () => {
             v-model="email"
             placeholder="Email"
             class="login-view__input"
+            data-cy="email-input"
           />
 
           <LoginPassword
             v-model="password"
             placeholder="Adgangskode"
             class="login-view__input"
+            data-cy="password-input"
           />
 
-          <LoginButton type="submit" class="login-view__submit-btn">
+          <LoginButton type="submit" class="login-view__submit-btn" data-cy="login-button">
             Log ind
           </LoginButton>
         </form>

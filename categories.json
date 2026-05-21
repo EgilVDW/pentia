@@ -13,5 +13,8 @@
   },
   "utils": {
     "displayName": "Utils"
+  },
+  "tests": {
+    "displayName": "Tests"
   }
 }

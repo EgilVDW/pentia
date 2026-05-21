@@ -4,15 +4,11 @@ import Icon from "@/components/Icon.vue";
 import SearchInput from "@/components/SearchInput.vue";
 import SelectInput from "@/components/SelectInput.vue";
 import DocumentFile from "@/components/DocumentFile.vue";
+import { useProjectStore } from "@/stores/project";
 
-// Dummy data
-const documents = ref([
-  { id: 1, name: "Plantegning.pdf", category: "Tegninger", date: new Date(), fileUrl: "#" },
-  { id: 2, name: "Købsaftale.pdf", category: "Kontrakt", date: new Date(), fileUrl: "#" },
-  { id: 3, name: "Leveranceplan.pdf", category: "Tidsplan", date: new Date(), fileUrl: "#" },
-  { id: 4, name: "BBR-oplysninger.pdf", category: "Kontrakt", date: new Date(), fileUrl: "#" },
-  { id: 5, name: "Guide til aflevering.pdf", category: "Andet", date: new Date(), fileUrl: "#" }
-]);
+const projectStore = useProjectStore();
+
+const documents = computed(() => projectStore.documents);
 
 const searchQuery = ref("");
 const selectedCategory = ref("");
@@ -34,8 +30,12 @@ const sortOptions = [
 const filteredDocuments = computed(() => {
   return documents.value
     .filter((doc) => {
-      const matchesSearch = doc.name.toLowerCase().includes(searchQuery.value.toLowerCase());
-      const matchesCategory = selectedCategory.value === "" || doc.category === selectedCategory.value;
+      const matchesSearch = doc.name
+        .toLowerCase()
+        .includes(searchQuery.value.toLowerCase());
+      const matchesCategory =
+        selectedCategory.value === "" ||
+        doc.category === selectedCategory.value;
       return matchesSearch && matchesCategory;
     })
     .sort((a, b) => {
@@ -64,15 +64,23 @@ const handleSortSelect = (val) => {
       <h1 class="document-view__title">Dokumenter</h1>
 
       <div class="document-view__filters">
-        <SelectInput label="Alle kategorier" :options="categories" @select="handleCategorySelect"
-          class="document-view__filter-item">
+        <SelectInput
+          label="Alle kategorier"
+          :options="categories"
+          @select="handleCategorySelect"
+          class="document-view__filter-item"
+        >
           <template #icon>
             <Icon name="Kategorier" />
           </template>
         </SelectInput>
 
-        <SelectInput label="Seneste" :options="sortOptions" @select="handleSortSelect"
-          class="document-view__filter-item">
+        <SelectInput
+          label="Seneste"
+          :options="sortOptions"
+          @select="handleSortSelect"
+          class="document-view__filter-item"
+        >
           <template #icon>
             <Icon name="Filter" />
           </template>
@@ -86,7 +94,12 @@ const handleSortSelect = (val) => {
 
     <main class="document-view__content">
       <div class="document-view__list">
-        <DocumentFile v-for="doc in filteredDocuments" :key="doc.id" :doc="doc" class="document-view__item" />
+        <DocumentFile
+          v-for="doc in filteredDocuments"
+          :key="doc.id"
+          :doc="doc"
+          class="document-view__item"
+        />
       </div>
 
       <p v-if="filteredDocuments.length === 0" class="document-view__empty">
@@ -127,7 +140,6 @@ const handleSortSelect = (val) => {
   }
 
   &__search {
-
     :deep(.search-bar__input) {
       margin-top: -8px;
     }
