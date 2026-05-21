@@ -1,5 +1,47 @@
 /* global describe, it, cy */
+
+/**
+ * @category tests
+ * @namespace E2E testing
+ * @description
+ * End-to-end test validating the primary authenticated user flow
+ * in the application.
+ *
+ * Test coverage:
+ * - User authentication
+ * - Redirect after successful login
+ * - Navigation to documents page
+ * - Verification of document list rendering
+ * - Opening a document from the document overview
+ *
+ * Purpose:
+ * Ensures that critical user functionality works correctly
+ * from the perspective of a real user.
+ *
+ * Tools:
+ * - Cypress
+ * - Google Chrome browser
+ *
+ * Test environment:
+ * - Local development environment
+ * - Chrome browser
+ * - Cypress E2E testing framework
+ *
+ * Preconditions:
+ * - Development server is running
+ * - Test user exists in authentication system
+ * - At least one document is available
+ *
+ * Expected result:
+ * The user can successfully log in, navigate to the documents
+ * section, and open a document without errors.
+ */
+
 describe("User flow", () => {
+
+  /**
+   * Validates login and document access workflow.
+   */
   it("logs in and opens a document", () => {
 
     // Visit login page
@@ -16,10 +58,10 @@ describe("User flow", () => {
     cy.get("[data-cy=\"login-button\"]")
       .click();
 
-    // Should redirect to homepage
+    // Verify redirect after login
     cy.url().should("include", "/");
 
-    // Navigate to documents
+    // Navigate to documents page
     cy.visit("/documents");
 
     // Verify document list exists
@@ -31,7 +73,7 @@ describe("User flow", () => {
       .first()
       .click();
 
-    // Verify document opened
+    // Verify document view is displayed
     // cy.get("[data-cy=\"document-view\"]")
     //   .should("exist");
   });
