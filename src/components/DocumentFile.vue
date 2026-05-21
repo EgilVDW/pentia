@@ -15,14 +15,15 @@ const formatDate = (date) => {
     }) + `, ${d.getHours()}.${d.getMinutes()}`
   );
 };
-
-const openFile = (url) => {
-  if (url) window.open(url, "_blank");
-};
 </script>
 
 <template>
-  <div class="document-item" @click="openFile(doc.fileUrl)" data-cy="document-item">
+  <a
+    :href="doc.fileUrl"
+    target="_blank"
+    class="document-item"
+    data-cy="document-item"
+  >
     <div class="document-item__icon-container">
       <Icon name="Dokumenter" />
     </div>
@@ -30,10 +31,10 @@ const openFile = (url) => {
     <div class="document-item__info">
       <h4 class="document-item__name">{{ doc.name }}</h4>
       <p class="document-item__meta">
-        {{ doc.category }}, {{ formatDate(doc.date) }}
+        {{ doc.category }}, {{ formatDate(doc.createdAt) }}
       </p>
     </div>
-  </div>
+  </a>
 </template>
 
 <style lang="scss" scoped>
