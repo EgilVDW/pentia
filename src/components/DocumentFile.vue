@@ -22,7 +22,7 @@ const openFile = (url) => {
 </script>
 
 <template>
-  <div class="document-item" @click="openFile(doc.fileUrl)">
+  <div class="document-item" @click="openFile(doc.fileUrl)" data-cy="document-item">
     <div class="document-item__icon-container">
       <Icon name="Dokumenter" />
     </div>
