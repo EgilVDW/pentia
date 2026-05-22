@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Global - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Guides</h3><ul><li><a href="global.html#RefactoringConsiderations">RefactoringConsiderations</a></li></ul><h3>Stores</h3><ul><li><a href="AuthStore.html">AuthStore</a><ul class='methods'><li data-type='method'><a href="AuthStore.html#.fetchUserProfile">fetchUserProfile</a></li><li data-type='method'><a href="AuthStore.html#.initAuth">initAuth</a></li><li data-type='method'><a href="AuthStore.html#.login">login</a></li><li data-type='method'><a href="AuthStore.html#.logout">logout</a></li><li data-type='method'><a href="AuthStore.html#.useAuthStore">useAuthStore</a></li></ul></li><li><a href="ContactStore.html">ContactStore</a><ul class='methods'><li data-type='method'><a href="ContactStore.html#.fetchContact">fetchContact</a></li><li data-type='method'><a href="ContactStore.html#.useContactStore">useContactStore</a></li></ul></li><li><a href="DocumentCategoriesStore.html">DocumentCategoriesStore</a><ul class='methods'><li data-type='method'><a href="DocumentCategoriesStore.html#.fetchCategories">fetchCategories</a></li><li data-type='method'><a href="DocumentCategoriesStore.html#.useDocumentCategoriesStore">useDocumentCategoriesStore</a></li></ul></li><li><a href="ManagerStore.html">ManagerStore</a><ul class='methods'><li data-type='method'><a href="ManagerStore.html#.fetchManagers">fetchManagers</a></li><li data-type='method'><a href="ManagerStore.html#.useManagerStore">useManagerStore</a></li></ul></li><li><a href="MaterialsStore.html">MaterialsStore</a><ul class='methods'><li data-type='method'><a href="MaterialsStore.html#.fetchMaterials">fetchMaterials</a></li><li data-type='method'><a href="MaterialsStore.html#.useMaterialsStore">useMaterialsStore</a></li></ul></li><li><a href="ProjectStore.html">ProjectStore</a><ul class='methods'><li data-type='method'><a href="ProjectStore.html#.fetchProject">fetchProject</a></li><li data-type='method'><a href="ProjectStore.html#.fetchSubCollections">fetchSubCollections</a></li><li data-type='method'><a href="ProjectStore.html#.uploadProjectFile">uploadProjectFile</a></li><li data-type='method'><a href="ProjectStore.html#.useProjectStore">useProjectStore</a></li></ul></li><li><a href="UserStore.html">UserStore</a><ul class='methods'><li data-type='method'><a href="UserStore.html#.initAuth">initAuth</a></li><li data-type='method'><a href="UserStore.html#.loadData">loadData</a></li><li data-type='method'><a href="UserStore.html#.useUserStore">useUserStore</a></li></ul></li></ul><h3>Tests</h3><ul><li><a href="E2E%2520testing.html">E2E testing</a></li></ul><h3>Namespaces</h3><ul><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ul><h3><a href="global.html">Global</a></h3>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Global</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="RefactoringConsiderations"><span class="type-signature"></span>RefactoringConsiderations<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><h1>Refactoring considerations</h1>
+<h2>1. Pinia store logic separation</h2>
+<h3>Current problem</h3>
+<p>Multiple Pinia stores fetch and store overlapping data from Firestore.
+This results in:</p>
+<ul>
+<li>redundant data caching</li>
+<li>overly complex stores</li>
+</ul>
+<h3>Consideration</h3>
+<p>Establish clearer distinctions and separations between Pinia stores,
+trimming the amount of data fetched by each store.</p>
+<h2>2. Components structure and naming conventions</h2>
+<h3>Current problem</h3>
+<p>Components are mostly stored in a single shared folder, with only a small separation for desktop-specific components.
+In addition, there is no consistent naming convention for components or props.</p>
+<p>This results in:</p>
+<ul>
+<li>difficulty locating related components</li>
+<li>unclear component responsibilities</li>
+<li>needing to inspect props manually more often</li>
+</ul>
+<h3>Consideration</h3>
+<p>Establish consistent naming conventions for components and props,
+along with a more organized folder structure.</p>
+<h2>3. More components</h2>
+<h3>Current problem</h3>
+<p>View templates utilize a combination of components and native elements due to prioritizing UI components over layout components.</p>
+<p>This results in:</p>
+<ul>
+<li>less flexibility when restructuring views</li>
+<li>duplicated layout structures</li>
+<li>less reusability</li>
+</ul>
+<h3>Consideration</h3>
+<p>Create reusable layout components and structured blocks
+to reduce duplication across views.</p></li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <h1>Refactoring considerations</h1>
+<h2>1. Pinia store logic separation</h2>
+<h3>Current problem</h3>
+<p>Multiple Pinia stores fetch and store overlapping data from Firestore.
+This results in:</p>
+<ul>
+<li>redundant data caching</li>
+<li>overly complex stores</li>
+</ul>
+<h3>Consideration</h3>
+<p>Establish clearer distinctions and separations between Pinia stores,
+trimming the amount of data fetched by each store.</p>
+<h2>2. Components structure and naming conventions</h2>
+<h3>Current problem</h3>
+<p>Components are mostly stored in a single shared folder, with only a small separation for desktop-specific components.
+In addition, there is no consistent naming convention for components or props.</p>
+<p>This results in:</p>
+<ul>
+<li>difficulty locating related components</li>
+<li>unclear component responsibilities</li>
+<li>needing to inspect props manually more often</li>
+</ul>
+<h3>Consideration</h3>
+<p>Establish consistent naming conventions for components and props,
+along with a more organized folder structure.</p>
+<h2>3. More components</h2>
+<h3>Current problem</h3>
+<p>View templates utilize a combination of components and native elements due to prioritizing UI components over layout components.</p>
+<p>This results in:</p>
+<ul>
+<li>less flexibility when restructuring views</li>
+<li>duplicated layout structures</li>
+<li>less reusability</li>
+</ul>
+<h3>Consideration</h3>
+<p>Create reusable layout components and structured blocks
+to reduce duplication across views.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

@@ -3,7 +3,7 @@
     "include": [
       "src",
       "guides",
-      "difficultiesSolutions"
+      "cypress/e2e"
     ],
     "includePattern": ".+\\.js(doc|x)?$",
     "excludePattern": "(^|\\/|\\\\)_"
