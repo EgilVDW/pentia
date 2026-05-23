@@ -20,7 +20,6 @@ const size = computed(() => {
   } else {
     return "heading--small"; // default
   }
-  return null;
 });
 </script>
 <template>
