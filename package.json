@@ -10,7 +10,7 @@
     "docs": "jsdoc -c jsdoc.json",
     "preview": "vite preview",
     "lint": "eslint src/",
-    "test": "vitest",
+    "test": "jest",
     "test:run": "vitest run"
   },
   "dependencies": {
