@@ -14,8 +14,7 @@ const overallProgress = ref(0);
     <h2><span>Byggeleder:</span> Kim Agerbæk</h2>
 
     <header class="status-view__header">
-      <!-- <MaterialsProgressBar :progress="overallProgress" /> -->
-      progress bar her
+      <MaterialsProgressBar :progress="overallProgress" />
     </header>
 
     <div class="status-view__card">
