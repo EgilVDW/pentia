@@ -1,11 +1,11 @@
 /* global describe, it, cy */
 
 /**
- * @category tests
- * @namespace E2E testing
+ * @category e2e-tests
+ * @namespace Login to open document
  * @description
- * End-to-end test validating the primary authenticated user flow
- * in the application.
+ * ## End-to-end test validating the primary authenticated user flow
+ * ## in the application.
  *
  * Test coverage:
  * - User authentication

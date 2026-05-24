@@ -109,10 +109,9 @@
  * - stable
  * - maintainable
  * - fast to execute
- * - focused on business logic
  *
- * @category tests
- * @namespace Unit testing
+ * @category unit-tests
+ * @namespace User store test
  */
 
 

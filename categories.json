@@ -14,7 +14,10 @@
   "utils": {
     "displayName": "Utils"
   },
-  "tests": {
-    "displayName": "Tests"
+  "e2e-tests": {
+    "displayName": "E2E Tests"
+  },
+  "unit-tests": {
+    "displayName": "Unit Tests"
   }
 }
