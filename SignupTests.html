@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>SignupTests - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Guides</h3><ul><li><a href="global.html#Guide">Guide</a></li></ul><h3>Stores</h3><ul><li><a href="AuthStore.html">AuthStore</a><ul class='methods'><li data-type='method'><a href="AuthStore.html#.fetchUserProfile">fetchUserProfile</a></li><li data-type='method'><a href="AuthStore.html#.initAuth">initAuth</a></li><li data-type='method'><a href="AuthStore.html#.login">login</a></li><li data-type='method'><a href="AuthStore.html#.logout">logout</a></li><li data-type='method'><a href="AuthStore.html#.useAuthStore">useAuthStore</a></li></ul></li><li><a href="ContactStore.html">ContactStore</a><ul class='methods'><li data-type='method'><a href="ContactStore.html#.fetchContact">fetchContact</a></li><li data-type='method'><a href="ContactStore.html#.useContactStore">useContactStore</a></li></ul></li><li><a href="DocumentCategoriesStore.html">DocumentCategoriesStore</a><ul class='methods'><li data-type='method'><a href="DocumentCategoriesStore.html#.fetchCategories">fetchCategories</a></li><li data-type='method'><a href="DocumentCategoriesStore.html#.useDocumentCategoriesStore">useDocumentCategoriesStore</a></li></ul></li><li><a href="ManagerStore.html">ManagerStore</a><ul class='methods'><li data-type='method'><a href="ManagerStore.html#.fetchManagers">fetchManagers</a></li><li data-type='method'><a href="ManagerStore.html#.useManagerStore">useManagerStore</a></li></ul></li><li><a href="MaterialsStore.html">MaterialsStore</a><ul class='methods'><li data-type='method'><a href="MaterialsStore.html#.fetchMaterials">fetchMaterials</a></li><li data-type='method'><a href="MaterialsStore.html#.useMaterialsStore">useMaterialsStore</a></li></ul></li><li><a href="ProjectStore.html">ProjectStore</a><ul class='methods'><li data-type='method'><a href="ProjectStore.html#.fetchProject">fetchProject</a></li><li data-type='method'><a href="ProjectStore.html#.fetchSubCollections">fetchSubCollections</a></li><li data-type='method'><a href="ProjectStore.html#.uploadProjectFile">uploadProjectFile</a></li><li data-type='method'><a href="ProjectStore.html#.useProjectStore">useProjectStore</a></li></ul></li><li><a href="UserStore.html">UserStore</a><ul class='methods'><li data-type='method'><a href="UserStore.html#.initAuth">initAuth</a></li><li data-type='method'><a href="UserStore.html#.loadData">loadData</a></li><li data-type='method'><a href="UserStore.html#.useUserStore">useUserStore</a></li></ul></li></ul><h3>Tests</h3><ul><li><a href="E2E%2520testing.html">E2E testing</a></li><li><a href="SignupTests.html">SignupTests</a></li><li><a href="Unit%2520testing.html">Unit testing</a></li></ul><h3>Namespaces</h3><ul><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ul><h3><a href="global.html">Global</a></h3>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">SignupTests</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            Namespace
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+
+    
+
+    <h4 class="name" id="SignupTests">SignupTests</h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><h1>Signup View Unit Tests</h1>
+<h2>Purpose</h2>
+<p>This test file validates the behavior of the Signup view component.
+The component is responsible for:</p>
+<ul>
+<li>collecting user registration data</li>
+<li>creating a new authenticated account</li>
+<li>storing user profile information in Firestore</li>
+<li>displaying success and error feedback to the user</li>
+</ul>
+<p>These tests ensure the signup flow behaves correctly under both successful
+and failing conditions while keeping all external services mocked.</p>
+<h2>What is being tested</h2>
+<h3>1. Successful user signup flow</h3>
+<p>The first test verifies the complete signup process when registration succeeds.</p>
+<p>The test simulates:</p>
+<ul>
+<li>filling out the signup form</li>
+<li>submitting the form</li>
+<li>receiving a successful authentication response</li>
+<li>storing the user profile in Firestore</li>
+</ul>
+<p>Mocked signup data includes:</p>
+<ul>
+<li>a generated Firebase user ID</li>
+<li>a valid email address</li>
+</ul>
+<p>The test validates that:</p>
+<ul>
+<li>the signup service is called with the correct email and password</li>
+<li>Firestore <code>setDoc()</code> is called with the expected user profile data</li>
+<li>the success message is rendered in the component</li>
+</ul>
+<p>This confirms that:</p>
+<ul>
+<li>form bindings work correctly</li>
+<li>form submission triggers the expected logic</li>
+<li>Firestore persistence is executed correctly</li>
+<li>user feedback is displayed after account creation</li>
+</ul>
+<h2>2. Signup failure handling</h2>
+<p>The second test verifies component behavior when the signup request fails.</p>
+<p>The mocked signup service rejects with an error.</p>
+<p>The test validates that:</p>
+<ul>
+<li>the component catches the error safely</li>
+<li>the error message is displayed to the user</li>
+</ul>
+<p>This ensures the component can safely handle:</p>
+<ul>
+<li>authentication failures</li>
+<li>invalid signup attempts</li>
+<li>backend or network issues</li>
+</ul>
+<h2>Why external services are mocked</h2>
+<p>Firebase authentication and Firestore methods are mocked to isolate
+component behavior from external systems.</p>
+<p>This provides several benefits:</p>
+<ul>
+<li>tests execute faster</li>
+<li>network requests are avoided</li>
+<li>Firestore writes are prevented</li>
+<li>authentication is simulated safely</li>
+<li>test results remain deterministic</li>
+</ul>
+<p>The following services are mocked:</p>
+<ul>
+<li>signup authentication service</li>
+<li>Firestore <code>doc()</code></li>
+<li>Firestore <code>setDoc()</code></li>
+<li>Firebase database configuration</li>
+</ul>
+<h2>Why Vue Test Utils is used</h2>
+<p><code>mount()</code> from Vue Test Utils is used to render the component in a realistic testing environment.</p>
+<p>This allows the tests to:</p>
+<ul>
+<li>interact with DOM elements</li>
+<li>simulate user input</li>
+<li>trigger form submission events</li>
+<li>inspect rendered UI output</li>
+</ul>
+<p>The tests simulate actual user behavior rather than testing implementation details directly.</p>
+<h2>Testing strategy</h2>
+<p>The tests follow a component-level unit testing strategy:</p>
+<ul>
+<li>external dependencies are mocked</li>
+<li>user interaction is simulated</li>
+<li>UI rendering and business logic are validated together</li>
+</ul>
+<p>This makes the tests:</p>
+<ul>
+<li>reliable</li>
+<li>maintainable</li>
+<li>fast to execute</li>
+<li>focused on user-facing functionality</li>
+</ul></li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
