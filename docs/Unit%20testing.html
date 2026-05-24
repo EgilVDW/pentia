@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Unit testing - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Guides</h3><ul><li><a href="global.html#Guide">Guide</a></li></ul><h3>Stores</h3><ul><li><a href="AuthStore.html">AuthStore</a><ul class='methods'><li data-type='method'><a href="AuthStore.html#.fetchUserProfile">fetchUserProfile</a></li><li data-type='method'><a href="AuthStore.html#.initAuth">initAuth</a></li><li data-type='method'><a href="AuthStore.html#.login">login</a></li><li data-type='method'><a href="AuthStore.html#.logout">logout</a></li><li data-type='method'><a href="AuthStore.html#.useAuthStore">useAuthStore</a></li></ul></li><li><a href="ContactStore.html">ContactStore</a><ul class='methods'><li data-type='method'><a href="ContactStore.html#.fetchContact">fetchContact</a></li><li data-type='method'><a href="ContactStore.html#.useContactStore">useContactStore</a></li></ul></li><li><a href="DocumentCategoriesStore.html">DocumentCategoriesStore</a><ul class='methods'><li data-type='method'><a href="DocumentCategoriesStore.html#.fetchCategories">fetchCategories</a></li><li data-type='method'><a href="DocumentCategoriesStore.html#.useDocumentCategoriesStore">useDocumentCategoriesStore</a></li></ul></li><li><a href="ManagerStore.html">ManagerStore</a><ul class='methods'><li data-type='method'><a href="ManagerStore.html#.fetchManagers">fetchManagers</a></li><li data-type='method'><a href="ManagerStore.html#.useManagerStore">useManagerStore</a></li></ul></li><li><a href="MaterialsStore.html">MaterialsStore</a><ul class='methods'><li data-type='method'><a href="MaterialsStore.html#.fetchMaterials">fetchMaterials</a></li><li data-type='method'><a href="MaterialsStore.html#.useMaterialsStore">useMaterialsStore</a></li></ul></li><li><a href="ProjectStore.html">ProjectStore</a><ul class='methods'><li data-type='method'><a href="ProjectStore.html#.fetchProject">fetchProject</a></li><li data-type='method'><a href="ProjectStore.html#.fetchSubCollections">fetchSubCollections</a></li><li data-type='method'><a href="ProjectStore.html#.uploadProjectFile">uploadProjectFile</a></li><li data-type='method'><a href="ProjectStore.html#.useProjectStore">useProjectStore</a></li></ul></li><li><a href="UserStore.html">UserStore</a><ul class='methods'><li data-type='method'><a href="UserStore.html#.initAuth">initAuth</a></li><li data-type='method'><a href="UserStore.html#.loadData">loadData</a></li><li data-type='method'><a href="UserStore.html#.useUserStore">useUserStore</a></li></ul></li></ul><h3>Tests</h3><ul><li><a href="E2E%2520testing.html">E2E testing</a></li><li><a href="SignupTests.html">SignupTests</a></li><li><a href="Unit%2520testing.html">Unit testing</a></li></ul><h3>Namespaces</h3><ul><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ul><h3><a href="global.html">Global</a></h3>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Unit testing</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            Namespace
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+
+    
+
+    <h4 class="name" id="Unit testing">Unit testing</h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><h2>User Store Unit Tests</h2>
+<h2>Purpose</h2>
+<p>This test file validates the behavior of the Pinia user store.
+The store is responsible for:</p>
+<ul>
+<li>storing authenticated user data</li>
+<li>storing related project data</li>
+<li>handling Firestore fetch operations</li>
+<li>maintaining reactive application state</li>
+</ul>
+<p>These tests ensure the store behaves predictably and safely when interacting with mocked Firebase services.</p>
+<h2>What is being tested</h2>
+<h3>1. Initial store state</h3>
+<p>The first test verifies that the store initializes with empty default values.</p>
+<p>The following properties are expected to be <code>null</code>:</p>
+<ul>
+<li><code>user</code></li>
+<li><code>project</code></li>
+<li><code>projectId</code></li>
+<li><code>firebaseUser</code></li>
+</ul>
+<p>This confirms that:</p>
+<ul>
+<li>the store starts from a clean state</li>
+<li>no stale data exists before loading</li>
+<li>state defaults are correctly configured</li>
+</ul>
+<h3>2. Loading user and project data</h3>
+<p>The second test verifies that the <code>loadData()</code> action:</p>
+<ul>
+<li>retrieves user data from Firestore</li>
+<li>retrieves project data related to the user</li>
+<li>updates the Pinia state correctly</li>
+</ul>
+<p>Mocked Firestore responses simulate:</p>
+<ul>
+<li>an existing user document</li>
+<li>a matching project query result</li>
+</ul>
+<p>The test validates that:</p>
+<ul>
+<li>the user object is populated correctly</li>
+<li>the project object contains merged Firestore data</li>
+<li>the project ID is extracted and stored separately</li>
+</ul>
+<p>This confirms that the store correctly transforms and stores Firestore responses.</p>
+<h3>3. Missing user handling</h3>
+<p>The final test verifies behavior when a Firestore user document does not exist.</p>
+<p>The mocked Firestore response returns:</p>
+<ul>
+<li><code>exists() === false</code></li>
+</ul>
+<p>The test validates that:</p>
+<ul>
+<li>the <code>user</code> state remains <code>null</code></li>
+</ul>
+<p>This ensures the application can safely handle:</p>
+<ul>
+<li>deleted users</li>
+<li>invalid user IDs</li>
+<li>incomplete Firestore data</li>
+</ul>
+<h2>Why Firestore is mocked</h2>
+<p>Firebase and Firestore methods are mocked to isolate the store logic from external services.</p>
+<p>This provides several benefits:</p>
+<ul>
+<li>tests run faster</li>
+<li>tests do not require network access</li>
+<li>Firestore billing is avoided</li>
+<li>results remain deterministic</li>
+<li>failures are easier to debug</li>
+</ul>
+<p>The following Firestore methods are mocked:</p>
+<ul>
+<li><code>getDoc</code></li>
+<li><code>getDocs</code></li>
+<li><code>doc</code></li>
+<li><code>collection</code></li>
+<li><code>query</code></li>
+<li><code>where</code></li>
+</ul>
+<h2>Why Pinia testing utilities are used</h2>
+<p><code>createTestingPinia()</code> is used to create an isolated Pinia environment for each test.</p>
+<p>This ensures:</p>
+<ul>
+<li>store state does not leak between tests</li>
+<li>actions can be spied on safely</li>
+<li>each test starts from a predictable baseline</li>
+</ul>
+<p><code>vi.clearAllMocks()</code> is also executed before each test to reset all mocked functions.</p>
+<h2>Testing strategy</h2>
+<p>The tests follow a unit testing approach:</p>
+<ul>
+<li>dependencies are mocked</li>
+<li>only store behavior is validated</li>
+<li>external systems are excluded</li>
+</ul>
+<p>This makes the tests:</p>
+<ul>
+<li>stable</li>
+<li>maintainable</li>
+<li>fast to execute</li>
+</ul></li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

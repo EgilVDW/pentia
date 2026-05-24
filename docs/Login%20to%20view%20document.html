@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Login to view document - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Guides</h3><ul><li><a href="global.html#Guide">Guide</a></li></ul><h3>Stores</h3><ul><li><a href="AuthStore.html">AuthStore</a><ul class='methods'><li data-type='method'><a href="AuthStore.html#.fetchUserProfile">fetchUserProfile</a></li><li data-type='method'><a href="AuthStore.html#.initAuth">initAuth</a></li><li data-type='method'><a href="AuthStore.html#.login">login</a></li><li data-type='method'><a href="AuthStore.html#.logout">logout</a></li><li data-type='method'><a href="AuthStore.html#.useAuthStore">useAuthStore</a></li></ul></li><li><a href="ContactStore.html">ContactStore</a><ul class='methods'><li data-type='method'><a href="ContactStore.html#.fetchContact">fetchContact</a></li><li data-type='method'><a href="ContactStore.html#.useContactStore">useContactStore</a></li></ul></li><li><a href="DocumentCategoriesStore.html">DocumentCategoriesStore</a><ul class='methods'><li data-type='method'><a href="DocumentCategoriesStore.html#.fetchCategories">fetchCategories</a></li><li data-type='method'><a href="DocumentCategoriesStore.html#.useDocumentCategoriesStore">useDocumentCategoriesStore</a></li></ul></li><li><a href="ManagerStore.html">ManagerStore</a><ul class='methods'><li data-type='method'><a href="ManagerStore.html#.fetchManagers">fetchManagers</a></li><li data-type='method'><a href="ManagerStore.html#.useManagerStore">useManagerStore</a></li></ul></li><li><a href="MaterialsStore.html">MaterialsStore</a><ul class='methods'><li data-type='method'><a href="MaterialsStore.html#.fetchMaterials">fetchMaterials</a></li><li data-type='method'><a href="MaterialsStore.html#.useMaterialsStore">useMaterialsStore</a></li></ul></li><li><a href="ProjectStore.html">ProjectStore</a><ul class='methods'><li data-type='method'><a href="ProjectStore.html#.fetchProject">fetchProject</a></li><li data-type='method'><a href="ProjectStore.html#.fetchSubCollections">fetchSubCollections</a></li><li data-type='method'><a href="ProjectStore.html#.uploadProjectFile">uploadProjectFile</a></li><li data-type='method'><a href="ProjectStore.html#.useProjectStore">useProjectStore</a></li></ul></li><li><a href="UserStore.html">UserStore</a><ul class='methods'><li data-type='method'><a href="UserStore.html#.initAuth">initAuth</a></li><li data-type='method'><a href="UserStore.html#.loadData">loadData</a></li><li data-type='method'><a href="UserStore.html#.useUserStore">useUserStore</a></li></ul></li></ul><h3>E2E Tests</h3><ul><li><a href="Login%2520to%2520view%2520document.html">Login to view document</a></li></ul><h3>Unit Tests</h3><ul><li><a href="Signup%2520test.html">Signup test</a></li><li><a href="User%2520store%2520test.html">User store test</a></li></ul><h3>Namespaces</h3><ul><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ul><h3><a href="global.html">Global</a></h3>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Login to view document</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            Namespace
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+
+    
+
+    <h4 class="name" id="Login to view document">Login to view document</h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><h2>End-to-end test validating the primary authenticated user flow</h2>
+<h2>in the application.</h2>
+<p>Test coverage:</p>
+<ul>
+<li>User authentication</li>
+<li>Redirect after successful login</li>
+<li>Navigation to documents page</li>
+<li>Verification of document list rendering</li>
+<li>Opening a document from the document overview</li>
+</ul>
+<p>Purpose:
+Ensures that critical user functionality works correctly
+from the perspective of a real user.</p>
+<p>Tools:</p>
+<ul>
+<li>Cypress</li>
+<li>Google Chrome browser</li>
+</ul>
+<p>Test environment:</p>
+<ul>
+<li>Local development environment</li>
+<li>Chrome browser</li>
+<li>Cypress E2E testing framework</li>
+</ul>
+<p>Preconditions:</p>
+<ul>
+<li>Development server is running</li>
+<li>Test user exists in authentication system</li>
+<li>At least one document is available</li>
+</ul>
+<p>Expected result:
+The user can successfully log in, navigate to the documents
+section, and open a document without errors.</p></li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
