@@ -1,14 +1,20 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import Icon from "@/components/Icon.vue";
 import SearchInput from "@/components/SearchInput.vue";
 import SelectInput from "@/components/SelectInput.vue";
 import DocumentFile from "@/components/DocumentFile.vue";
 import { useProjectStore } from "@/stores/project";
+import { auth } from "@/firebase"
 
 const projectStore = useProjectStore();
 
 const documents = computed(() => projectStore.documents);
+
+onMounted(async () => {
+  await auth.authStateReady();
+  await projectStore.fetchProject();
+});
 
 const searchQuery = ref("");
 const selectedCategory = ref("");
@@ -56,6 +62,7 @@ const handleCategorySelect = (val) => {
 const handleSortSelect = (val) => {
   selectedSort.value = val;
 };
+
 </script>
 
 <template>
@@ -99,6 +106,7 @@ const handleSortSelect = (val) => {
           :key="doc.id"
           :doc="doc"
           class="document-view__item"
+          data-cy="document-item"
         />
       </div>
 
