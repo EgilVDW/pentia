@@ -20,64 +20,22 @@ import {
 
 import { auth, db } from "@/firebase";
 
-/**
- * Pinia store for managing authenticated user data
- * and related project information.
- *
- * @memberof UserStore
- * @function useUserStore
- *
- * @returns {Object} User store instance
- */
 export const useUserStore = defineStore("user", () => {
-  /**
-   * Raw Firebase authenticated user.
-   *
-   * @memberof UserStore
-   * @type {Object|null}
-   */
   const firebaseUser = ref(null);
-
-  /**
-   * Application user profile data from Firestore.
-   *
-   * @memberof UserStore
-   * @type {Object|null}
-   */
   const user = ref(null);
-
-  /**
-   * Project associated with the user.
-   *
-   * @memberof UserStore
-   * @type {Object|null}
-   */
   const project = ref(null);
-
-  /**
-   * ID of the user's project.
-   *
-   * @memberof UserStore
-   * @type {string|null}
-   */
   const projectId = ref(null);
 
-  /**
-   * Loads user profile and associated project data
-   * from Firestore.
-   *
-   * @memberof UserStore
-   * @async
-   * @function loadData
-   *
-   * @param {string} userId Firebase user UID
-   *
-   * @returns {Promise<void>}
-   */
   async function loadData(userId) {
     try {
+      console.log("login with ", userId);
+
       // USER
-      const userSnap = await getDoc(doc(db, "users", userId));
+      const userRef = doc(db, "users", userId);
+      console.log("get user ", userRef.path);
+
+      const userSnap = await getDoc(userRef);
+      console.log("User data ", userSnap.data());
 
       if (!userSnap.exists()) {
         user.value = null;
@@ -87,12 +45,23 @@ export const useUserStore = defineStore("user", () => {
       user.value = userSnap.data();
 
       // PROJECT
+      const userDocRef = doc(db, "users", userId);
+
       const q = query(
         collection(db, "projects"),
-        where("customerId", "==", doc(db, "users", userId))
+        where("customerId", "==", userDocRef)
       );
+      console.log("get project where customerId =", userDocRef.path);
 
       const projectSnap = await getDocs(q);
+
+
+      projectSnap.docs.forEach((projectDoc) => {
+        console.log("Project ", {
+          id: projectDoc.id,
+          ...projectDoc.data()
+        });
+      });
 
       if (projectSnap.empty) {
         project.value = null;
@@ -107,19 +76,13 @@ export const useUserStore = defineStore("user", () => {
       };
 
       projectId.value = projectDoc.id;
+
+      console.log("Project stored ", project.value);
     } catch (err) {
-      console.error(err);
+      console.error("error", err);
     }
   }
 
-  /**
-   * Initializes Firebase authentication listener.
-   *
-   * Updates store state whenever auth state changes.
-   *
-   * @memberof UserStore
-   * @function initAuth
-   */
   function initAuth() {
     onAuthStateChanged(auth, async (authUser) => {
       if (!authUser) {

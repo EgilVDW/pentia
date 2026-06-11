@@ -3,6 +3,8 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage"
+import { connectFirestoreEmulator } from "firebase/firestore";
+import { connectAuthEmulator } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,3 +24,13 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app)
 export const db = getFirestore(app)
 export const storage = getStorage(app)
+
+if (window.location.hostname === "localhost") {
+  connectFirestoreEmulator(db, "127.0.0.1", 8080)
+  connectAuthEmulator(auth, "http://127.0.0.1:9099")
+}
+
+// clear local storage
+// localStorage.clear()
+// indexedDB.deleteDatabase("firebaseLocalStorageDb")
+// location.reload()
