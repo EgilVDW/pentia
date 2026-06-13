@@ -34,3 +34,7 @@ if (window.location.hostname === "localhost") {
 // localStorage.clear()
 // indexedDB.deleteDatabase("firebaseLocalStorageDb")
 // location.reload()
+
+// start emulator
+// firebase emulators:start --only firestore,auth --project pentia-1
+// node seed-emulator.js
