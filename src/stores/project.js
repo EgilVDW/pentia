@@ -13,7 +13,11 @@ import {
   collection,
   getDocs,
   addDoc,
-  doc
+  doc,
+  onSnapshot,
+  query,
+  orderBy,
+  serverTimestamp
 } from "firebase/firestore";
 
 import {
@@ -119,6 +123,8 @@ export const useProjectStore = defineStore("project", () => {
         };
 
         await fetchSubCollections(projectDoc.id);
+
+        listenToMessages(projectDoc.id);
       }
     } catch (error) {
       console.error("Fejl ved hentning af projekt:", error);
@@ -141,48 +147,36 @@ export const useProjectStore = defineStore("project", () => {
   async function fetchSubCollections(projectId) {
     const pRef = doc(db, "projects", projectId);
 
-    const [
-      tasksSnap,
-      docsSnap,
-      calSnap,
-      imgSnap,
-      msgSnap,
-      notifSnap
-    ] = await Promise.all([
-      getDocs(collection(pRef, "tasks")),
-      getDocs(collection(pRef, "documents")),
-      getDocs(collection(pRef, "calendar")),
-      getDocs(collection(pRef, "images")),
-      getDocs(collection(pRef, "messages")),
-      getDocs(collection(pRef, "notifications"))
-    ]);
+    const [tasksSnap, docsSnap, calSnap, imgSnap, notifSnap] =
+      await Promise.all([
+        getDocs(collection(pRef, "tasks")),
+        getDocs(collection(pRef, "documents")),
+        getDocs(collection(pRef, "calendar")),
+        getDocs(collection(pRef, "images")),
+        getDocs(collection(pRef, "notifications"))
+      ]);
 
-    tasks.value = tasksSnap.docs.map(d => ({
+    tasks.value = tasksSnap.docs.map((d) => ({
       id: d.id,
       ...d.data()
     }));
 
-    documents.value = docsSnap.docs.map(d => ({
+    documents.value = docsSnap.docs.map((d) => ({
       id: d.id,
       ...d.data()
     }));
 
-    calendar.value = calSnap.docs.map(d => ({
+    calendar.value = calSnap.docs.map((d) => ({
       id: d.id,
       ...d.data()
     }));
 
-    images.value = imgSnap.docs.map(d => ({
+    images.value = imgSnap.docs.map((d) => ({
       id: d.id,
       ...d.data()
     }));
 
-    messages.value = msgSnap.docs.map(d => ({
-      id: d.id,
-      ...d.data()
-    }));
-
-    notifications.value = notifSnap.docs.map(d => ({
+    notifications.value = notifSnap.docs.map((d) => ({
       id: d.id,
       ...d.data()
     }));
@@ -222,12 +216,7 @@ export const useProjectStore = defineStore("project", () => {
       };
 
       const docRef = await addDoc(
-        collection(
-          db,
-          "projects",
-          currentProject.value.id,
-          subcollectionName
-        ),
+        collection(db, "projects", currentProject.value.id, subcollectionName),
         docData
       );
 
@@ -239,11 +228,47 @@ export const useProjectStore = defineStore("project", () => {
         images.value.push({ id: docRef.id, ...docData });
       }
     } catch (error) {
-      console.error(
-        `Fejl ved upload til ${subcollectionName}:`,
-        error
-      );
+      console.error(`Fejl ved upload til ${subcollectionName}:`, error);
     }
+  }
+
+  let unsubscribeMessages = null;
+
+  function listenToMessages(projectId) {
+    if (!projectId) return;
+
+    // stop previous listener
+    if (unsubscribeMessages) {
+      unsubscribeMessages();
+    }
+
+    const messagesRef = collection(db, "projects", projectId, "messages");
+
+    const q = query(messagesRef, orderBy("createdAt", "asc"));
+
+    unsubscribeMessages = onSnapshot(q, (snapshot) => {
+      messages.value = snapshot.docs.map((d) => ({
+        id: d.id,
+        ...d.data()
+      }));
+    });
+  }
+
+  async function sendMessage({ content, sender }) {
+    if (!currentProject.value) return;
+
+    const messagesRef = collection(
+      db,
+      "projects",
+      currentProject.value.id,
+      "messages"
+    );
+
+    await addDoc(messagesRef, {
+      content,
+      sender,
+      createdAt: serverTimestamp()
+    });
   }
 
   return {
@@ -256,6 +281,8 @@ export const useProjectStore = defineStore("project", () => {
     messages,
     notifications,
     fetchProject,
-    uploadProjectFile
+    uploadProjectFile,
+    listenToMessages,
+    sendMessage
   };
 });

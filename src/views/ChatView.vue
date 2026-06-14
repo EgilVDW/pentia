@@ -2,74 +2,48 @@
 import ChatHeader from "@/components/ChatHeader.vue";
 import MessageList from "@/components/MessageList.vue";
 import MessageInput from "@/components/MessageInput.vue";
-import { ref, onMounted } from "vue";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  doc,
-  getDoc,
-  orderBy
-} from "firebase/firestore";
-import { db } from "@/firebase";
 
-const customer = ref(null);
-const manager = ref(null);
+import { computed, onMounted, watch, ref } from "vue";
 
-const customerId = "FVyJCzaC2MGGqbDsDwsF";
+import { useAuthStore } from "@/stores/auth";
+import { useProjectStore } from "@/stores/project";
+import { useContactStore } from "@/stores/contact";
 
-const messages = ref([]);
-
-onMounted(async () => {
-  const customerRef = doc(db, "users", customerId);
-
-  const [customerSnapshot, projectSnapshot] = await Promise.all([
-    getDoc(customerRef),
-    getDocs(
-      query(collection(db, "projects"), where("customerId", "==", customerRef))
-    )
-  ]);
-
-  if (customerSnapshot.exists()) {
-    customer.value = customerSnapshot.data();
-  }
-
-  const projectDoc = projectSnapshot.docs[0];
-  if (!projectDoc) return;
-
-  const [managerSnapshot, messagesSnapshot] = await Promise.all([
-    getDoc(projectDoc.data().managerId),
-    getDocs(
-      query(
-        collection(db, "projects", projectDoc.id, "messages"),
-        orderBy("createdAt", "asc")
-      )
-    )
-  ]);
-
-  if (managerSnapshot.exists()) {
-    manager.value = managerSnapshot.data();
-  }
-
-  messages.value = messagesSnapshot.docs.map((d) => ({
-    id: d.id,
-    ...d.data()
-  }));
-});
+const authStore = useAuthStore();
+const projectStore = useProjectStore();
+const contactStore = useContactStore();
 
 const message = ref("");
 
-const sendMessage = (text) => {
-  messages.value.push({
-    sender: {
-      id: customerId
-    },
-    content: text,
-    timestamp: Date.now(),
-    status: "sent"
+const customerId = computed(() => authStore.user?.uid);
+
+const manager = computed(() => contactStore.contact);
+const messages = computed(() => projectStore.messages);
+
+onMounted(async () => {
+  if (!projectStore.currentProject) {
+    await projectStore.fetchProject();
+  }
+});
+
+watch(
+  () => [authStore.user, projectStore.currentProject],
+  async () => {
+    if (projectStore.currentProject) {
+      await contactStore.fetchContact(projectStore.currentProject.managerId);
+    }
+  },
+  { immediate: true }
+);
+
+async function sendMessage(content) {
+  await projectStore.sendMessage({
+    content,
+    sender: customerId.value
   });
-};
+
+  message.value = "";
+}
 
 const getRole = (role) => {
   const map = {
@@ -88,7 +62,7 @@ const getRole = (role) => {
       :active="manager.isActive"
     />
     <div class="chat-view__chat">
-      <MessageList v-if="messages" :data="messages" :sender="customerId" />
+      <MessageList :data="messages" :sender="customerId" />
       <MessageInput v-model="message" @send="sendMessage" />
     </div>
   </main>
