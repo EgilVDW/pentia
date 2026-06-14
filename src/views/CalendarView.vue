@@ -12,7 +12,8 @@ onMounted(() => {
   onSnapshot(
     collection(db, "projects", projectId, "calendar"),
     snapshot => {
-      activities.value = snapshot.docs.map(doc => {
+
+      const firebaseActivities = snapshot.docs.map(doc => {
         const data = doc.data()
 
         return {
@@ -22,11 +23,30 @@ onMounted(() => {
           date: data.datetime.toDate()
         }
       })
+
+      // Merges local storage with out firestore collections.
+      const localBookings = loadLocalBookings()
+
+      activities.value = [
+        ...firebaseActivities,
+        ...localBookings
+      ]
     }
   )
 })
 
 const activities = ref([])
+
+const loadLocalBookings = () => {
+  const saved = localStorage.getItem("calendarBookings")
+
+  if (!saved) return []
+
+  return JSON.parse(saved).map(booking => ({
+    ...booking,
+    date: new Date(booking.date)
+  }))
+}
 
 const selectedDate = ref(new Date())
 const handleDateSelect = (date) => {

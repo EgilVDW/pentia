@@ -5,6 +5,7 @@ import ProjectLayout from "@/layouts/ProjectLayout.vue";
 import CalendarView from "@/views/CalendarView.vue";
 import ChatView from "@/views/ChatView.vue";
 import DailyUpdateView from "@/views/DailyUpdate.vue";
+import CalendarAdminView from "@/views/desktop/CalendarAdminView.vue";
 import CustomerView from "@/views/desktop/CustomerView.vue";
 import DesktopHomeView from "@/views/desktop/HomeView.vue";
 import MaterialsUploadView from "@/views/desktop/MaterialsUploadView.vue";
@@ -135,7 +136,7 @@ const router = createRouter({
             {
               path: "kalender",
               name: "kalender",
-              component: DesktopHomeView
+              component: CalendarAdminView
             },
             {
               path: "materialevalg",
