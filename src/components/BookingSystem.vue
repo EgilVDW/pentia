@@ -88,7 +88,6 @@ const submit = () => {
   margin-bottom: 0.5rem;
 }
 
-/* Inputs */
 .booking input,
 .booking textarea {
   padding: 0.75rem;
@@ -98,13 +97,11 @@ const submit = () => {
   background: #fff;
 }
 
-/* Textarea sizing */
 .booking textarea {
   min-height: 100px;
   resize: vertical;
 }
 
-/* Button */
 .booking button {
   padding: 0.75rem 1rem;
   border: none;
