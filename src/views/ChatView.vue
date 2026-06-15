@@ -47,7 +47,8 @@ async function sendMessage(content) {
 
 const getRole = (role) => {
   const map = {
-    manager: "Byggeleder"
+    manager: "Byggeleder",
+    customer: "Bygherre"
   };
 
   return map[role] ?? role;
