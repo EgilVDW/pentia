@@ -237,7 +237,6 @@ export const useProjectStore = defineStore("project", () => {
   function listenToMessages(projectId) {
     if (!projectId) return;
 
-    // stop previous listener
     if (unsubscribeMessages) {
       unsubscribeMessages();
     }

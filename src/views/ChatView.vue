@@ -30,7 +30,7 @@ watch(
   () => [authStore.user, projectStore.currentProject],
   async () => {
     if (projectStore.currentProject) {
-      await contactStore.fetchContact(projectStore.currentProject.managerId);
+      contactStore.subscribeToContact(projectStore.currentProject.managerId);
     }
   },
   { immediate: true }
@@ -52,6 +52,22 @@ const getRole = (role) => {
 
   return map[role] ?? role;
 };
+
+const now = ref(Date.now());
+
+setInterval(() => {
+  now.value = Date.now();
+}, 10000);
+
+const isOnline = computed(() => {
+  if (!manager.value?.lastActive) return false;
+
+  const last =
+    manager.value.lastActive.toMillis?.() ??
+    new Date(manager.value.lastActive).getTime();
+
+  return now.value - last < 60000;
+});
 </script>
 <template>
   <main class="chat-view">
@@ -59,7 +75,7 @@ const getRole = (role) => {
       v-if="manager"
       :name="`${manager.firstName} ${manager.lastName}`"
       :role="getRole(manager.role)"
-      :active="manager.isActive"
+      :active="isOnline"
     />
     <div class="chat-view__chat">
       <MessageList :data="messages" :sender="customerId" />

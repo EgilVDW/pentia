@@ -9,7 +9,7 @@
 import { defineStore } from "pinia";
 import { ref, computed, watch } from "vue";
 import { db } from "@/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 
 import { useAuthStore } from "@/stores/auth";
 import { useProjectStore } from "@/stores/project";
@@ -100,6 +100,32 @@ export const useContactStore = defineStore("contact", () => {
     }
   }
 
+  let unsubscribeContact = null;
+
+  function subscribeToContact() {
+    if (!contactId.value) {
+      contact.value = null;
+      return;
+    }
+
+    if (unsubscribeContact) {
+      unsubscribeContact();
+    }
+
+    const ref = doc(db, "users", contactId.value);
+
+    unsubscribeContact = onSnapshot(ref, (snap) => {
+      if (snap.exists()) {
+        contact.value = {
+          id: snap.id,
+          ...snap.data()
+        };
+      } else {
+        contact.value = null;
+      }
+    });
+  }
+
   /**
    * Watches authentication and project changes
    * and refreshes the contact automatically.
@@ -118,6 +144,7 @@ export const useContactStore = defineStore("contact", () => {
     contact,
     contactId,
     loading,
-    fetchContact
+    fetchContact,
+    subscribeToContact
   };
 });

@@ -15,7 +15,7 @@ import {
   onAuthStateChanged
 } from "firebase/auth";
 
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 
 /**
  * Pinia authentication store.
@@ -105,6 +105,8 @@ export const useAuthStore = defineStore("auth", () => {
 
     user.value = null;
     profile.value = null;
+
+    stopPresence();
   }
 
   /**
@@ -151,6 +153,35 @@ export const useAuthStore = defineStore("auth", () => {
     });
   }
 
+  let presenceInterval = null;
+
+  const startPresence = (userId) => {
+    if (!userId) return;
+
+    updateDoc(doc(db, "users", userId), {
+      lastActive: serverTimestamp()
+    });
+
+    presenceInterval = setInterval(() => {
+      updateDoc(doc(db, "users", userId), {
+        lastActive: serverTimestamp()
+      });
+    }, 30000);
+
+    window.addEventListener("beforeunload", () => {
+      updateDoc(doc(db, "users", userId), {
+        lastActive: serverTimestamp()
+      });
+    });
+  };
+
+  const stopPresence = () => {
+    if (presenceInterval) {
+      clearInterval(presenceInterval);
+      presenceInterval = null;
+    }
+  };
+
   return {
     user,
     profile,
@@ -159,6 +190,8 @@ export const useAuthStore = defineStore("auth", () => {
     isManager,
     login,
     logout,
-    initAuth
+    initAuth,
+    startPresence,
+    stopPresence
   };
 });
